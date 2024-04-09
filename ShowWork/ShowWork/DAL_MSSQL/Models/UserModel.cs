@@ -1,0 +1,30 @@
+﻿using LinqToDB.Mapping;
+using System.ComponentModel.DataAnnotations;
+
+namespace ShowWork.DAL_MSSQL.Models
+{
+    [Table(Name = "User")]
+    public class UserModel
+    {
+        [Column(IsPrimaryKey = true, Name = "UserId", CanBeNull = false)]
+        [Key]
+        public int UserId { get; set; }
+
+        [Column(Name = "Email", CanBeNull = false)]
+        public string Email { get; set; } = null!;
+
+        [Column(Name = "Password", CanBeNull = true)]
+        public string Password { get; set; } = "default";
+
+        [Column(Name = "FirstName", CanBeNull = false)]
+        public string FirstName { get; set; } = null!;
+
+        [Column(Name = "SecondName", CanBeNull = false)]
+        public string SecondName { get; set; } = null!;
+
+        [Column(Name = "ProfileImage", CanBeNull = true)]
+
+        [Column(Name = "Status", CanBeNull = false)]
+        public int Status { get; set; } = 0;
+    }
+}
