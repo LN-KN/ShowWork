@@ -396,3 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/ShowWork/ShowWork/DAL_MSSQL/DbHelper.cs
