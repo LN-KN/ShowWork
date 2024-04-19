@@ -9,10 +9,10 @@ namespace ShowWork.ViewMapper
         {
             return new UserModel()
             {
-                Email = model.Email,
-                Password = model.Password,
-                FirstName = model.FirstName,
-                SecondName = model.SecondName
+                Email = model.Email!,
+                Password = model.Password!,
+                FirstName = model.FirstName!,
+                SecondName = model.SecondName!
             };
         }
     }

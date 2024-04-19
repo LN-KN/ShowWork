@@ -13,7 +13,13 @@ namespace ShowWork
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddSingleton<IAuthBL, AuthBL>();
+            builder.Services.AddSingleton<IEncrypt, Encrypt>();
+            builder.Services.AddScoped<ICurrentUser, CurrentUser>(); //Scoped потому что юзеры разные, синглтон для одинаковых данных
             builder.Services.AddSingleton<IAuthDal, AuthDAL>();
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            builder.Services.AddMvc().AddSessionStateTempDataProvider();
+            builder.Services.AddSession();
 
             var app = builder.Build();
 
@@ -28,6 +34,7 @@ namespace ShowWork
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();

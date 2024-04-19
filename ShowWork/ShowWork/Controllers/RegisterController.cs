@@ -27,7 +27,7 @@ namespace ShowWork.Controllers
             if (ModelState.IsValid)
             {
                 authBL.CreateUser(AuthMapper.MapRegisterVMToUserModel(model));
-                return Redirect("/");
+                
             }
             return View("Index", model);
         }

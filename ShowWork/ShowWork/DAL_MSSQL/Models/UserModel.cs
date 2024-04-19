@@ -8,13 +8,15 @@ namespace ShowWork.DAL_MSSQL.Models
     {
         [Column(IsPrimaryKey = true, Name = "UserId", CanBeNull = false)]
         [Key]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         [Column(Name = "Email", CanBeNull = false)]
         public string Email { get; set; } = null!;
 
         [Column(Name = "Password", CanBeNull = true)]
         public string Password { get; set; } = "default";
+        [Column(Name = "Salt", CanBeNull = false)]
+        public string Salt { get; set; } = null!;
 
         [Column(Name = "FirstName", CanBeNull = false)]
         public string FirstName { get; set; } = null!;

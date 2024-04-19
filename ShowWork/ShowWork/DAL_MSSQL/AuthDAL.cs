@@ -2,6 +2,7 @@
 using Dapper;
 using System.Data.SqlClient;
 using LinqToDB.SqlQuery;
+using static LinqToDB.Reflection.Methods.LinqToDB;
 
 namespace ShowWork.DAL_MSSQL
 {
@@ -14,7 +15,7 @@ namespace ShowWork.DAL_MSSQL
                 connection.Open();
 
                 return await connection.QueryFirstOrDefaultAsync<UserModel>(@"
-                      select UserId, Email, Password, Status 
+                      select UserId, Email, Password, Salt, Status 
                       from 
                       User where UserId = @email", new { id = email }) ?? new UserModel();
             }
@@ -27,7 +28,7 @@ namespace ShowWork.DAL_MSSQL
                 connection.Open();
 
                 return await connection.QueryFirstOrDefaultAsync<UserModel>(@"
-                      select UserId, Email, Password, Status 
+                      select UserId, Email, Password, Salt, Status 
                       from 
                       User where UserId = @id", new {id = id }) ?? new  UserModel();
             }
@@ -40,9 +41,11 @@ namespace ShowWork.DAL_MSSQL
                 using (var connection = new SqlConnection(DbHelper.connString))
                 {
                     connection.Open();
-                    string sql = @"insert into [User](Email, Password, FirstName, SecondName, Status)
-                    values(@Email, @Password, @FirstName, @SecondName, @Status)";
-                    return await connection.ExecuteAsync(sql, model);
+                    string sql = @"insert into [User](Email, Password, Salt, FirstName, SecondName, Status)
+                    values(@Email, @Password, @Salt, @FirstName,  @SecondName, @Status);
+                    SELECT UserId AS LastID FROM [User] WHERE UserId = @@Identity;";
+                    var query = connection.QuerySingleAsync<int>(sql, model);
+                    return await query;
                 }
             }
             catch(Exception e)

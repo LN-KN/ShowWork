@@ -1,0 +1,37 @@
+<ul class="navbar">
+          <li>
+            <img class="navigation" src="images/logo_mini.png">
+            <p class="navigation" class="">Главная</p>
+          </li>
+          <li>
+            <img class="navigation" src="images/logo.png">
+          </li>
+          <li>
+            <p class="navigation" >Каталог</p>
+          </li>
+          <li>
+            <p class="navigation" >Мои подписки</p>
+          </li>
+          <li>
+            <img class="navigation" src="images/+.png">
+          </li>
+          <li>
+            <p class="navigation">Вход</p>
+          </li>
+
+        </ul>
+
+
+.navigation{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.navbar{
+    background-color: rgb(248,247,254);
+    list-style-type: none;
+    columns: 6;
+    margin-left: 5%;
+    margin-right: 5%;
+    
+}
