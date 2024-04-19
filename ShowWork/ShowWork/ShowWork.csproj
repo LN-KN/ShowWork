@@ -17,11 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\Home\images\logo_mini.png" />
+    <None Remove="Properties\images\logo_mini.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Views\Home\images\logo_mini.png" />
+    <Content Include="Properties\images\logo_mini.png" />
   </ItemGroup>
 
   <ItemGroup>
