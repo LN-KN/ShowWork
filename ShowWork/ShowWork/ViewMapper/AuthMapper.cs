@@ -10,6 +10,7 @@ namespace ShowWork.ViewMapper
             return new UserModel()
             {
                 Email = model.Email!,
+                Login = model.Login!,
                 Password = model.Password!,
                 FirstName = model.FirstName!,
                 SecondName = model.SecondName!

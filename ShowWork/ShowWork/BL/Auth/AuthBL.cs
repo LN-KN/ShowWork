@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using ShowWork.DAL_MSSQL;
 using ShowWork.DAL_MSSQL.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShowWork.BL.Auth
 {
@@ -16,6 +17,17 @@ namespace ShowWork.BL.Auth
             this.httpContextAccessor = httpContextAccessor;
         }
 
+        public async Task<int> Authenticate(string login, string password, bool rememberMe)
+        {
+            var user = await authDal.GetUser(login);
+            if (user.UserId != null && user.Password == encrypt.HashPassword(password, user.Salt))
+            {
+                Login(user.UserId ?? 0);
+                return user.UserId ?? 0;
+            }
+            throw new AuthorizationException();
+        }
+
         public async Task<int> CreateUser(UserModel user)
         {
             user.Salt = Guid.NewGuid().ToString();
@@ -23,6 +35,16 @@ namespace ShowWork.BL.Auth
             int id = await authDal.CreateUser(user);
             Login(id);
             return id;
+        }
+
+        public async Task<ValidationResult?> ValidateLogin(string login)
+        {
+            var user = await authDal.GetUser(login);
+            if(user.UserId != null)
+            {
+                return new ValidationResult("Логин уже существует");
+            }
+            return null;
         }
 
         public void Login(int id) 

@@ -8,16 +8,16 @@ namespace ShowWork.DAL_MSSQL
 {
     public class AuthDAL : IAuthDal
     {
-        public async Task<UserModel> GetUser(string email)
+        public async Task<UserModel> GetUser(string login)
         {
             using (var connection = new SqlConnection(DbHelper.connString))
             {
-                connection.Open();
+                await connection.OpenAsync();
 
                 return await connection.QueryFirstOrDefaultAsync<UserModel>(@"
-                      select UserId, Email, Password, Salt, Status 
+                      select UserId, Email, Login, Password, Salt, Status 
                       from 
-                      User where UserId = @email", new { id = email }) ?? new UserModel();
+                      [User] where Login = @login", new { login = login }) ?? new UserModel();
             }
         }
 
@@ -25,12 +25,12 @@ namespace ShowWork.DAL_MSSQL
         {
             using (var connection = new SqlConnection(DbHelper.connString))
             {
-                connection.Open();
+                await connection.OpenAsync();
 
                 return await connection.QueryFirstOrDefaultAsync<UserModel>(@"
-                      select UserId, Email, Password, Salt, Status 
+                      select UserId, Email, Login, Password, Salt, Status 
                       from 
-                      User where UserId = @id", new {id = id }) ?? new  UserModel();
+                      [User] where UserId = @id", new {id = id }) ?? new  UserModel();
             }
         }
 
@@ -40,9 +40,9 @@ namespace ShowWork.DAL_MSSQL
             {
                 using (var connection = new SqlConnection(DbHelper.connString))
                 {
-                    connection.Open();
-                    string sql = @"insert into [User](Email, Password, Salt, FirstName, SecondName, Status)
-                    values(@Email, @Password, @Salt, @FirstName,  @SecondName, @Status);
+                    await connection.OpenAsync();
+                    string sql = @"insert into [User](Email, Login, Password, Salt, FirstName, SecondName, Status)
+                    values(@Email, @Login, @Password, @Salt, @FirstName,  @SecondName, @Status);
                     SELECT UserId AS LastID FROM [User] WHERE UserId = @@Identity;";
                     var query = connection.QuerySingleAsync<int>(sql, model);
                     return await query;

@@ -11,7 +11,7 @@
         public bool IsLoggedIn()
         {
             int? id = httpContextAccessor.HttpContext?.Session.GetInt32(AuthConstants.AUTH_SESSION_PARAM_NAME);
-            return id != null;
+            return id!=null;
         }
     }
 }

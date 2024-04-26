@@ -8,6 +8,7 @@ namespace ShowWork.Controllers
     public class RegisterController : Controller
     {
         private readonly IAuthBL authBL;
+        
         public RegisterController(IAuthBL authBL)
         {
             this.authBL = authBL;
@@ -22,12 +23,21 @@ namespace ShowWork.Controllers
 
         [HttpPost]
         [Route("/register")]
-        public IActionResult IndexSave(RegisterViewModel model)
+        public async Task<IActionResult> IndexSave(RegisterViewModel model)
         {
+
             if (ModelState.IsValid)
             {
-                authBL.CreateUser(AuthMapper.MapRegisterVMToUserModel(model));
-                
+                var errorModel = await authBL.ValidateLogin(model.Login  ?? "");
+                if(errorModel != null)
+                {
+                    ModelState.TryAddModelError("Login", errorModel.ErrorMessage!);
+                }
+            }
+            if (ModelState.IsValid)
+            {
+                await authBL.CreateUser(AuthMapper.MapRegisterVMToUserModel(model));
+                return Redirect("/");
             }
             return View("Index", model);
         }

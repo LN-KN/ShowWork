@@ -17,11 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Properties\images\logo_mini.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Properties\images\logo_mini.png" />
+    <None Remove="wwwroot\images\logo_mini.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +35,19 @@
 
   <ItemGroup>
     <Folder Include="Новая папка\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\plus.png" />
+    <None Include="wwwroot\images\Arrow1.png" />
+    <None Include="wwwroot\images\arrow_logo.png" />
+    <None Include="wwwroot\images\arrow_logo2.svg" />
+    <None Include="wwwroot\images\color_decor.png" />
+    <None Include="wwwroot\images\color_decor.svg" />
+    <None Include="wwwroot\images\logo.png" />
+    <None Include="wwwroot\images\patterns.png" />
+    <None Include="wwwroot\images\узоры цвет 1.png" />
+    <None Include="wwwroot\images\узоры цвет 2.png" />
   </ItemGroup>
 
 </Project>

@@ -25,19 +25,25 @@
 
 </head>
 <body class="body">
-
-    <header class="head">
+    @if (Model)
+    {
+        <header class=""/>
+    }
+    else
+    {
+        <header class="head"/>
+    }
         <nav class="navbar">
             <ul class="navigation">
                 <li>
-                    <img class="miniLogo" src="@Url.Content("~/../Views/images/logo_mini.png")" width="50" height="59">
+                    <img class="miniLogo" src="/images/logo_mini.png" width="50" height="59">
 
                 </li>
                 <li class="mainPage">
                     <p>Главная</p>
                 </li>
                 <li class="mainLogo">
-                    <img src="../Views/images/logo.png">
+                    <img src="/images/logo.png">
                 </li>
                 <li>
                     <p>Каталог</p>
@@ -46,28 +52,43 @@
                     <p>Мои подписки</p>
                 </li>
                 <li>
-                    <img class="plus" src="../Views/images/+.png">
+                    <img class="plus" src="/images/plus.png">
                 </li>
                 <li>
-                    <a href="loginPage.html" class="login">Вход</a>
+                    @if (Model)
+                    {
+                        <img src="/images/plus.png" /> //Типа иконка пользователя
+                    }
+                    else
+                    {
+                        <a href="/login" class="login">Вход</a>
+                    }
                 </li>
 
             </ul>
-            <div class="about">
-                <p class="slogan">Делитесь своим<br> талантом</p>
-                <p class="slogan2">
-                    Show Work - ваш персональный креативный каталог для представления своих проектов,
-                    идей и достижений в цифровом<br> формате.
-                </p>
-                <a href="loginPage.html" class="startwork">Начать работу</a>
-                <img class="arrow" src="../Views/images/Arrow1.png">
-            </div>
+            
+                @if (Model)
+                {
+                    <a href="/register">Просмотреть работы</a>
+                }
+                else
+                {
+                     <div class="about">
+                         <p class="slogan">Делитесь своим<br> талантом</p>
+                         <p class="slogan2">
+                             Show Work - ваш персональный креативный каталог для представления своих проектов,
+                             идей и достижений в цифровом<br> формате.
+                         </p>
+                         <a href="/register" class="startwork">Начать работу</a>
+                         <img class="arrow" src="/images/Arrow1.png">
+                     </div>
+                }
         </nav>
     </header>
     <main>
         <div class="mainwork">
             <p>Портфолио недели</p>
-            <img src="../Views/images/arrow_logo.png">
+            <img src="/images/arrow_logo.png">
 
         </div>
     </main>
@@ -75,14 +96,6 @@
     </footer>
 
 </body>
-@if (Model)
-{
-    <h1>Авторизован</h1>
-}
-else
-{
-    <h1>Не Авторизован</h1>
-}
 </html>
 
 

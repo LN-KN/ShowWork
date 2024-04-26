@@ -1,48 +1,55 @@
-.head{
+.about {
     background-color: rgb(167,151,214);
     border-width: 5px 5px 5px 4px;
     border-style: none none solid none;
     border-color: rgb(112,84,189);
+    margin-top: -5%;
+    top: 1;
+    z-index: 0;
 }
 
-.body{
-    height: 100%; 
-    width: 100%; 
-    margin: 0; 
-    padding: 0; 
-}   
+.body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
 
-.mainPage{
+.mainPage {
     align-items: left;
     margin-left: 15%;
 }
 
-.miniLogo{
+.miniLogo {
     margin-left: -45%;
     margin-top: 7px;
 }
 
-.login{
+.login {
     font-weight: bold;
     color: rgb(112,84,189);
     text-decoration: none;
 }
 
-.navbar{
+.navbar {
     padding-bottom: 40px;
     margin-top: -1%;
-    }
+}
 
-.mainLogo{
+.mainLogo {
     text-align: center;
     margin-left: 12%;
 }
-.plus{
+
+.plus {
     margin-top: 2px;
 }
 
-.navigation{
-    background-color: rgb(248,247,254);
+.navigation {
+    position: relative;
+    top: 0;
+    z-index: 100;
+    background-color: rgb(248,247,254) !important;
     list-style-type: none;
     display: grid;
     columns: 7;
@@ -52,51 +59,58 @@
     margin-left: 5%;
     margin-right: 5%;
     align-items: center;
-    li{
-        text-align: center;
-        font-family: "Lato", sans-serif;
-        font-weight: bold 700;
-    }
-    
+    li
+
+{
+    text-align: center;
+    font-family: "Lato", sans-serif;
+    font-weight: bold 700;
 }
 
-.about{
+}
+
+.about {
     display: grid;
     text-align: center;
+    .slogan
 
-    .slogan{
-        text-align: center;
-        font-family: "Anonymous Pro", monospace;
-        font-size: 300%;
-        margin-top: 3%;
-    }
-    .slogan2{
-        font-family: "Lato", sans-serif;
-        font-size: 15px;
-    }
-    .startwork{
-        font-family: "Lato", sans-serif;
-        font-family: monospace;
-        text-decoration: none;
-        font-weight: 500;
-        color: black;
-        background-color: rgb(255,238,221);
-        padding: 9px;
-        padding-inline: 45px;
-        border-radius: 30px;
-        margin: auto;
-        font-size: 15px;
-        margin-top: 2%;
-    }
-    .arrow{
-        margin: auto;
-        padding-left: 13%;
-        margin-top: -1.9%;
-        pointer-events: none;
-    }
+{
+    text-align: center;
+    font-family: "Anonymous Pro", monospace;
+    font-size: 300%;
+    margin-top: 3%;
 }
 
-.mainwork{
+.slogan2 {
+    font-family: "Lato", sans-serif;
+    font-size: 15px;
+}
+
+.startwork {
+    font-family: "Lato", sans-serif;
+    font-family: monospace;
+    text-decoration: none;
+    font-weight: 500;
+    color: black;
+    background-color: rgb(255,238,221);
+    padding: 9px;
+    padding-inline: 45px;
+    border-radius: 30px;
+    margin: auto;
+    font-size: 15px;
+    margin-top: 2%;
+}
+
+.arrow {
+    margin: auto;
+    padding-left: 13%;
+    margin-top: -1.9%;
+    pointer-events: none;
+}
+
+}
+
+.mainwork {
     background-image: url("images/color_decor.svg");
     background-size: cover;
     display: grid;
@@ -107,10 +121,11 @@
 }
 /* Страница регистрации */
 
-.mainLogo2{
+.mainLogo2 {
     text-align: center;
 }
-.loginPage{
+
+.loginPage {
     background-color: rgb(167,151,214);
     background-image: url(images/узоры.png);
     background-size: cover;
@@ -118,9 +133,9 @@
 
 
 
-.login_window{
+.login_window {
     background-color: rgba(189, 177, 224, 1);
-    margin-inline:25%;
+    margin-inline: 25%;
     margin-top: 10%;
     text-align: center;
     border-radius: 25px;
@@ -128,96 +143,188 @@
     border-style: solid;
     font-family: "Lato", sans-serif;
     font-family: monospace;
-    .arrow_logo{
-        margin-left: 4px;
-        margin-top: 2px;
-        
-    }
-    .title{
-        text-align: left;
-        color: black;
-        font-weight: lighter;
-    }
-    .caption{
-        color:black;
-        font-size: 20px;
-        margin-bottom: 20%;
-        font-weight: 400;
-    }
-    .field{
-        width: 105%;
-        border-radius: 25px;
-        padding: 4%;
-        background-color: rgb(248,247,254);
-        border-style: none;
-        
-    }
-    .no-account{
-        color: black;
-        
-    }
-   
+    .arrow_logo
 
-    .go-to-reg{
-        color: rgb(5,0,228);
-        text-align: right;
-    }
-    .miniWindow{
-        margin-right: 30%;
-        margin-left: 30%;       
-        
-        
-    }
+{
+    margin-left: 4px;
+    margin-top: 2px;
+}
 
-    .login_button{
-        background-color: rgba(189, 177, 224, 1);
-        border-color: rgb(167,151,214);
-        color: black;
-        border-radius: 25px;
-        padding: 5px;
-        font-family: "Lato", sans-serif;
-        font-family: monospace;
-        font-size: 15px;
-        font-weight: bolder;
-        padding-inline: 40px;
-        border-style:solid;
-        cursor: pointer;
-        margin-top: 13%;
-        text-decoration: none;
-    }
-    .login_button:active{
+.title {
+    text-align: left;
+    color: black;
+    font-weight: lighter;
+}
+
+.caption {
+    color: black;
+    font-size: 20px;
+    margin-bottom: 20%;
+    font-weight: 400;
+}
+
+.field {
+    width: 105%;
+    border-radius: 25px;
+    padding: 4%;
+    background-color: rgb(248,247,254);
+    border-style: none;
+}
+
+.no-account {
+    color: black;
+}
+
+
+.go-to-reg {
+    color: rgb(5,0,228);
+    text-align: right;
+}
+
+.miniWindow {
+    margin-right: 30%;
+    margin-left: 30%;
+}
+
+
+
+.login_button {
+    background-color: rgba(189, 177, 224, 1);
+    border-color: rgb(167,151,214);
+    color: black;
+    border-radius: 25px;
+    padding: 5px;
+    font-family: "Lato", sans-serif;
+    font-family: monospace;
+    font-size: 15px;
+    font-weight: bolder;
+    padding-inline: 40px;
+    border-style: solid;
+    cursor: pointer;
+    margin-top: 13%;
+    text-decoration: none;
+}
+
+    .login_button:active {
         /* СДЕЛАТЬ КОГДА ИСПРАВИТ КСЮША */
         background-color: rgb(112,85,189);
         color: rgb(255,238,221);
         border-color: rgb(112,85,189);
-        
-    }
-    
-    .window-bottom{
-        font-family: "Lato", sans-serif;
-        font-weight: 400;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        column-gap: 10px;
-        margin-bottom: 40%;
-        margin-top: 5%;
-        width: 170%;
-        text-align: left;
     }
 
+.window-bottom {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 10px;
+    margin-bottom: 40%;
+    margin-top: 5%;
+    width: 170%;
+    text-align: left;
+}
 
 }
-.decor-line{
+
+.decor-line {
     margin-top: 20%;
     align-items: center;
     width: 230px;
     border-color: rgb(112,84,189);
     margin-bottom: 1.75%;
-    
 }
-.bottom-slogan{
+
+.bottom-slogan {
     text-align: center;
     font-family: "Lato", sans-serif;
     color: black;
     margin-bottom: 31px;
+}
+
+.error, validation-summarry-errors {
+    color:red;
+}
+
+/* Регистрация */
+.registerPage {
+    background-color: rgb(167,151,214);
+    background-image: url(images/узоры.png);
+    background-size: cover;
+    padding-inline: 25%;
+}
+
+.register_button {
+    background-color: rgba(189, 177, 224, 1);
+    border-color: 1px solid black;
+    color: black;
+    border-radius: 25px;
+    padding: 5px;
+    font-family: "Lato", sans-serif;
+    font-family: monospace;
+    font-size: 15px;
+    font-weight: bolder;
+    padding-inline: 40px;
+    border-style: solid;
+    cursor: pointer;
+    margin-top: 5%;
+    text-decoration: none;
+    margin-bottom: 5%;
+    margin-left: 20px;
+}
+
+    .register_button:active {
+        background-color: rgb(112,85,189);
+        color: rgb(255,238,221);
+        border-color: rgb(112,85,189);
+    }
+
+.register_window {
+    background-color: rgba(189, 177, 224, 1);
+    margin-top: 10%;
+    text-align: center;
+    border-radius: 25px;
+    border: 4px rgb(130,55,218);
+    border-style: solid;
+    font-family: "Lato", sans-serif;
+    font-family: monospace;
+    .arrow_logo
+
+{
+    margin-left: 4px;
+    margin-top: 2px;
+}
+
+.title {
+    text-align: left;
+    color: black;
+    font-weight: lighter;
+}
+
+.caption {
+    color: black;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.field {
+    width: 110%;
+    border-radius: 25px;
+    padding: 3%;
+    background-color: rgb(248,247,254);
+    border-style: none;
+}
+
+.miniWindow {
+    margin-block-start: 20px;
+    margin-inline-end: 30px;
+}
+
+.fields {
+    display: grid;
+    grid-template-columns: repeat(2, 307px);
+    columns: 2;
+    grid-auto-flow: row;
+    column-gap: 80px;
+    justify-content: space-between;
+}
 }

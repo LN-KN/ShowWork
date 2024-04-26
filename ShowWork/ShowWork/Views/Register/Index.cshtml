@@ -1,28 +1,95 @@
 ﻿@model RegisterViewModel
 
 @{
-    ViewData["Title"] = "Registration";
+    ViewData["Title"] = "Регистрация";
+    IgnoreBody();
 }
 
-<div>
-    <form action ="/register" method="post">
-        <p>
-            <label>Почта</label>
-            <input name="Email" value="@Model.Email" />
-        </p> 
-        <p>
-            <label>Пароль</label>
-            <input name="Password"  type="password"/>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="портфолио, контент, работы">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="registerPage">
+    <header>
+        <div class="mainLogo2">
+            <img src="/images/logo.png">
+        </div>
+    </header>
+    <main class="register_window">
+        <a href="/home"><img align="left" class="arrow_logo" src="/images/arrow_logo2.svg"></a>
+        <div class="miniWindow">
+             <form id="registrationForm" action="/register" method="post">
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var error = document.getElementById("passwordError");
+                        if (error.innerText == "Wrong password") {
+                                var passwordError = "Пароль слишком простой, требования:<br>• Более 8 символов<br>• Более одной строчной буквы<br>• Не менее одной цифры<br>• Не менее одного спецсимвола";
+                                document.getElementById("passwordError").innerHTML = passwordError;
+                            }
+                        });
+                    </script>
+
+            <p class="caption">Регистрация</p>
+            <div class="fields">
+                <figure>
+                    <figcaption><p class="title">Имя</p></figcaption>
+                        <input class="field" name="FirstName" value="@Model.FirstName" />
+                        <div class="error">@Html.ValidationMessageFor(m => m.FirstName)</div>
+                </figure>
+                <figure>
+                    <figcaption><p class="title">Фамилия</p></figcaption>
+                        <input class="field" name="SecondName" value="@Model.SecondName" />
+                        <div class="error">@Html.ValidationMessageFor(m => m.SecondName)</div>
+                </figure>
+                <figure>
+                    <figcaption><p class="title">E-mail</p></figcaption>
+                        <input class="field" name="Email" value="@Model.Email" />
+                        <div class="error">@Html.ValidationMessageFor(m => m.Email)</div>
+                </figure><br>
+                <figure>
+                    <figcaption><p class="title">Логин</p></figcaption>
+                        <input class="field" name="Login" value="@Model.Login" />
+                        <div class="error">@Html.ValidationMessageFor(m => m.Login)</div>
+                </figure><br>
+                <figure>
+                    <figcaption><p class="title">Пароль</p></figcaption>
+                        <input class="field" name="Password" id="passwordInput" type="password" />
+                        <div class="error" id="passwordError">@Html.ValidationMessageFor(m => m.Password)</div>
+                </figure>
+                <figure>
+                    <figcaption><p class="title">Подтверждение пароля</p></figcaption>
+                        <input class="field" name="CorrectPassword" type="password" value="@Model.CorrectPassword" />
+                        <div class="error">@Html.ValidationMessageFor(m => m.CorrectPassword)</div>
+                </figure>
+            </div>
+                <button id="loginBtn" class="register_button">
+                    Зарегистрироваться
+                </button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <hr class="decor-line">
+        <div class="mainLogo2">
+            <img src="/images/logo.png">
+        </div>
+        <p class="bottom-slogan">
+            Show Work - Ваш путь к вдохновению и успеху в цифровом мире!
         </p>
-        <p>
-            <label>Имя</label>
-            <input name="FirstName" value="@Model.FirstName" />
-        </p>
-        <p>
-            <label>Фамилия</label>
-            <input name="SecondName" value="@Model.SecondName"/>
-        </p>
-        <button>Зарегистрироваться</button>
-    </form>
-    <p>Тест</p>
-</div>
+    </footer>
+</body>
+</html>

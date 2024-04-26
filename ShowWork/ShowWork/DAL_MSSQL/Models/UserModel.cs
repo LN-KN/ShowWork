@@ -12,6 +12,8 @@ namespace ShowWork.DAL_MSSQL.Models
 
         [Column(Name = "Email", CanBeNull = false)]
         public string Email { get; set; } = null!;
+        [Column(Name = "Login", CanBeNull = true)]
+        public string Login { get; set; } = null!;
 
         [Column(Name = "Password", CanBeNull = true)]
         public string Password { get; set; } = "default";
