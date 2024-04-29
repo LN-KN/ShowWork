@@ -1,7 +1,11 @@
-﻿namespace ShowWork.BL.Auth
+﻿using ShowWork.DAL_MSSQL.Models;
+
+namespace ShowWork.BL.Auth
 {
     public interface ICurrentUser
     {
-        bool IsLoggedIn();
+        Task<bool> IsLoggedIn();
+        Task<int?> GetCurrentUserId();
+        Task<IEnumerable<UserModel>> GetProfiles();
     }
 }

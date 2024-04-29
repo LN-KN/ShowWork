@@ -1,0 +1,109 @@
+﻿@model ProfileViewModel
+
+@{
+    ViewData["Title"] = "Профиль";
+    IgnoreBody();
+    bool Edit = false;
+    
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="портфолио, контент, работы">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <title>Профиль</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
+</head>
+
+<body class="profile-background">
+            <script>
+                 document.querySelector('.note__body').addEventListener("keyup", function () {
+                     this.value = this.value.replace(/[]/g, "");
+                 });
+            </script>
+        <form action="/profile" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="UserId" value="@Model.UserId" />    
+            @Html.AntiForgeryToken()
+                <div>Профиль</div>
+                <div class="image-upload">
+                    <label for="file-input">
+                        @if (Model.ImagePath != null)
+                        {
+                            <img src="@Url.Content(Model.ImagePath).Substring(9)" name="ImagePath" />
+                        }
+                        else
+                        {
+                            <img src="images/inputImage.svg" />
+                        }
+
+                    </label>
+                    <input id="file-input" type="file" name="file" />
+                </div>
+                <div class="note">
+                    <div class="note__content">
+                    <h2 class="note__title"> Имя </h2>
+                    <input class="note__body" style="width:200px; padding:5px;" type="text" value="@Model.FirstName" name="FirstName"/>
+                    <div class="error">@Html.ValidationMessageFor(m => m.FirstName)</div>
+                    <h2 class="note__title"> Фамилия </h2>
+                    <input class="note__body" style="width:200px; padding:5px;" type="text" value="@Model.LastName" name="LastName" />
+                    <div class="error">@Html.ValidationMessageFor(m => m.LastName)</div>
+                    <h2 class="note__title"> Логин </h2>
+                    <input class="note__body" style="width:200px; padding:5px;" type="text" value="@Model.Login" name="Login" />
+                    <div class="error">@Html.ValidationMessageFor(m => m.Login)</div>
+                    <h2 class="note__title"> Email </h2>
+                    <input class="note__body" style="width:200px; padding:5px;" type="text" value="@Model.Email" name="Email" />
+                    <div class="error">@Html.ValidationMessageFor(m => m.Email)</div>
+                    <h2 class="note__title"> Описание </h2>
+                    <input class="note__body" style="width:200px; padding:5px;" type="text" value="@Model.Description" name="Description" />
+                    <div class="error">@Html.ValidationMessageFor(m => m.Description)</div>
+                    <h2 class="note__title"> Специализация </h2>
+                    <input class="note__body" style="width:200px; padding:5px;" type="text" value="@Model.Specialization" name="Specialization" />
+                    <div class="error">@Html.ValidationMessageFor(m => m.Specialization)</div>
+                </div>
+                
+                    <button id="btnSave" class="btnSave" value="save" style="display:none;">Сохранить</button>
+                </div>
+        </form>
+        <button id="btnEditSave" class="actions" name="action" value="edit" style="display:block;">Редактировать</button>
+            
+        <script>
+            const editSave = function () {
+                let notes = document.querySelectorAll('.note__body');
+                let buttonSave = document.querySelector('.btnSave');
+                if (this.textContent == 'Редактировать') {
+                    for (let note of notes) {
+                            note.contentEditable = true;
+                            note.focus();
+                            this.textContent = 'Сохранить';
+                        }; 
+                    this.value = 'save';
+                    btnSave.style.display = 'block';
+                    this.style.display = 'none';                
+                }
+                else {
+                    for (let note of notes) {
+                        this.textContent = 'Редактировать';
+                        note.contentEditable = false;
+                    };
+                    this.value = 'edit';
+                    btnSave.style.display = 'none';
+                    this.style.display = 'block';
+                }
+            }
+            document.querySelector('.actions').addEventListener('click', editSave);
+            
+        </script> 
+</body>
+</html>

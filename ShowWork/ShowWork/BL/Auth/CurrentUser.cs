@@ -1,17 +1,69 @@
-﻿namespace ShowWork.BL.Auth
+﻿using ShowWork.BL.General;
+using ShowWork.BL.Profile;
+using ShowWork.DAL_MSSQL;
+using ShowWork.DAL_MSSQL.Models;
+
+namespace ShowWork.BL.Auth
 {
     public class CurrentUser : ICurrentUser
     {
-        private readonly IHttpContextAccessor httpContextAccessor; 
-        public CurrentUser(IHttpContextAccessor httpContextAccessor)
+        private readonly IDbSession dbSession;
+        private readonly IWebCookie webCookie;
+        private readonly IUserTokenDAL userTokenDAL;
+        private readonly IProfileDAL profileDAL;
+
+        public CurrentUser(
+            IDbSession dbSession,
+            IWebCookie webCookie,
+            IUserTokenDAL userTokenDAL,
+            IProfileDAL profileDAL
+            )
         {
-            this.httpContextAccessor = httpContextAccessor;
+            this.dbSession = dbSession;
+            this.webCookie = webCookie;
+            this.userTokenDAL = userTokenDAL;
+            this.profileDAL = profileDAL;
         }
 
-        public bool IsLoggedIn()
+        public async Task<int?> GetUserIdByToken()
         {
-            int? id = httpContextAccessor.HttpContext?.Session.GetInt32(AuthConstants.AUTH_SESSION_PARAM_NAME);
-            return id!=null;
+            string? tokenCookie = webCookie.Get(AuthConstants.RememberMeCookieName);
+            if (tokenCookie == null)
+                return null;
+            Guid? tokenGuid = Helpers.StringToGuidDef(tokenCookie ?? "");
+            if (tokenGuid == null)
+                return null;
+
+            int? userid = await userTokenDAL.Get((Guid)tokenGuid);
+            return userid;
+        }
+
+        public async Task<bool> IsLoggedIn()
+        {
+            bool isLoggedIn = await dbSession.IsLoggedIn();
+            if (!isLoggedIn)
+            {
+                int? userid = await GetUserIdByToken();
+                if (userid != null)
+                {
+                    await dbSession.SetUserId((int)userid);
+                    isLoggedIn = true;
+                }
+            }
+            return isLoggedIn;
+        }
+
+        public async Task<int?> GetCurrentUserId()
+        {
+            return await dbSession.GetUserId();
+        }
+
+        public async Task<IEnumerable<UserModel>> GetProfiles()
+        {
+            int? userId = await GetCurrentUserId();
+            if (userId == null)
+                throw new Exception("Пользователь не найден");
+            return await profileDAL.Get((int)userId);
         }
     }
 }

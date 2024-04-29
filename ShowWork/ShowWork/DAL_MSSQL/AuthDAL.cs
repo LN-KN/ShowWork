@@ -1,7 +1,6 @@
 ﻿using ShowWork.DAL_MSSQL.Models;
 using Dapper;
 using System.Data.SqlClient;
-using LinqToDB.SqlQuery;
 using static LinqToDB.Reflection.Methods.LinqToDB;
 
 namespace ShowWork.DAL_MSSQL
@@ -10,50 +9,69 @@ namespace ShowWork.DAL_MSSQL
     {
         public async Task<UserModel> GetUser(string login)
         {
-            using (var connection = new SqlConnection(DbHelper.connString))
-            {
-                await connection.OpenAsync();
-
-                return await connection.QueryFirstOrDefaultAsync<UserModel>(@"
-                      select UserId, Email, Login, Password, Salt, Status 
-                      from 
-                      [User] where Login = @login", new { login = login }) ?? new UserModel();
-            }
+            var result = await DbHelper.QueryAsync<UserModel>(@"
+                  select UserId, Email, Login, Password, Salt, Status 
+                  from 
+                  [User] where Login = @login", new { login = login });
+            return result.FirstOrDefault() ?? new UserModel();
         }
 
         public async Task<UserModel> GetUser(int id)
         {
-            using (var connection = new SqlConnection(DbHelper.connString))
-            {
-                await connection.OpenAsync();
-
-                return await connection.QueryFirstOrDefaultAsync<UserModel>(@"
-                      select UserId, Email, Login, Password, Salt, Status 
-                      from 
-                      [User] where UserId = @id", new {id = id }) ?? new  UserModel();
-            }
+            var result = await DbHelper.QueryAsync<UserModel>(@"
+                   select UserId, Email, Login, Password, Salt, Status, FirstName, SecondName, ProfileImage, Specialization, Description
+                   from 
+                   [User] where UserId = @id", new {id = id });
+            return result.FirstOrDefault() ?? new UserModel();
         }
 
         public async Task<int> CreateUser(UserModel model)
         {
             try
             {
-                using (var connection = new SqlConnection(DbHelper.connString))
-                {
-                    await connection.OpenAsync();
-                    string sql = @"insert into [User](Email, Login, Password, Salt, FirstName, SecondName, Status)
-                    values(@Email, @Login, @Password, @Salt, @FirstName,  @SecondName, @Status);
-                    SELECT UserId AS LastID FROM [User] WHERE UserId = @@Identity;";
-                    var query = connection.QuerySingleAsync<int>(sql, model);
-                    return await query;
-                }
+                string sql = @"insert into [User](Email, Login, Password, Salt, FirstName, SecondName, Status)
+                values(@Email, @Login, @Password, @Salt, @FirstName,  @SecondName, @Status);
+                SELECT UserId AS LastID FROM [User] WHERE UserId = @@Identity;";
+                var result = await DbHelper.QueryAsync<int>(sql, model);
+                return result.First();
             }
             catch(Exception e)
             {
                 Console.WriteLine(e.Message);
             }
             return 0;
-           
+        }
+        public async Task<int> AddImageToUser(string path, UserModel model)
+        {
+            try
+            {
+                var result = await DbHelper.QueryAsync<UserModel>(
+                @"insert into[User](ProfileImage)
+                values(@ProfileImage)", new { ProfileImage = path });
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return 0;
+        }
+
+        public async Task<int> UpdateUser(string firstName, string secondName, UserModel model)
+        {
+            try
+            {
+                var result = await DbHelper.QueryAsync<UserModel>(
+                @"update [User] set FirstName = @FirstName, SecondName = @SecondName where UserId = @UserId", 
+                new { FirstName = firstName, SecondName = secondName, @UserId = model.UserId});
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return 0;
+
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿@model LoginViewModel
 
 @{
-    ViewData["Title"] = "Авторизация";
+    ViewData["Title"] = "Профиль";
     IgnoreBody();
 }
 
@@ -31,7 +31,8 @@
     </header>
     <main class="login_window">
         <a href="/home"><img align="left" class="arrow_logo" src="/images/arrow_logo2.svg"></a>
-        <form action="/login" method="post">  
+        <form action="/login" method="post"> 
+        @Html.AntiForgeryToken()
         <div class="miniWindow">
                 <p class="caption">Вход</p>
                 <p class="title">Логин</p>
@@ -43,6 +44,8 @@
                 <button class="login_button">
                     Войти
                 </button>
+                <p><input type="checkbox" value="true" name="RememberMe">Запомнить меня</p>
+                
                 <div class="window-bottom">
                     <p class="no-account">Нет аккаунта?</p>
                     <p class="go-to-reg"><a href="/register" style="text-decoration:none;">Зарегистрироваться</a></p>

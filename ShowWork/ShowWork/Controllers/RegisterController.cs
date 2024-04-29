@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShowWork.BL;
 using ShowWork.BL.Auth;
+using ShowWork.Middleware;
 using ShowWork.ViewMapper;
 using ShowWork.ViewModels;
 
 namespace ShowWork.Controllers
 {
+    [SiteNotAuthorize()]
     public class RegisterController : Controller
     {
-        private readonly IAuthBL authBL;
+        private readonly IAuth authBL;
         
-        public RegisterController(IAuthBL authBL)
+        public RegisterController(IAuth authBL)
         {
             this.authBL = authBL;
         }
@@ -23,23 +26,24 @@ namespace ShowWork.Controllers
 
         [HttpPost]
         [Route("/register")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> IndexSave(RegisterViewModel model)
         {
-
             if (ModelState.IsValid)
             {
-                var errorModel = await authBL.ValidateLogin(model.Login  ?? "");
-                if(errorModel != null)
+                try
                 {
-                    ModelState.TryAddModelError("Login", errorModel.ErrorMessage!);
+                    await authBL.Register(AuthMapper.MapRegisterVMToUserModel(model));
+                    return Redirect("/");
                 }
-            }
-            if (ModelState.IsValid)
-            {
-                await authBL.CreateUser(AuthMapper.MapRegisterVMToUserModel(model));
-                return Redirect("/");
+                catch (DuplicateLoginException)
+                {
+                    ModelState.TryAddModelError("Login", "Логин уже существует");
+                }
             }
             return View("Index", model);
         }
     }
+
+
 }

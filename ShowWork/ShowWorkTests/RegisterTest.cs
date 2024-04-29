@@ -1,3 +1,4 @@
+using ShowWork.BL;
 using ShowWork.BL.Auth;
 using ShowWorkTests.Helpers;
 using System.Transactions;
@@ -20,8 +21,7 @@ namespace ShowWorkTests
                 string login = Guid.NewGuid().ToString().Substring(0,10);
 
                 //Validation: should not be in database
-                var loginValidationResult = await authBL.ValidateLogin(login);
-                Assert.IsNull(loginValidationResult);
+                await authBL.ValidateLogin(login);
 
                 //Create user
                 int userId = await authBL.CreateUser(
@@ -34,10 +34,21 @@ namespace ShowWorkTests
                         Email = Guid.NewGuid().ToString() + "@test.com",
                     });
                 Assert.Greater(userId, 0);
+                var user = await authDal.GetUser(userId);
+                Assert.That(login, Is.EqualTo(user.Login));
+                Assert.NotNull(user.Salt);
+
+                var userByLogin = await authDal.GetUser(login);
+                Assert.That(login, Is.EqualTo(user.Login));
 
                 //Validation: should be in database
-                loginValidationResult = await authBL.ValidateLogin(login);
-                Assert.IsNotNull(loginValidationResult);
+                Assert.Throws<DuplicateLoginException>(delegate { authBL.ValidateLogin(login).GetAwaiter().GetResult();}) ;
+
+                string encpas = encrypt.HashPassword("Qwerty123!", userByLogin.Salt);
+                Assert.That(encpas, Is.EqualTo(user.Password));
+
+                
+                
             }
             Assert.Pass();
         }

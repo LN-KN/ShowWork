@@ -1,4 +1,6 @@
 using ShowWork.BL.Auth;
+using ShowWork.BL.General;
+using ShowWork.BL.Profile;
 using ShowWork.DAL_MSSQL;
 
 namespace ShowWork
@@ -12,14 +14,17 @@ namespace ShowWork
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddSingleton<IAuthBL, AuthBL>();
+            builder.Services.AddScoped<IAuth, Auth>();
             builder.Services.AddSingleton<IEncrypt, Encrypt>();
             builder.Services.AddScoped<ICurrentUser, CurrentUser>(); //Scoped потому что юзеры разные, синглтон для одинаковых данных
             builder.Services.AddSingleton<IAuthDal, AuthDAL>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            builder.Services.AddMvc().AddSessionStateTempDataProvider();
-            builder.Services.AddSession();
+            builder.Services.AddSingleton<IUserTokenDAL, UserTokenDAL>();
+            builder.Services.AddSingleton<IDbSessionDAL, DbSessionDAL>();
+            builder.Services.AddScoped<IDbSession, DbSession>();
+            builder.Services.AddScoped<IWebCookie, WebCookie>();
+            builder.Services.AddSingleton<IProfileDAL, ProfileDAL>();
+            builder.Services.AddSingleton<IProfile, Profile>();
 
             var app = builder.Build();
 
@@ -34,7 +39,6 @@ namespace ShowWork
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();

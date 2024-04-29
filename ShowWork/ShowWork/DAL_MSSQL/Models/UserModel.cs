@@ -25,8 +25,14 @@ namespace ShowWork.DAL_MSSQL.Models
 
         [Column(Name = "SecondName", CanBeNull = false)]
         public string SecondName { get; set; } = null!;
+        [Column(Name = "Specialization", CanBeNull = true)]
+        public string? Specialization { get; set; } = null!;
+
+        [Column(Name = "Description", CanBeNull = true)]
+        public string? Description { get; set; } = null!;
 
         [Column(Name = "ProfileImage", CanBeNull = true)]
+        public string ProfileImage { get; set; } = null!;
 
         [Column(Name = "Status", CanBeNull = false)]
         public int Status { get; set; } = 0;

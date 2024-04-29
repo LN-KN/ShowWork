@@ -33,6 +33,7 @@
         <a href="/home"><img align="left" class="arrow_logo" src="/images/arrow_logo2.svg"></a>
         <div class="miniWindow">
              <form id="registrationForm" action="/register" method="post">
+                @Html.AntiForgeryToken()
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         var error = document.getElementById("passwordError");

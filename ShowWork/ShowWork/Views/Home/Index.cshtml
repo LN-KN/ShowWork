@@ -25,71 +25,11 @@
 
 </head>
 <body class="body">
-    @if (Model)
-    {
-        <header class=""/>
-    }
-    else
-    {
-        <header class="head"/>
-    }
-        <nav class="navbar">
-            <ul class="navigation">
-                <li>
-                    <img class="miniLogo" src="/images/logo_mini.png" width="50" height="59">
-
-                </li>
-                <li class="mainPage">
-                    <p>Главная</p>
-                </li>
-                <li class="mainLogo">
-                    <img src="/images/logo.png">
-                </li>
-                <li>
-                    <p>Каталог</p>
-                </li>
-                <li>
-                    <p>Мои подписки</p>
-                </li>
-                <li>
-                    <img class="plus" src="/images/plus.png">
-                </li>
-                <li>
-                    @if (Model)
-                    {
-                        <img src="/images/plus.png" /> //Типа иконка пользователя
-                    }
-                    else
-                    {
-                        <a href="/login" class="login">Вход</a>
-                    }
-                </li>
-
-            </ul>
-            
-                @if (Model)
-                {
-                    <a href="/register">Просмотреть работы</a>
-                }
-                else
-                {
-                     <div class="about">
-                         <p class="slogan">Делитесь своим<br> талантом</p>
-                         <p class="slogan2">
-                             Show Work - ваш персональный креативный каталог для представления своих проектов,
-                             идей и достижений в цифровом<br> формате.
-                         </p>
-                         <a href="/register" class="startwork">Начать работу</a>
-                         <img class="arrow" src="/images/Arrow1.png">
-                     </div>
-                }
-        </nav>
-    </header>
+   @await Component.InvokeAsync("MainMenu");
     <main>
         <div class="mainwork">
             <p>Портфолио недели</p>
             <img src="/images/arrow_logo.png">
-
         </div>
     </main>
     <footer>

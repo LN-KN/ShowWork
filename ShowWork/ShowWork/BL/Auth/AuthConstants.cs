@@ -2,6 +2,9 @@
 {
     public class AuthConstants
     {
-        public const string AUTH_SESSION_PARAM_NAME = "userid";
+        public const string AuthSessionParamName = "userid";
+        public const string SessionCookieName = "CustomSessionId";
+        public const string RememberMeCookieName = "RememberMe";
+        public const int RememberMeDays = 30;
     }
 }

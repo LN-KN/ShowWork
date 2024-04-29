@@ -111,7 +111,7 @@
 }
 
 .mainwork {
-    background-image: url("images/color_decor.svg");
+    background-image: url("../images/color_decor.svg");
     background-size: cover;
     display: grid;
     text-align: center;
@@ -127,7 +127,7 @@
 
 .loginPage {
     background-color: rgb(167,151,214);
-    background-image: url(images/узоры.png);
+    background-image: url(../images/patterns.png);
     background-size: cover;
 }
 
@@ -248,7 +248,7 @@
 /* Регистрация */
 .registerPage {
     background-color: rgb(167,151,214);
-    background-image: url(images/узоры.png);
+    background-image: url(../images/patterns.png);
     background-size: cover;
     padding-inline: 25%;
 }
@@ -287,8 +287,8 @@
     border-style: solid;
     font-family: "Lato", sans-serif;
     font-family: monospace;
-    .arrow_logo
-
+}    
+.arrow_logo
 {
     margin-left: 4px;
     margin-top: 2px;
@@ -327,4 +327,26 @@
     column-gap: 80px;
     justify-content: space-between;
 }
+
+a.text:active, /* активная/посещенная ссылка */
+a.text:hover, /* при наведении */
+a.text {
+    text-decoration: none;
+    color: rgb(167,151,214);
+}
+
+.image-upload {
+    border-radius: 25px;
+}
+
+.image-upload > input {
+    display: none;
+}
+
+.profile-background {
+    background-color: rgb(167,151,214);
+}
+
+.note__body{
+    
 }

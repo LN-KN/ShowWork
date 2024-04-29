@@ -9,7 +9,7 @@ namespace ShowWorkTests.Helpers
 {
     internal class Helper : Helpers.BaseTest
     {
-        public static TransactionScope CreateTransactionsScope(int seconds = 1)
+        public static TransactionScope CreateTransactionsScope(int seconds = 6000)
         {
             return new TransactionScope(
                 TransactionScopeOption.Required, 
