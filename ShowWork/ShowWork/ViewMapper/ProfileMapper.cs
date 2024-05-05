@@ -15,7 +15,8 @@ namespace ShowWork.ViewMapper
                 SecondName = model.LastName!,
                 Description = model.Description!,
                 Specialization = model.Specialization!,
-                ProfileImage = model.ImagePath!
+                ProfileImage = model.ImagePath!,
+                Status = model.Status!
             };
         }
 
@@ -30,7 +31,8 @@ namespace ShowWork.ViewMapper
                 LastName = model.SecondName!,
                 Description = model.Description!,
                 Specialization = model.Specialization!,
-                ImagePath = model.ProfileImage!
+                ImagePath = model.ProfileImage!,
+                Status = model.Status!
             };
         }
     }

@@ -1,0 +1,73 @@
+﻿@using ShowWork.DAL_MSSQL.Models
+@model IEnumerable<UserModel>
+
+@{
+    ViewData["Title"] = "Каталог";
+    IgnoreBody();
+
+}
+
+<!DOCTYPE html>
+<header class="">
+    <nav class="navbar">
+        <ul class="navigation">
+            <li>
+                <img class="miniLogo" src="/images/logo_mini.png" width="50" height="59">
+            </li>
+            <li class="mainPage">
+                <a href="/home" class="text"><p>Главная</p></a>
+            </li>
+            <li class="mainLogo">
+                <img src="/images/logo.png">
+            </li>
+            <li>
+                <a href="#" class="text"><p>Каталог</p></a>
+            </li>
+            <li>
+                <a href="#" class="text"><p>Мои подписки</p></a>
+            </li>
+            <li>
+                <a href="#" class="text"><img class="plus" src="/images/plus.png"></a>
+            </li>
+            <li>
+                <a href="/profile" class="text"><img src="/images/profile.svg" /></a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="портфолио, контент, работы">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <title>Профиль</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
+</head>
+<body class="profile-background">
+    @foreach(var profile in Model)
+    {
+        <div class="profile-section">
+            @if (!String.IsNullOrEmpty(@profile.ProfileImage))
+            {
+                <a href="/resume/@profile.UserId"><img src="@profile.ProfileImage" /></a>
+            }
+            else
+            {
+                <a href="/resume/@profile.UserId"><img src="images/inputImage.svg" /></a>
+            }
+            <h1>@profile.Login</h1>
+            <h2>@profile.FirstName @profile.SecondName</h2>
+            <button>Перейти</button>
+        </div>
+    }
+</body>

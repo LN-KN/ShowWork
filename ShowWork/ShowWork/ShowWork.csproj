@@ -17,12 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="wwwroot\images\logo_mini.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="linq2db.AspNet" Version="5.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.0" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.4.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -45,6 +42,10 @@
     <None Include="wwwroot\images\patterns.png" />
     <None Include="wwwroot\images\узоры цвет 1.png" />
     <None Include="wwwroot\images\узоры цвет 2.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ShowWorkUI\ShowWorkUI.csproj" />
   </ItemGroup>
 
 </Project>

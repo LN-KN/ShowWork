@@ -32,8 +32,7 @@ namespace ShowWork.DAL_MSSQL
                 string sql = @"insert into [User](Email, Login, Password, Salt, FirstName, SecondName, Status)
                 values(@Email, @Login, @Password, @Salt, @FirstName,  @SecondName, @Status);
                 SELECT UserId AS LastID FROM [User] WHERE UserId = @@Identity;";
-                var result = await DbHelper.QueryAsync<int>(sql, model);
-                return result.First();
+                return await DbHelper.QueryScalarAsync<int>(sql, model);
             }
             catch(Exception e)
             {
@@ -41,37 +40,47 @@ namespace ShowWork.DAL_MSSQL
             }
             return 0;
         }
-        public async Task<int> AddImageToUser(string path, UserModel model)
+
+        public async Task<IEnumerable<AppRoleModel>> GetRoles(int appUserId)
         {
-            try
-            {
-                var result = await DbHelper.QueryAsync<UserModel>(
-                @"insert into[User](ProfileImage)
-                values(@ProfileImage)", new { ProfileImage = path });
-                
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return 0;
+            return await DbHelper.QueryAsync<AppRoleModel>(@"
+                    select ar.AppRoleId, ar.Abbreviation, ar.RoleName
+                    from [AppRole] ar
+	                    join AppUserAppRole au on au.AppRoleId = ar.AppRoleId
+                    where au.AppUserId = @appUserId
+                ", new { appUserId = appUserId });
         }
+        //public async Task<int> AddImageToUser(string path, UserModel model)
+        //{
+        //    try
+        //    {
+        //        var result = await DbHelper.QueryAsync<UserModel>(
+        //        @"insert into[User](ProfileImage)
+        //        values(@ProfileImage)", new { ProfileImage = path });
 
-        public async Task<int> UpdateUser(string firstName, string secondName, UserModel model)
-        {
-            try
-            {
-                var result = await DbHelper.QueryAsync<UserModel>(
-                @"update [User] set FirstName = @FirstName, SecondName = @SecondName where UserId = @UserId", 
-                new { FirstName = firstName, SecondName = secondName, @UserId = model.UserId});
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //    }
+        //    return 0;
+        //}
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return 0;
+        //public async Task<int> UpdateUser(string firstName, string secondName, UserModel model)
+        //{
+        //    try
+        //    {
+        //        var result = await DbHelper.QueryAsync<UserModel>(
+        //        @"update [User] set FirstName = @FirstName, SecondName = @SecondName where UserId = @UserId", 
+        //        new { FirstName = firstName, SecondName = secondName, @UserId = model.UserId});
 
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //    }
+        //    return 0;
+
+        //}
     }
 }

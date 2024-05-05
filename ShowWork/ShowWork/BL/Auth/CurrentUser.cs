@@ -53,6 +53,13 @@ namespace ShowWork.BL.Auth
             return isLoggedIn;
         }
 
+        public bool IsAdmin()
+        {
+            if (dbSession.GetValueDef(AuthConstants.ADMIN_ROLE_KEY, "").ToString() == AuthConstants.ADMIN_ROLE_ABBR)
+                return true;
+            return false;
+        }
+
         public async Task<int?> GetCurrentUserId()
         {
             return await dbSession.GetUserId();

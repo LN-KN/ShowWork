@@ -8,8 +8,10 @@ namespace ShowWork.Middleware
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class SiteAuthorizeAttribute : Attribute, IAsyncAuthorizationFilter
     {
-        public SiteAuthorizeAttribute()
+        bool requireAdmin = false;
+        public SiteAuthorizeAttribute(bool RequireAdmin = false)
         {
+            this.requireAdmin = RequireAdmin;
         }
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
@@ -25,6 +27,15 @@ namespace ShowWork.Middleware
             {
                 context.Result = new RedirectResult("/login");
                 return;
+            }
+
+            if (requireAdmin)
+            {
+                bool isadmin = currentUser.IsAdmin();
+                if(isadmin == false)
+                {
+                    context.Result = new RedirectResult("/login");
+                }
             }
         }
     }

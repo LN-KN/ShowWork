@@ -65,6 +65,13 @@ namespace ShowWork.BL.Auth
         public async Task Login(int id)
         {
             await dbSession.SetUserId(id);
+
+            var roles = await this.authDal.GetRoles(id);
+            if (roles.Any(m => m.Abbreviation == AuthConstants.ADMIN_ROLE_ABBR))
+            {
+                dbSession.AddValue(AuthConstants.ADMIN_ROLE_KEY, AuthConstants.ADMIN_ROLE_ABBR);
+                await dbSession.UpdateSessionData();
+            }
         }
 
         public async Task Register(UserModel user)

@@ -53,18 +53,42 @@ namespace ShowWork.Controllers
             {
                 UserModel userModel = ProfileMapper.MapProfileVMToUserModel(model);
                 userModel.UserId = userId;
+                
+                await profile.AddOrUpdate(userModel);
+            }
+            return Redirect("/profile");
+        }
+
+        [HttpPost]
+        [Route("/profile/uploadimage")]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> ImageSave(int? UserId)
+        {
+            int? userId = await currentUser.GetCurrentUserId();
+            if (userId == null)
+                throw new Exception("Пользователь не найден");
+
+            var profiles = await profile.Get((int)userId);
+            if (UserId != null && !profiles.Any(m => m.UserId == UserId))
+                throw new Exception("Error");
+
+            if (ModelState.IsValid)
+            {
+                UserModel userModel = profiles.FirstOrDefault(m => m.UserId == UserId) ?? new UserModel();
+                userModel.UserId = userId;
                 if (Request.Form.Files.Count > 0 && Request.Form.Files[0] != null)
-                {   
+                {
                     var imageData = Request.Form.Files[0];
                     WebFile webFile = new WebFile();
                     string fileName = webFile.GetFileName(imageData.FileName);
                     await webFile.UploadAndResizeImage(imageData.OpenReadStream(), fileName, 100, 100);
                     userModel.ProfileImage = fileName;
-                    model.ImagePath = fileName;
+                    await profile.UpdateImage(userModel);
+                    //model.ImagePath = fileName;
                 }
-                await profile.AddOrUpdate(userModel);
+                
             }
-            return View("Index", model);
+            return Redirect("/profile");
         }
     }
 }

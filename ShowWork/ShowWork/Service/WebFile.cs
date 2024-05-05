@@ -1,4 +1,4 @@
-﻿using SixLabors.ImageSharp;
+﻿    using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 using System.Security.Cryptography;
@@ -8,13 +8,14 @@ namespace ShowWork.Service
 {
     public class WebFile
     {
+        const string FOLDER_PREFIX = "./wwwroot";
         public WebFile()
         {
         }
         public string GetFileName(string fileName)
         {
             string dir = GetWebFileFolder(fileName);
-            CreateFolder(dir);
+            CreateFolder(FOLDER_PREFIX + dir);
             return dir + "/" + Path.GetFileNameWithoutExtension(fileName) + ".jpg";
         }
         public string GetWebFileFolder(string fileName)
@@ -25,7 +26,7 @@ namespace ShowWork.Service
 
             string hash = Convert.ToHexString(hashBytes);
 
-            return "./wwwroot/images/" + hash.Substring(0, 2) + "/" + hash.Substring(0, 4);
+            return "/images/" + hash.Substring(0, 2) + "/" + hash.Substring(0, 4);
         }
 
         public void CreateFolder(string dir)
@@ -47,7 +48,7 @@ namespace ShowWork.Service
                     Size = new Size(newWidth, newHeight)
                 };
                 image.Mutate(x => x.Resize(resizeOptions));
-                await image.SaveAsJpegAsync(fileName, new JpegEncoder() {Quality = 75});
+                await image.SaveAsJpegAsync(FOLDER_PREFIX + fileName, new JpegEncoder() {Quality = 75});
             }
         }
     }

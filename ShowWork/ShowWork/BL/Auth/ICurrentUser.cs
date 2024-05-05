@@ -7,5 +7,6 @@ namespace ShowWork.BL.Auth
         Task<bool> IsLoggedIn();
         Task<int?> GetCurrentUserId();
         Task<IEnumerable<UserModel>> GetProfiles();
+        bool IsAdmin();
     }
 }

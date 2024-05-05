@@ -35,6 +35,6 @@ namespace ShowWork.DAL_MSSQL.Models
         public string ProfileImage { get; set; } = null!;
 
         [Column(Name = "Status", CanBeNull = false)]
-        public int Status { get; set; } = 0;
+        public int Status { get; set; } = 1;
     }
 }

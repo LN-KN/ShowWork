@@ -1,0 +1,56 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using static ProfileWorkEditor
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-4-grid@3.4.0/Gruntfile.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-4-grid@3.4.0/css/grid.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/uistyles.css">
+</head>
+
+<h1>Добавление работы</h1>
+<table class="table">
+    <tbody>
+        <tr>
+            <td>Тег</td>
+            <td>Название</td>
+            <td>Описание</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <select @bind="editItem.TypeOfWork">
+                    @for (int i = 0; i < tagNames.Length; i++)
+                    {
+                        <option value="@i">@tagNames[i]</option>
+                    }
+                </select>
+            </td>
+            <td><input type="text" @bind="editItem.Title" /></td>
+            <td><input type="text" @bind="editItem.Description" /></td>
+            <td> <button id="button" class="button" @onclick="SaveItem">Добавить</button></td>
+        </tr>
+    </tbody>
+</table>
+
+@code {
+    private string[] tagNames = new string[]
+    {
+        "Аналитика",
+        "Фотография",
+        "Графический дизайн",
+        "Разработка",
+        "UI/UX дизайн",
+        "Другое"
+    };
+    private Work editItem = new Work();
+
+    private async Task SaveItem()
+    {
+        await Http.PutAsJsonAsync<Work>("works/add", editItem);
+        works?.Add(editItem);
+        editItem = new Work();
+        await OnInitializedAsync();
+        NavigationManager.NavigateTo("/profile", true);
+    }
+}

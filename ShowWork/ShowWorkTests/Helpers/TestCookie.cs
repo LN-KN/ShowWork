@@ -32,5 +32,10 @@ namespace ShowWorkTests.Helpers
                 return cookies[cookieName];
             return null;
         }
+
+        public void Clear()
+        {
+            cookies.Clear();
+        }
     }
 }

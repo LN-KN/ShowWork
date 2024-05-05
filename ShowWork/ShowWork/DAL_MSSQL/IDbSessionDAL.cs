@@ -6,9 +6,12 @@ namespace ShowWork.DAL_MSSQL
     {
         Task<SessionModel?> Get(Guid sessionId);
 
-        Task<int> Update(SessionModel model);
+        Task Update(Guid dbSessionID, string sessionData);
 
-        Task<int> Create(SessionModel model);
+        Task Create(SessionModel model);
+
         Task Lock(Guid sessionId);
+
+        Task Extend(Guid dbSessionID);
     }
 }
