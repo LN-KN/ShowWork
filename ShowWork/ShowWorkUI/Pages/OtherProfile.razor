@@ -16,10 +16,6 @@
 else
 {
     <div class="works">
-        <label for="button" style="display: inline-block;">
-            <img class="work" src="/images/создать работу.png" />
-        </label>
-        <button id="button" class="button" @onclick="RedirectToEdit" style="display:none;">Добавить</button>
         @foreach (var work in works)
         {
             if (work.TypeOfWork >= 0 && work.TypeOfWork < tagNames.Length)
@@ -30,7 +26,7 @@ else
                     <label>@work.Description</label>
                     <label>@work.LikesCount</label>
                     <label>@work.CommentsCount</label>
-                    <a href="/work/@work.WorkId"> <img class="work" src="/images/image 7.png" /></a>
+                    <a href="#"> <img class="work" src="/images/image 7.png" /></a>
                 </div>
                 
                  
@@ -54,9 +50,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync<List<Work>>("works/my");
-        if(result != null)
+        var result = await Http.GetFromJsonAsync<List<Work>>("works/current/{UserId}");
+        if (result != null)
+        {
             works = result.ToList();
+        }
     }
 
     public class Work
@@ -72,9 +70,5 @@ else
         public int Status { get; set; } = 0;
         public int LikesCount { get; set; } = 0;
         public int CommentsCount { get; set; } = 0;
-    }
-    private void RedirectToEdit()
-    {
-        NavigationManager.NavigateTo("/edit", true);
     }
 }

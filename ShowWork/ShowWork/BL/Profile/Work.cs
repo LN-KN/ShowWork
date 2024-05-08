@@ -16,5 +16,10 @@ namespace ShowWork.BL.Profile
         {
             return await this.workDAL.Search(top, title);
         }
+
+        public async Task<IEnumerable<WorkCardModel>> GetNew(int top)
+        {
+            return null;
+        }
     }
 }

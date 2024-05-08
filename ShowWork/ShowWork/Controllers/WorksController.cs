@@ -44,6 +44,27 @@ namespace ShowWork.Controllers
             }));
         }
 
+        [Route("works/current/{UserId}")]
+        public async Task<IActionResult> Current(int UserId)
+        {
+            var p = await currentUser.GetProfiles();
+            var myworks = await profile.GetProfileWorks(p.Where(x=>x.UserId==UserId).FirstOrDefault()?.UserId ?? 0);
+            return new JsonResult(myworks.Select(m => new WorkViewModel
+            {
+                Title = m.Title,
+                CommentsCount = m.CommentsCount,
+                LikesCount = m.LikesCount,
+                Description = m.Description,
+                TextBlockOne = m.TextBlockOne,
+                TextBlockThree = m.TextBlockThree,
+                TextBlockTwo = m.TextBlockTwo,
+                TypeOfWork = m.TypeOfWork,
+                UserId = m.UserId,
+                WorkId = m.WorkId
+
+            }));
+        }
+
         [HttpPut]
         public async Task<IActionResult> Add([FromBody] WorkViewModel work)
         {
@@ -54,11 +75,11 @@ namespace ShowWork.Controllers
             return Ok();
         }
 
-        [Route("skills/search/{search}")]
+        [Route("works/search/{search}")]
         public async Task<IActionResult> Search(string search)
         {
-            var skills = await this.work.Search(5, search);
-            return new JsonResult(skills?.Select(m => m.Title).ToList());
+            var works = await this.work.Search(5, search);
+            return new JsonResult(works?.Select(m => m.Title).ToList());
         }
     }
 }

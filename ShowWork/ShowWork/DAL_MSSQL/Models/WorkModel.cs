@@ -34,7 +34,7 @@ namespace ShowWork.DAL_MSSQL.Models
         [Column(Name = "CommentsCount", CanBeNull = true)]
         public int CommentsCount { get; set; } = 0;
         [Column(Name = "TypeOfWork", CanBeNull = true)]
-        public int? TypeOfWork { get; set; } = 0;
+        public int TypeOfWork { get; set; } = 0;
 
     }
 }

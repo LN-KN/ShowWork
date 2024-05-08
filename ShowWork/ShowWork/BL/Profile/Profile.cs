@@ -43,7 +43,7 @@ namespace ShowWork.BL.Profile
 
         public async Task<IEnumerable<WorkModel>> GetProfileWorks(int userid)
         {
-            return await workDAL.GetUserWorks(userid);
+            return await workDAL.GetWorksByUserId(userid);
         }
 
         public async Task AddProfileWork(WorkModel model)
@@ -53,8 +53,12 @@ namespace ShowWork.BL.Profile
             //    model.WorkId = await this.workDAL.Create(model.Title);
             //else
             //    model.WorkId = work.WorkId ?? 0;
-            if(model.Title!=null)
+            if (model.Title != null)
+            {
                 await workDAL.AddUserWork(model);
+                await workDAL.AddTagToCurrentWork(model);
+            }
+                
         }
     }
 }

@@ -1,0 +1,114 @@
+﻿@model UserModel?
+@using ShowWork.DAL_MSSQL.Models
+@using ShowWork.Service
+@using ShowWorkUI
+
+@{
+    ViewData["Title"] = $"Профиль {Model.Login}";
+    IgnoreBody();
+}
+
+<!DOCTYPE html>
+@await Component.InvokeAsync("MainMenu")
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="портфолио, контент, работы">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <title>Профиль</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
+</head>
+
+<body class="profile-background">
+    <div class="profile-background">
+        <div id="user_header">
+            <div id="user_info">
+                    <input type="hidden" name="UserId" value="@Model.UserId" />
+                    @Html.AntiForgeryToken()
+                    <label for="file-input" style="display: inline-block;">
+                        @if (!String.IsNullOrEmpty(Model.ProfileImage))
+                        {
+                            <div id="picture_box" style="display: inline-block;">
+                                <img src="@Url.Content(Model.ProfileImage)" name="ImagePath" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div id="picture_box" style="display: inline-block;">
+                                <img src="images/inputImage.svg" />
+                            </div>
+                        }
+
+                    </label>
+            
+                    <input type="hidden" name="UserId" value="@Model.UserId" />
+                    @Html.AntiForgeryToken()
+                    <div style="display: inline-block; padding:20px;">
+                        <h2 class="user_name"> Имя </h2>
+                        <label id="firstNameLabel" for="firstNameInput" class="note">@Model.FirstName</label>
+                        <input type="text" name="FirstName" id="firstNameInput" style="display:none;" />
+                        <div class="error">@Html.ValidationMessageFor(m => m.FirstName)</div>
+                    </div>
+                    <div style="display: inline-block; padding:20px;">
+                        <h2 class="user_name"> Фамилия </h2>
+                        <label id="lastNameLabel" for="lastNameInput" class="note">@Model.SecondName</label>
+                        <input type="text" name="LastName" id="lastNameInput" style="display:none;" />
+                        <div class="error">@Html.ValidationMessageFor(m => m.SecondName)</div>
+                    </div>
+
+                    <hr />
+                    <input type="hidden" name="UserId" value="@Model.UserId" />
+
+                    <ul id="user_list">
+                        <li>
+                            <h2 class="note__title"> Логин </h2>
+                            <label id="loginLabel" for="loginInput" class="note">@Model.Login</label>
+                            <input type="text" name="Login" id="loginInput" style="display:none;" />
+                            <div class="error">@Html.ValidationMessageFor(m => m.Login)</div>
+                        </li>
+                        <li>
+                            <h2 class="note__title"> Email </h2>
+                            <label id="emailLabel" for="emailInput" class="note">@Model.Email</label>
+                            <input type="text" name="Email" id="emailInput" style="display:none;" />
+                            <div class="error">@Html.ValidationMessageFor(m => m.Email)</div>
+                        </li>
+                        <li>
+                            <h2 class="note__title"> Описание </h2>
+                            <label id="descLabel" for="descInput" class="note">@Model.Description</label>
+                            <input type="text" name="Description" id="descInput" style="display:none;" />
+                            <div class="error">@Html.ValidationMessageFor(m => m.Description)</div>
+                        </li>
+                        <li>
+                            <h2 class="note__title"> Специализация </h2>
+                            <label id="specLabel" for="specInput" class="note">@Model.Specialization</label>
+                            <input type="text" name="Specialization" id="specInput" style="display:none;" />
+                            <div class="error">@Html.ValidationMessageFor(m => m.Specialization)</div>
+                        </li>
+
+                    </ul>
+               
+            </div>
+        </div>
+       
+    </div>
+    <h1 style="margin-left:650px;margin-right:auto;margin-top:350px;">Мои работы:</h1>
+    <div class="row">
+        <div class="col-sm-12">
+            <component type="typeof(ShowWorkUI.Pages.OtherProfile)" render-mode="WebAssembly" />
+        </div>
+    </div>
+
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>
+

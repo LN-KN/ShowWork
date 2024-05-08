@@ -18,6 +18,6 @@
         public int Status { get; set; } = 0;
         public int LikesCount { get; set; } = 0;
         public int CommentsCount { get; set; } = 0;
-        public int? TypeOfWork { get; set; } = 0;
+        public int TypeOfWork { get; set; } = 0;
     }
 }
