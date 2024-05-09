@@ -1,4 +1,7 @@
 ﻿@model bool
+@using ShowWork.DAL_MSSQL.Models
+@using ShowWork.Service
+@using ShowWorkUI
 
 @{
     ViewData["Title"] = "Home Page";
@@ -31,10 +34,15 @@
             <p>Портфолио недели</p>
             <img src="/images/arrow_logo.png">
         </div>
+       <div class="row">
+            <div class="col-sm-12">
+                <component type="typeof(ShowWorkUI.Pages.Works)" render-mode="WebAssembly" />
+            </div>
+        </div> 
     </main>
     <footer>
     </footer>
-
+    <script src="_framework/blazor.webassembly.js"></script>
 </body>
 </html>
 

@@ -28,8 +28,9 @@ namespace ShowWork.Controllers
         {
             var p = await currentUser.GetProfiles();
             var myworks = await profile.GetProfileWorks(p.FirstOrDefault()?.UserId ?? 0);
-            return new JsonResult(myworks.Select(m => new WorkViewModel 
-            { 
+            var user = p.FirstOrDefault();
+            return new JsonResult(myworks.Select(m => new WorkViewModel
+            {
                 Title = m.Title,
                 CommentsCount = m.CommentsCount,
                 LikesCount = m.LikesCount,
@@ -39,10 +40,59 @@ namespace ShowWork.Controllers
                 TextBlockTwo = m.TextBlockTwo,
                 TypeOfWork = m.TypeOfWork,
                 UserId = m.UserId,
-                WorkId = m.WorkId
-                
+                WorkId = m.WorkId,
+
+                UserName = user.FirstName,
+                UserSurname = user.SecondName,
+                UserImagePath = user.ProfileImage,
+                MiddleGrade = m.MiddleGrade
             }));
         }
+
+        public async Task<IActionResult> All()
+        {
+            var works = await work.GetTopWorks(10);
+            var profiles = await profile.GetAllProfiles();
+
+            var tasks = works.Select(async (m) =>
+            {
+                var p = profiles.FirstOrDefault(x => x.UserId == m.UserId);
+                if (p != null)
+                {
+                    return new WorkViewModel
+                    {
+                        Title = m.Title,
+                        CommentsCount = m.CommentsCount,
+                        LikesCount = m.LikesCount,
+                        Description = m.Description,
+                        TextBlockOne = m.TextBlockOne,
+                        TextBlockThree = m.TextBlockThree,
+                        TextBlockTwo = m.TextBlockTwo,
+                        TypeOfWork = m.TypeOfWork,
+                        UserId = m.UserId,
+                        WorkId = m.WorkId,
+
+                        UserName = p.FirstName,
+                        UserSurname = p.SecondName,
+                        UserImagePath = p.ProfileImage,
+                        MiddleGrade = m.MiddleGrade
+                    };
+                }
+                else
+                {
+                    // Handle case where profile is not found for a work
+                    // You can either skip this work or assign default values
+                    return null;
+                }
+            }).ToList();
+
+            var workViewModels = await Task.WhenAll(tasks);
+
+            return new JsonResult(workViewModels.Where(w => w != null).OrderByDescending(x=>x.MiddleGrade).ToList());
+        }
+
+
+
 
         [Route("works/current/{UserId}")]
         public async Task<IActionResult> Current(int UserId)

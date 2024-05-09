@@ -1,0 +1,45 @@
+﻿@model ShowWork.DAL_MSSQL.Models.WorkModel
+@{
+    IgnoreBody();
+}
+
+
+<h2>@Model.Title</h2>
+<p>@Model.Description</p>
+
+@if (Model.MiddleGrade != 0)
+{
+    <p>Средняя оценка: @Model.MiddleGrade</p>
+}
+else
+{
+    <p>Пока нет оценок</p>
+}
+<div class="rating-icons">
+    <input type="hidden" name="WorkId" value="@Model.WorkId" />
+    <form method="post" enctype="multipart/form-data" action="/work/@Model.WorkId/rate1">
+        <input type="hidden" name="UserId" value="@Model.UserId" />
+        @Html.AntiForgeryToken()
+        <input type="image" src="/images/1.png" alt="grade 1" value="1" name="Grade_1" />
+    </form>
+    <form method="post" enctype="multipart/form-data" action="/work/@Model.WorkId/rate2">
+        <input type="hidden" name="UserId" value="@Model.UserId" />
+        @Html.AntiForgeryToken()
+        <input type="image" src="/images/2.png" alt="grade 2" value="2" name="Grade_2" />
+    </form>
+    <form method="post" enctype="multipart/form-data" action="/work/@Model.WorkId/rate3">
+        <input type="hidden" name="UserId" value="@Model.UserId" />
+        @Html.AntiForgeryToken()
+        <input type="image" src="/images/3.png" alt="grade 3" value="3" name="Grade_3" />
+    </form>
+    <form method="post" enctype="multipart/form-data" action="/work/@Model.WorkId/rate4">
+        <input type="hidden" name="UserId" value="@Model.UserId" />
+        @Html.AntiForgeryToken()
+        <input type="image" src="/images/4.png" alt="grade 4" value="4" name="Grade_4" />
+    </form>
+    <form method="post" enctype="multipart/form-data" action="/work/@Model.WorkId/rate5">
+        <input type="hidden" name="UserId" value="@Model.UserId" />
+        @Html.AntiForgeryToken()
+        <input type="image" src="/images/5.png" alt="grade 5" value="5" name="Grade_5" />
+    </form>
+</div>

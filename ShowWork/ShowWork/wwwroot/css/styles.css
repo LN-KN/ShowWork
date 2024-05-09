@@ -389,6 +389,11 @@ a.text {
     box-shadow: 2px 2px 5px rgba(#000, .7);
 }
 
+.rating-icons input[type="image"] {
+    width: 30px; /* Ширина изображений */
+    height: 30px; /* Высота изображений */
+    margin-right: 5px; /* Отступ между изображениями */
+}
 
 /* Временное отображение профиля */
 hr {
@@ -463,4 +468,229 @@ hr {
     margin-left:auto;
     margin-right:auto;
     margin:20px;
+}
+
+.about {
+    display: grid;
+    text-align: center;
+    padding-bottom: 80px;
+    .slogan
+
+{
+    text-align: center;
+    font-family: "Anonymous Pro", monospace;
+    font-size: 300%;
+    margin-top: 10%;
+}
+
+.slogan2 {
+    font-family: "Lato", system-ui;
+    font-size: 15px;
+}
+
+.startwork {
+    font-family: "Lato", monospace;
+    text-decoration: none;
+    font-weight: 500;
+    color: black;
+    background-color: rgb(255,238,221);
+    padding: 9px;
+    padding-inline: 45px;
+    border-radius: 30px;
+    font-size: 15px;
+    margin: 2% auto auto;
+}
+
+.startbutton {
+    display: compact;
+    align-items: center;
+    img
+
+{
+    margin-left: -1%;
+}
+
+}
+
+.startarrow {
+    vertical-align: middle;
+}
+
+}
+
+.mainwork {
+    z-index: -1;
+    background-image: url("images/mainbackground.svg");
+    background-size: cover;
+    display: grid;
+    text-align: center;
+    grid-template-columns: 3fr 8fr;
+    column-gap: 20px;
+    grid-auto-flow: column;
+    margin-inline: 31px;
+    align-items: center;
+}
+
+.week-portfolio {
+    font-family: "Lato", system-ui;
+    font-size: 34px;
+    display: flex;
+    align-items: center;
+    margin-top: 4%;
+    justify-content: center;
+    img
+
+{
+    margin-left: 2%;
+    margin-top: 1%;
+}
+
+}
+
+.mainportfolio {
+    background: rgba(248, 247, 254, 1);
+    box-shadow: 0px 9px 8px 0px rgba(34, 60, 80, 0.2);
+    width: 940px;
+    display: grid;
+    columns: 2;
+    grid-template-columns: 180px 515px;
+    column-gap: 5px;
+    grid-auto-flow: column;
+    p
+
+{
+    text-align: left;
+}
+
+font-family: "Lato", system-ui;
+font-size: 16px;
+justify-self: center;
+margin-right: 17%;
+img {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-left: 5%;
+}
+
+}
+
+.author {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.author p {
+    margin-left: 13.46px;
+    margin-right: 21px;
+    font-size: 14px !important;
+    font-family: "Raleway", system-ui;
+    font-weight: 500;
+}
+
+.work {
+    background: rgba(248, 247, 254, 1);
+    box-shadow: 0px 9px 8px 0px rgba(34, 60, 80, 0.2);
+    width: 660px;
+    display: grid;
+    columns: 2;
+    grid-template-columns: 180px 515px;
+    column-gap: 5px;
+    grid-auto-flow: column;
+    font-family: "Lato", system-ui;
+    font-size: 16px;
+    margin-right: 17%;
+}
+.work p
+{
+    text-align: left;
+}
+
+
+img {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-left: 5%;
+}
+
+
+.portfolio-info {
+    width: 190px;
+}
+.portfolio-info p
+{
+    font-size: 28px;
+    margin-left: 7%;
+}
+
+.portfolio-info rating {
+    font-size: 15px;
+    color: rgba(245, 86, 137, 1);
+    font-weight: 700;
+}
+
+.portfolio-info portfolio-name {
+    margin-top: 50%;
+    font-family: "Raleway", system-ui;
+    font-weight: 500;
+}
+
+
+.more-work_button {
+    background: rgba(248, 247, 254, 1);
+    border-color: rgb(167,151,214);
+    color: black;
+    border-radius: 25px;
+    padding: 1px;
+    font-family: "Lato", system-ui;
+    font-size: 15px;
+    padding-inline: 25px;
+    border-style: solid;
+    cursor: pointer;
+    margin-top: 3%;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+}
+
+.rait-works {
+}
+
+.top-portfolio {
+    margin-top: 2%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    column-gap: 10px;
+    gap: 20px 2%;
+    grid-auto-flow: row;
+    grid-template-areas:
+        ". ."
+        ". ."
+        ". .";
+    margin-inline: 14%;
+}
+
+.work-block {
+    background-image: url("images/rait-background.svg");
+    background-size: cover;
+}
+
+.bottom-links {
+    text-align: center;
+    a
+
+{
+    margin-left: 50px;
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.55);
+    font-family: "Lato", system-ui;
+    font-weight: 500;
+}
+
+margin-bottom: 2%;
 }

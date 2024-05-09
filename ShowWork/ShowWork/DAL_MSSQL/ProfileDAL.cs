@@ -46,11 +46,11 @@ namespace ShowWork.DAL_MSSQL
             await DbHelper.ExecuteAsync(sql, user);
         }
 
-        public async Task<IEnumerable<UserModel>> GetAllProfiles(UserModel user)
+        public async Task<IEnumerable<UserModel>> GetAllProfiles()
         {
             var result = await DbHelper.QueryAsync<UserModel>(@"
                    select UserId, Email, Login, Password, Salt, Status, FirstName, SecondName, ProfileImage, Specialization, Description
-                   from [User]", user);
+                   from [User]", new { });
             return result;
         }
 

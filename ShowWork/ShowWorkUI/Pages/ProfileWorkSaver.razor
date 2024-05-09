@@ -28,6 +28,7 @@
             </td>
             <td><input type="text" @bind="editItem.Title" /></td>
             <td><input type="text" @bind="editItem.Description" /></td>
+            <td><input type="file" name="file" @bind="editItem.ImagePath" /></td>
             <td> <button id="button" class="button" @onclick="SaveItem">Добавить</button></td>
         </tr>
     </tbody>

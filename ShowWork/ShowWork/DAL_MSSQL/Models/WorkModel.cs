@@ -35,6 +35,13 @@ namespace ShowWork.DAL_MSSQL.Models
         public int CommentsCount { get; set; } = 0;
         [Column(Name = "TypeOfWork", CanBeNull = true)]
         public int TypeOfWork { get; set; } = 0;
+        [Column(Name = "MiddleGrade", CanBeNull = true)]
+        public double MiddleGrade { get; set; } = 0;
+
+        [Column(Name = "ImagePath", CanBeNull = true)]
+        public string? ImagePath { get; set; }
+
+
 
     }
 }

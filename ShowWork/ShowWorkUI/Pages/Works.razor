@@ -17,10 +17,6 @@
 else
 {
     <div class="works">
-        <label for="button" style="display: inline-block;">
-            <img class="work" src="/images/создать работу.png" />
-        </label>
-        <button id="button" class="button" @onclick="RedirectToEdit" style="display:none;">Добавить</button>
         @foreach (var work in works)
         {
             if (work.TypeOfWork >= 0 && work.TypeOfWork < tagNames.Length)
@@ -35,21 +31,21 @@ else
                         </div>
                         <div>
                             <p class="work-name">@work.Title</p>
-                            <p class="rating">@Math.Round(work.MiddleGrade,2)</p>
+                            <p class="rating">@work.MiddleGrade</p>
                         </div>
                     </div>
                     <a href="/work/@work.WorkId"> <img src="/images/image 7.png" /></a>
                 </div>
-               @*  <div>
-                    <label>@tagNames[(int)work.TypeOfWork!]</label>
-                    <label>@work.Title</label>
-                    <label>@work.Description</label>
-                    <label>@work.LikesCount</label>
-                    <label>@work.CommentsCount</label>
-                    <a href="/work/@work.WorkId"> <img class="work" src="/images/image 7.png" /></a>
-                </div> *@
-                
-                 
+                @*  <div>
+    <label>@tagNames[(int)work.TypeOfWork!]</label>
+    <label>@work.Title</label>
+    <label>@work.Description</label>
+    <label>@work.LikesCount</label>
+    <label>@work.CommentsCount</label>
+    <a href="/work/@work.WorkId"> <img class="work" src="/images/image 7.png" /></a>
+    </div> *@
+
+
             }
         }
     </div>
@@ -57,21 +53,21 @@ else
 
 @code {
     internal static List<Work>? works = null;
-    private string[] tagNames = new string[] 
-    { 
-        "Аналитика", 
-        "Фотография", 
-        "Графический дизайн", 
-        "Разработка", 
-        "UI/UX дизайн", 
-        "Другое" 
+    private string[] tagNames = new string[]
+    {
+        "Аналитика",
+        "Фотография",
+        "Графический дизайн",
+        "Разработка",
+        "UI/UX дизайн",
+        "Другое"
     };
     private Work editItem = new Work();
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync<List<Work>>("works/my");
-        if(result != null)
+        var result = await Http.GetFromJsonAsync<List<Work>>("works/all");
+        if (result != null)
             works = result.ToList();
     }
 

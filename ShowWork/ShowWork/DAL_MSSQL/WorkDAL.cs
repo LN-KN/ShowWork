@@ -16,10 +16,18 @@ namespace ShowWork.DAL_MSSQL
 
         public async Task<IEnumerable<WorkModel>?> Search(int top, string workname)
         {
-            string sql = @"select WorkId, Title, Description, TypeOfWork, LikesCount, CommentsCount from [Work] where Title like @workname 
+            string sql = @"select WorkId, Title, Description, TypeOfWork, LikesCount, MiddleGrade, CommentsCount from [Work] where Title like @workname 
                            order by 1
                            OFFSET 0 ROWS FETCH NEXT @top ROWS ONLY";
             return await DbHelper.QueryAsync<WorkModel>(sql, new { top = top, workname = "%" + workname + "%" });
+        }
+
+        public async Task<IEnumerable<WorkModel>?> GetTopWorks(int top)
+        {
+            string sql = @"select WorkId, UserId, Title, Description, TypeOfWork, LikesCount, MiddleGrade, CommentsCount from [Work] 
+                           order by MiddleGrade
+                           OFFSET 0 ROWS FETCH NEXT @top ROWS ONLY";
+            return await DbHelper.QueryAsync<WorkModel>(sql, new { top = top});
         }
 
         public async Task<WorkModel> Get(string workname)

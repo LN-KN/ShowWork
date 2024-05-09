@@ -25,7 +25,7 @@ namespace ShowWork.BL.Profile
 
         public async Task<IEnumerable<UserModel>> GetAllProfiles()
         {
-            return await profileDAL.GetAllProfiles(new UserModel() {UserId=1});
+            return await profileDAL.GetAllProfiles();
         }
 
         public async Task AddOrUpdate(UserModel user)

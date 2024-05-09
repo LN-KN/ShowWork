@@ -21,5 +21,10 @@ namespace ShowWork.BL.Profile
         {
             return null;
         }
+
+        public async Task<IEnumerable<WorkModel>?> GetTopWorks(int top)
+        {
+            return await workDAL.GetTopWorks(top);
+        }
     }
 }
