@@ -33,9 +33,8 @@ ShowWork - это веб-приложение, которое позволяет
 
 
 ## Ссылки
----
 
-> [Репозиторий](https://github.com/LN-KN/ShowWork) &nbsp;&middot;&nbsp;
-> [Канбан-доска](https://yougile.com/team/47cdad97f983/DIGITAL-PORTFOLIO/Задачи) &nbsp;&middot;&nbsp;
-> [Карточка проекта](https://project.ai-info.ru/sites/default/files/kartochka_proekta.pdf)
+[Репозиторий](https://github.com/LN-KN/ShowWork) &nbsp;&middot;&nbsp;
+[Канбан-доска](https://yougile.com/team/47cdad97f983/DIGITAL-PORTFOLIO/Задачи) &nbsp;&middot;&nbsp;
+[Карточка проекта](https://project.ai-info.ru/sites/default/files/kartochka_proekta.pdf)
 
