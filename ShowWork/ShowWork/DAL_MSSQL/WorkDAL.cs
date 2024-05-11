@@ -67,10 +67,17 @@ namespace ShowWork.DAL_MSSQL
                                                            where w.WorkId = @WorkId; ", new {WorkId = WorkId});
         }
 
+        public async Task<WorkModel> GetBestWork()
+        {
+            return await DbHelper.QueryScalarAsync<WorkModel>(@"select * from [Work] 
+                                                                where MiddleGrade = (select (max(MiddleGrade)) from [Work]) 
+                                                                and Published >= DATEADD(day,-7, GETDATE())", new { });
+        }
+
         public async Task<int> AddUserWork(WorkModel model)
         {
-            string sql = @"insert into Work (UserId, Title, Description, TextBlockOne, TextBlockTwo, TextBlockThree, TypeOfWork, Status, LikesCount, CommentsCount)
-                    values (@UserId, @Title, @Description, @TextBlockOne, @TextBlockTwo, @TextBlockThree, @TypeOfWork, @Status, @LikesCount, @CommentsCount);
+            string sql = @"insert into Work (UserId, Title, Description, TextBlockOne, TextBlockTwo, TextBlockThree, TypeOfWork, Status, LikesCount, CommentsCount, ImagePath, Published)
+                    values (@UserId, @Title, @Description, @TextBlockOne, @TextBlockTwo, @TextBlockThree, @TypeOfWork, @Status, @LikesCount, @CommentsCount, @ImagePath, @Published);
                     SELECT WorkId AS LastID FROM [Work] WHERE WorkId = @@Identity;";
             return await DbHelper.QueryScalarAsync<int>(sql, model);
         }

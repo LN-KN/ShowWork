@@ -85,19 +85,43 @@
                                    <input type="text" name="Email" id="emailInput" style="display:none;" />
                                    <div class="error">@Html.ValidationMessageFor(m => m.Email)</div>
                                 </li>
-                                <li>
-                                     <h2 class="note__title"> Описание </h2>
-                                     <label id="descLabel" for="descInput" class="note">@Model.Description</label>
-                                     <input type="text" name="Description" id="descInput" style="display:none;" />
-                                     <div class="error">@Html.ValidationMessageFor(m => m.Description)</div>
-                                </li>
-                                <li>
-                                     <h2 class="note__title"> Специализация </h2>
-                                     <label id="specLabel" for="specInput" class="note">@Model.Specialization</label>
-                                     <input type="text" name="Specialization" id="specInput" style="display:none;" />
-                                     <div class="error">@Html.ValidationMessageFor(m => m.Specialization)</div>
-                                </li>
-                                <li>
+                                @if (@Model.Description != null)
+                                {
+                                     <li>
+                                         <h2 class="note__title"> Описание </h2>
+                                         <label id="descLabel" for="descInput" class="note">@Model.Description</label>
+                                         <input type="text" name="Description" id="descInput" style="display:none;" />
+                                         <div class="error">@Html.ValidationMessageFor(m => m.Description)</div>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <h2 class="note__title"> Описание </h2>
+                                        <label id="descLabel" for="descInput" class="note">Не заполнено</label>
+                                        <input type="text" name="Description" id="descInput" style="display:none;" />
+                                        <div class="error">@Html.ValidationMessageFor(m => m.Description)</div>
+                                    </li>
+                                }
+                                @if (@Model.Specialization != null)
+                                {
+                                     <li>
+                                          <h2 class="note__title"> Специализация </h2>
+                                          <label id="specLabel" for="specInput" class="note">@Model.Specialization</label>
+                                          <input type="text" name="Specialization" id="specInput" style="display:none;" />
+                                          <div class="error">@Html.ValidationMessageFor(m => m.Specialization)</div>
+                                     </li>
+                                 }
+                                 else
+                                 {
+                                      <li>
+                                          <h2 class="note__title"> Специализация </h2>
+                                          <label id="specLabel" for="specInput" class="note">Не заполнено</label>
+                                          <input type="text" name="Specialization" id="specInput" style="display:none;" />
+                                          <div class="error">@Html.ValidationMessageFor(m => m.Specialization)</div>
+                                      </li>
+                                 }
+                        <li>
                                     <select name="Status" class="text">
                                     @foreach (int s in Enum.GetValues(typeof(ProfileStatus))){
                                     if(Model.Status == s)
@@ -159,8 +183,7 @@
                 
             </script>    
     </div>
-    <h1 style="margin-left:650px;margin-right:auto;margin-top:350px;">Мои работы:</h1>
-    <div class="row">
+    <div class="row" style="margin-top:350px;">
         <div class="col-sm-12">
             <component type="typeof(ShowWorkUI.Pages.ProfileWorkEditor)" render-mode="WebAssembly" />
         </div>

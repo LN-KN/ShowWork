@@ -54,6 +54,7 @@ namespace ShowWork.Controllers
             var p = await currentUser.GetProfiles();
             WorkModel profileWorkModel = WorkMapper.MapWorkViewModelToWorkModel(work);
             profileWorkModel.UserId = p.FirstOrDefault()?.UserId ?? 0;
+            profileWorkModel.Published = DateTime.Now;
             await profile.AddProfileWork(profileWorkModel);
             return Ok();
         }

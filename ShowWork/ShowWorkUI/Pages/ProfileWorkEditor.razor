@@ -16,7 +16,9 @@
 }
 else
 {
-    <div class="works">
+    <div class="rait-works">
+        <div class="work-block">
+        <div class="top-portfolio">
         <label for="button" style="display: inline-block;">
             <img class="work" src="/images/создать работу.png" />
         </label>
@@ -52,6 +54,8 @@ else
                  
             }
         }
+            </div>
+        </div>
     </div>
 }
 
@@ -95,6 +99,7 @@ else
         public int Status { get; set; } = 0;
         public int LikesCount { get; set; } = 0;
         public int CommentsCount { get; set; } = 0;
+        public DateTime? Published { get; set; }
     }
     private void RedirectToEdit()
     {

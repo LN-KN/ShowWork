@@ -27,20 +27,28 @@
     <link rel="stylesheet" href="/css/styles.css">
 
 </head>
-<body class="body">
+<body class="mainPage">
    @await Component.InvokeAsync("MainMenu")
     <main>
-        <div class="mainwork">
-            <p>Портфолио недели</p>
-            <img src="/images/arrow_logo.png">
-        </div>
-       <div class="row">
-            <div class="col-sm-12">
-                <component type="typeof(ShowWorkUI.Pages.Works)" render-mode="WebAssembly" />
-            </div>
-        </div> 
+         <component type="typeof(ShowWorkUI.Pages.BestWork)" render-mode="WebAssembly" />
+         <component type="typeof(ShowWorkUI.Pages.Works)" render-mode="WebAssembly" />
     </main>
     <footer>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="mainLogo2">
+            <img src="images/logo.png">
+        </div>
+        <p class="bottom-slogan">
+            Show Work - Ваш путь к вдохновению и успеху в цифровом мире!
+        </p>
+        <div class="bottom-links">
+            <a href="/catalogue">Каталог</a>
+            <a href="#">Мои подписки</a>
+        </div>
     </footer>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>

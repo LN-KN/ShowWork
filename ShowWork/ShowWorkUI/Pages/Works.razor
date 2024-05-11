@@ -16,7 +16,9 @@
 }
 else
 {
-    <div class="works">
+    <div class="rait-works">
+        <div class="work-block">
+        <div class="top-portfolio">
         @foreach (var work in works)
         {
             if (work.TypeOfWork >= 0 && work.TypeOfWork < tagNames.Length)
@@ -48,6 +50,8 @@ else
 
             }
         }
+            </div>
+        </div>
     </div>
 }
 

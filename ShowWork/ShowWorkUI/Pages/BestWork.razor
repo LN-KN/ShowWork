@@ -1,0 +1,85 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-4-grid@3.4.0/Gruntfile.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-4-grid@3.4.0/css/grid.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/uistyles.css">
+</head>
+
+<PageTitle>Лучшая работа</PageTitle>
+
+@if (work == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+   <div class="mainwork">
+    <div class="week-portfolio">
+        <p>Портфолио недели</p>
+        <img src="images/arrow_logo.png" width="30" height="30">
+    </div>
+    <div class="mainportfolio">
+        <div class="portfolio-info">
+            <div class="author">
+                <img src="@work.UserImagePath"
+                     height="32.54"
+                     width="36.5">
+                <p>@work.UserName @work.UserSurname</p>
+            </div>
+            <p class="portfolio-name">@work.Title</p>
+            <p class="rating">@work.MiddleGrade</p>
+        </div>
+        <a href="/work/@work.WorkId"> <img src="/images/image 7.png" width="700" height="400" /></a>
+    </div>
+    </div>
+}
+
+@code {
+    internal static Work? work = null;
+    private string[] tagNames = new string[]
+    {
+        "Аналитика",
+        "Фотография",
+        "Графический дизайн",
+        "Разработка",
+        "UI/UX дизайн",
+        "Другое"
+    };
+    private Work editItem = new Work();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync<Work>("works/bestwork");
+        if (result != null)
+            work = result;
+    }
+
+    public class Work
+    {
+        public int WorkId { get; set; }
+        public int UserId { get; set; }
+
+        public string UserName { get; set; }
+        public string UserSurname { get; set; }
+        public string UserImagePath { get; set; }
+        public double MiddleGrade { get; set; }
+
+        public int? TypeOfWork { get; set; } = 0;
+        public string Title { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public string TextBlockOne { get; set; } = null!;
+        public string TextBlockTwo { get; set; } = null!;
+        public string TextBlockThree { get; set; } = null!;
+        public string ImagePath { get; set; }
+        public int Status { get; set; } = 0;
+        public int LikesCount { get; set; } = 0;
+        public int CommentsCount { get; set; } = 0;
+    }
+}
+
+    
+
+

@@ -6,5 +6,6 @@ namespace ShowWork.BL.Profile
     {
         Task<IEnumerable<WorkModel>?> Search(int top, string title);
         Task<IEnumerable<WorkModel>?> GetTopWorks(int top);
+        Task<WorkModel> GetBestWork();
     }
 }

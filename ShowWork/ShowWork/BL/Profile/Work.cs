@@ -26,5 +26,10 @@ namespace ShowWork.BL.Profile
         {
             return await workDAL.GetTopWorks(top);
         }
+
+        public async Task<WorkModel> GetBestWork()
+        {
+            return await workDAL.GetBestWork();
+        }
     }
 }

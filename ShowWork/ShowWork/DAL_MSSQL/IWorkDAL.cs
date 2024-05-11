@@ -19,5 +19,6 @@ namespace ShowWork.DAL_MSSQL
         Task<IEnumerable<WorkModel>> GetWorksByType(int type);
         Task<IEnumerable<WorkModel>> GetUserByWork(int WorkId);
         Task<IEnumerable<WorkModel>?> GetTopWorks(int top);
+        Task<WorkModel> GetBestWork();
     }
 }

@@ -5,6 +5,7 @@ using ShowWork.BL.Profile;
 using ShowWork.DAL_MSSQL.Models;
 using ShowWork.ViewMapper;
 using ShowWork.ViewModels;
+using ShowWorkUI.Pages;
 using System.Reflection.Metadata.Ecma335;
 using static LinqToDB.SqlQuery.SqlPredicate;
 
@@ -92,6 +93,31 @@ namespace ShowWork.Controllers
         }
 
 
+        public async Task<IActionResult> BestWork()
+        {
+            var bestWork = await work.GetBestWork();
+            var user = await profile.Get(bestWork.UserId);
+            var u = user.FirstOrDefault();
+            return new JsonResult(new WorkViewModel
+            {
+                Title = bestWork.Title,
+                CommentsCount = bestWork.CommentsCount,
+                LikesCount = bestWork.LikesCount,
+                Description = bestWork.Description,
+                TextBlockOne = bestWork.TextBlockOne,
+                TextBlockThree = bestWork.TextBlockThree,
+                TextBlockTwo = bestWork.TextBlockTwo,
+                TypeOfWork = bestWork.TypeOfWork,
+                UserId = bestWork.UserId,
+                WorkId = bestWork.WorkId,
+
+                UserName = u.FirstName,
+                UserSurname = u.SecondName,
+                UserImagePath = u.ProfileImage,
+                MiddleGrade = bestWork.MiddleGrade
+            });
+        }
+
 
 
         [Route("works/current/{UserId}")]
@@ -121,6 +147,7 @@ namespace ShowWork.Controllers
             var p = await currentUser.GetProfiles();
             WorkModel profileWorkModel = WorkMapper.MapWorkViewModelToWorkModel(work);
             profileWorkModel.UserId= p.FirstOrDefault()?.UserId ?? 0;
+            profileWorkModel.Published = DateTime.Today;
             await profile.AddProfileWork(profileWorkModel);
             return Ok();
         }

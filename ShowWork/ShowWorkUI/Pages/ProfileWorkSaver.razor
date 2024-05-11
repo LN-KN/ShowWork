@@ -48,6 +48,7 @@
 
     private async Task SaveItem()
     {
+        editItem.Published = DateTime.Now;
         await Http.PutAsJsonAsync<Work>("works/add", editItem);
         works?.Add(editItem);
         editItem = new Work();
