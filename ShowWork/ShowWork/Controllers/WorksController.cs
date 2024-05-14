@@ -81,8 +81,6 @@ namespace ShowWork.Controllers
                 }
                 else
                 {
-                    // Handle case where profile is not found for a work
-                    // You can either skip this work or assign default values
                     return null;
                 }
             }).ToList();

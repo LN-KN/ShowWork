@@ -677,5 +677,11 @@ hr {
     padding-bottom:20px;
 }
 
+.profile-section {
+    border:5px solid black;
+    margin:20px;
+    padding:20px;
+}
+
 
 

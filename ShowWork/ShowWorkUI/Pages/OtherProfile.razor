@@ -1,6 +1,5 @@
 ﻿@page "/fetchdata"
 @inject HttpClient Http
-@inject NavigationManager NavigationManager
 <head>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-4-grid@3.4.0/Gruntfile.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-4-grid@3.4.0/css/grid.min.css" rel="stylesheet">
@@ -36,7 +35,8 @@ else
 }
 
 @code {
-    internal static List<Work>? works = null;
+    [Parameter]
+    public static List<Work>? works { get; set; }
     private string[] tagNames = new string[] 
     { 
         "Аналитика", 
@@ -50,11 +50,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync<List<Work>>("works/current/{UserId}");
-        if (result != null)
-        {
-            works = result.ToList();
-        }
+        int a = 0;
     }
 
     public class Work

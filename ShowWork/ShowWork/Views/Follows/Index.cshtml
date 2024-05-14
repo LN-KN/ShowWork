@@ -1,0 +1,54 @@
+﻿@using ShowWork.DAL_MSSQL.Models
+@model FollowsViewModel
+
+@{
+    ViewData["Title"] = "Подписки";
+    IgnoreBody();
+
+}
+
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="портфолио, контент, работы">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <title>Подписки</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
+</head>
+@await Component.InvokeAsync("MainMenu")
+<body class="profile-background">
+    <form method="post" action="/follows/search">
+        <input class="form-control" asp-for="@Model.Text" id="TextSearchInput" placeholder="Введите текст для поиска" width="800px" height="50px" />
+        <button id="ApplyTextSearchButton" height="50px">Поиск</button>
+    </form>
+    <br />
+    <br />
+    @foreach (var profile in Model.Profiles)
+    {
+        <div class="profile-section">
+            @if (!String.IsNullOrEmpty(@profile.ImagePath))
+            {
+                <a href="/resume/@profile.UserId"><img src="@profile.ImagePath" /></a>
+            }
+            else
+            {
+                <a href="/resume/@profile.UserId"><img src="images/inputImage.svg" /></a>
+            }
+            <h1>@profile.Login</h1>
+            <h2>@profile.FirstName @profile.LastName</h2>
+            @* <button></button> *@
+        </div>
+    }
+</body>

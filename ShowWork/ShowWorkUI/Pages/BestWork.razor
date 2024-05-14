@@ -24,9 +24,14 @@ else
     <div class="mainportfolio">
         <div class="portfolio-info">
             <div class="author">
-                <img src="@work.UserImagePath"
-                     height="32.54"
-                     width="36.5">
+                    @if (!String.IsNullOrEmpty(@work.UserImagePath))
+                    {
+                        <a href="/resume/@work.UserId"><img src="@work.UserImagePath" height="32.54" width="36.5" /></a>
+                    }
+                    else
+                    {
+                        <a href="/resume/@work.UserId"><img src="images/inputImage.svg" height="32.54" width="36.5" /></a>
+                    }
                 <p>@work.UserName @work.UserSurname</p>
             </div>
             <p class="portfolio-name">@work.Title</p>

@@ -30,6 +30,7 @@ namespace ShowWork
             builder.Services.AddSingleton<IWork, Work>();
             builder.Services.AddSingleton<IWorkDAL, WorkDAL>();
             builder.Services.AddSingleton<IGradesDAL, GradesDAL>();
+            builder.Services.AddSingleton<IFollowDAL, FollowDAL>();
 
             var app = builder.Build();
 

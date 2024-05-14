@@ -26,9 +26,14 @@ else
                 <div class="work">
                     <div class="portfolio-info">
                         <div class="author">
-                            <img src="@work.UserImagePath"
-                                 height="32.54"
-                                 width="36.5">
+                              @if (!String.IsNullOrEmpty(@work.UserImagePath))
+                              {
+                                 <a href="/resume/@work.UserId"><img src="@work.UserImagePath"  height="32.54" width="36.5" /></a>
+                              }
+                              else
+                              {
+                                 <a href="/resume/@work.UserId"><img src="images/inputImage.svg"  height="32.54" width="36.5" /></a>
+                              }
                             <p>@work.UserName @work.UserSurname</p>
                         </div>
                         <div>
@@ -38,16 +43,6 @@ else
                     </div>
                     <a href="/work/@work.WorkId"> <img src="/images/image 7.png" /></a>
                 </div>
-                @*  <div>
-    <label>@tagNames[(int)work.TypeOfWork!]</label>
-    <label>@work.Title</label>
-    <label>@work.Description</label>
-    <label>@work.LikesCount</label>
-    <label>@work.CommentsCount</label>
-    <a href="/work/@work.WorkId"> <img class="work" src="/images/image 7.png" /></a>
-    </div> *@
-
-
             }
         }
             </div>

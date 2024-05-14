@@ -1,11 +1,20 @@
-﻿@model UserModel?
+﻿@model Tuple<UserModel?, IEnumerable<UserModel>, IEnumerable<WorkModel>>
 @using ShowWork.DAL_MSSQL.Models
 @using ShowWork.Service
 @using ShowWorkUI
 
 @{
-    ViewData["Title"] = $"Профиль {Model.Login}";
+    ViewData["Title"] = $"Профиль {Model.Item1.Login}";
     IgnoreBody();
+    string[] tagNames = new string[]
+    {
+        "Аналитика",
+        "Фотография",
+        "Графический дизайн",
+        "Разработка",
+        "UI/UX дизайн",
+        "Другое"
+    };
 }
 
 <!DOCTYPE html>
@@ -24,7 +33,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
-    <title>Профиль</title>
+    <title>Профиль @Model.Item1.Login</title>
     <link rel="stylesheet" href="/css/styles.css">
 
 </head>
@@ -33,13 +42,13 @@
     <div class="profile-background">
         <div id="user_header">
             <div id="user_info">
-                    <input type="hidden" name="UserId" value="@Model.UserId" />
+                <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
                     @Html.AntiForgeryToken()
                     <label for="file-input" style="display: inline-block;">
-                        @if (!String.IsNullOrEmpty(Model.ProfileImage))
+                    @if (!String.IsNullOrEmpty(Model.Item1.ProfileImage))
                         {
                             <div id="picture_box" style="display: inline-block;">
-                                <img src="@Url.Content(Model.ProfileImage)" name="ImagePath" />
+                            <img src="@Url.Content(Model.Item1.ProfileImage)" name="ImagePath" />
                             </div>
                         }
                         else
@@ -50,45 +59,45 @@
                         }
 
                     </label>
-            
-                    <input type="hidden" name="UserId" value="@Model.UserId" />
+
+                    <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
                     @Html.AntiForgeryToken()
                     <div style="display: inline-block; padding:20px;">
                         <h2 class="user_name"> Имя </h2>
-                        <label id="firstNameLabel" for="firstNameInput" class="note">@Model.FirstName</label>
+                    <label id="firstNameLabel" for="firstNameInput" class="note">@Model.Item1.FirstName</label>
                         <input type="text" name="FirstName" id="firstNameInput" style="display:none;" />
-                        <div class="error">@Html.ValidationMessageFor(m => m.FirstName)</div>
+                    <div class="error">@Html.ValidationMessageFor(m => m.Item1.FirstName)</div>
                     </div>
                     <div style="display: inline-block; padding:20px;">
                         <h2 class="user_name"> Фамилия </h2>
-                        <label id="lastNameLabel" for="lastNameInput" class="note">@Model.SecondName</label>
+                    <label id="lastNameLabel" for="lastNameInput" class="note">@Model.Item1.SecondName</label>
                         <input type="text" name="LastName" id="lastNameInput" style="display:none;" />
-                        <div class="error">@Html.ValidationMessageFor(m => m.SecondName)</div>
+                    <div class="error">@Html.ValidationMessageFor(m => m.Item1.SecondName)</div>
                     </div>
 
                     <hr />
-                    <input type="hidden" name="UserId" value="@Model.UserId" />
+                <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
 
                     <ul id="user_list">
                         <li>
                             <h2 class="note__title"> Логин </h2>
-                            <label id="loginLabel" for="loginInput" class="note">@Model.Login</label>
+                        <label id="loginLabel" for="loginInput" class="note">@Model.Item1.Login</label>
                             <input type="text" name="Login" id="loginInput" style="display:none;" />
-                            <div class="error">@Html.ValidationMessageFor(m => m.Login)</div>
+                        <div class="error">@Html.ValidationMessageFor(m => m.Item1.Login)</div>
                         </li>
                         <li>
                             <h2 class="note__title"> Email </h2>
-                            <label id="emailLabel" for="emailInput" class="note">@Model.Email</label>
+                        <label id="emailLabel" for="emailInput" class="note">@Model.Item1.Email</label>
                             <input type="text" name="Email" id="emailInput" style="display:none;" />
-                            <div class="error">@Html.ValidationMessageFor(m => m.Email)</div>
+                        <div class="error">@Html.ValidationMessageFor(m => m.Item1.Email)</div>
                         </li>
-                    @if (@Model.Description != null)
+                    @if (@Model.Item1.Description != null)
                     {
                         <li>
                             <h2 class="note__title"> Описание </h2>
-                            <label id="descLabel" for="descInput" class="note">@Model.Description</label>
+                            <label id="descLabel" for="descInput" class="note">@Model.Item1.Description</label>
                             <input type="text" name="Description" id="descInput" style="display:none;" />
-                            <div class="error">@Html.ValidationMessageFor(m => m.Description)</div>
+                            <div class="error">@Html.ValidationMessageFor(m => m.Item1.Description)</div>
                         </li>
                     }
                     else
@@ -97,16 +106,16 @@
                             <h2 class="note__title"> Описание </h2>
                             <label id="descLabel" for="descInput" class="note">Не заполнено</label>
                             <input type="text" name="Description" id="descInput" style="display:none;" />
-                            <div class="error">@Html.ValidationMessageFor(m => m.Description)</div>
+                            <div class="error">@Html.ValidationMessageFor(m => m.Item1.Description)</div>
                         </li>
                     }
-                    @if (@Model.Specialization != null)
+                    @if (@Model.Item1.Specialization != null)
                     {
                         <li>
                             <h2 class="note__title"> Специализация </h2>
-                            <label id="specLabel" for="specInput" class="note">@Model.Specialization</label>
+                            <label id="specLabel" for="specInput" class="note">@Model.Item1.Specialization</label>
                             <input type="text" name="Specialization" id="specInput" style="display:none;" />
-                            <div class="error">@Html.ValidationMessageFor(m => m.Specialization)</div>
+                            <div class="error">@Html.ValidationMessageFor(m => m.Item1.Specialization)</div>
                         </li>
                     }
                     else
@@ -115,10 +124,23 @@
                             <h2 class="note__title"> Специализация </h2>
                             <label id="specLabel" for="specInput" class="note">Не заполнено</label>
                             <input type="text" name="Specialization" id="specInput" style="display:none;" />
-                            <div class="error">@Html.ValidationMessageFor(m => m.Specialization)</div>
+                            <div class="error">@Html.ValidationMessageFor(m => m.Item1.Specialization)</div>
                         </li>
                     }
-
+                        <li>
+                        @if(!Model.Item2.Any(x=>x.UserId == Model.Item1.UserId))
+                        {
+                            <form action="/follows/follow/@Model.Item1.UserId" method="post" enctype="multipart/form-data">
+                                <button>Подписаться</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form action="/follows/unfollow/@Model.Item1.UserId" method="post" enctype="multipart/form-data">
+                                <button>Отписаться</button>
+                            </form>
+                        }
+                        </li>
                     </ul>
                
             </div>
@@ -126,12 +148,38 @@
        
     </div>
     <div class="row" style="margin-top:350px;">
-        <div class="col-sm-12">
-            <component type="typeof(ShowWorkUI.Pages.OtherProfile)" render-mode="WebAssembly" />
+        <div class="rait-works">
+            <div class="work-block">
+                <div class="top-portfolio">
+                    @foreach (var work in Model.Item3)
+                    {
+                        <div class="work">
+                            <div class="portfolio-info">
+                                <div class="author">
+                                    @if (!String.IsNullOrEmpty(Model.Item1.ProfileImage))
+                                    {
+                                        <a href="/resume/@work.UserId"><img src="@Model.Item1.ProfileImage" height="32.54" width="36.5" /></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/resume/@work.UserId"><img src="images/inputImage.svg" height="32.54" width="36.5" /></a>
+                                    }
+                                    <p>@Model.Item1.FirstName @Model.Item1.SecondName</p>
+                                </div>
+                                <div>
+                                    <p class="work-name">@work.Title</p>
+                                    <p class="rating">@work.MiddleGrade</p>
+                                </div>
+                            </div>
+                            <a href="/work/@work.WorkId"> <img src="/images/image 7.png" /></a>
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="/_framework/blazor.webassembly.js"></script>
 </body>
 </html>
 

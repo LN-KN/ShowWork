@@ -34,7 +34,7 @@
             <div id="user_header">
                 <div id="user_info">
                     <form action="/profile/uploadimage" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="UserId" value="@Model.UserId" />
+                        <input type="hidden" name="UserId" value="@Model.UserId"  />
                         @Html.AntiForgeryToken()
                         <label for="file-input" style="display: inline-block;">
                             @if (!String.IsNullOrEmpty(Model.ImagePath))
@@ -121,8 +121,8 @@
                                           <div class="error">@Html.ValidationMessageFor(m => m.Specialization)</div>
                                       </li>
                                  }
-                        <li>
-                                    <select name="Status" class="text">
+                                 <li>
+                                    <select name="Status" id="Status" class="Status" disabled>
                                     @foreach (int s in Enum.GetValues(typeof(ProfileStatus))){
                                     if(Model.Status == s)
                                     {
@@ -138,8 +138,9 @@
                                     }
                                     
                                     }
-                            </select>
+                                    </select>
                                 </li>
+                                
                                 <button id="btnSave" class="btnSave" value="save" style="display:none; margin-left:auto; margin-right:auto;" onclick="OnSubmit()">Сохранить</button>
                                 <script type="text/javascript">
                                     function OnSubmit() {
@@ -167,7 +168,8 @@
                                 note.classList.add('editable');
                             }; 
                         btnSave.style.display = 'block';
-                        this.style.display = 'none';                
+                        this.style.display = 'none';
+                        document.getElementById("Status").disabled = false;
                     }
                     else {
                         for (let note of notes) {
@@ -177,6 +179,7 @@
                         };
                         btnSave.style.display = 'none';
                         this.style.display = 'block';
+                        document.getElementById("Status").disabled = true;
                     }
                 }
                 document.querySelector('.actions').addEventListener('click', editSave);
