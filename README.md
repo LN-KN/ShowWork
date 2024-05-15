@@ -30,6 +30,18 @@ ShowWork - это веб-приложение, которое позволяет
   - Система подписок
   - Возможность комментирования
 
+## Разработан с помощью
+<div align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-plain-wordmark.svg" height="40" alt="dot-net logo"  />
+  <img width="12" />
+  <img src="https://github.com/devicons/devicon/blob/v2.16.0/icons/microsoftsqlserver/microsoftsqlserver-plain-wordmark.svg" height="40" alt="mssql logo"  />
+  <img width="12" />
+  <img src="https://www.lluisfranco.com/images/posts/DapperLogo.png" height="40" alt="dapper logo"  />
+  <img width="12" />
+  <img src="https://avatars.githubusercontent.com/u/25224152?v=4&s=400" height="40" alt="imagesharp logo"  />
+  <img width="12" />
+  
+</div>
 
 ## Ссылки
 
