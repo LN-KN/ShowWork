@@ -24,7 +24,7 @@
         public string UserSurname { get; set; }
         public string UserImagePath { get; set; }
         public double MiddleGrade { get; set; }
-        public DateTime? Published { get; set; }
+        public DateTime Published { get; set; }
 
         public string ImagePath { get; set; }
 

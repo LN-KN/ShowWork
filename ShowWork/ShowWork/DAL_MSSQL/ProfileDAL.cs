@@ -54,14 +54,13 @@ namespace ShowWork.DAL_MSSQL
             return result;
         }
 
-        public async Task<IEnumerable<UserModel>> Search(int count)
+        public async Task<IEnumerable<UserModel>> Search()
         {
             return await DbHelper.QueryAsync<UserModel>(@"select
                    UserId, Email, Login, Password, Salt, Status, FirstName, SecondName, ProfileImage, Specialization, Description
                    from [User]
                    where Status = @profileStatus
-                   order by 1 desc
-                   OFFSET 0 ROWS FETCH NEXT @count ROWS ONLY", new { count = count, profileStatus = ProfileStatus.Public});
+                   order by 1 desc", new {profileStatus = ProfileStatus.Public});
         }
     }
 }

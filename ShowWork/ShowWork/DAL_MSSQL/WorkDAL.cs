@@ -24,7 +24,7 @@ namespace ShowWork.DAL_MSSQL
 
         public async Task<IEnumerable<WorkModel>?> GetTopWorks(int top)
         {
-            string sql = @"select WorkId, UserId, Title, Description, TypeOfWork, LikesCount, MiddleGrade, CommentsCount from [Work] 
+            string sql = @"select WorkId, UserId, Title, Description, TypeOfWork, LikesCount, MiddleGrade, CommentsCount, Published, ImagePath from [Work] 
                            order by MiddleGrade
                            OFFSET 0 ROWS FETCH NEXT @top ROWS ONLY";
             return await DbHelper.QueryAsync<WorkModel>(sql, new { top = top});

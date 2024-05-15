@@ -137,14 +137,21 @@ namespace ShowWork.Controllers
                 {
                     list.Add(work);
                 }
-                if(model.PopularityUpOrDown)
+
+                if (model.PopularityUpOrDown)
                     list = list.OrderByDescending(x => x.MiddleGrade).ToList();
                 else
                     list = list.OrderBy(x => x.MiddleGrade).ToList();
+
                 if (model.TimePublishedUpOrDown)
-                    list = list.OrderByDescending(x => x.Published).ToList();
-                else
-                    list = list.OrderBy(x => x.Published).ToList();
+                {
+                    if (model.PopularityUpOrDown)
+                        list = list.OrderBy(x => x.Published).ThenByDescending(x => x.MiddleGrade).ToList();
+                    else
+                        list =  list.OrderByDescending(x => x.Published).ToList();
+                }
+                    
+
 
                 if (!string.IsNullOrEmpty(model.Text))
                 {

@@ -40,8 +40,8 @@ namespace ShowWork.DAL_MSSQL.Models
 
         [Column(Name = "ImagePath", CanBeNull = true)]
         public string? ImagePath { get; set; }
-        [Column(Name = "Published", CanBeNull = true)]
-        public DateTime? Published { get; set; }
+        [Column(Name = "Published", CanBeNull = false)]
+        public DateTime Published { get; set; }
 
 
 

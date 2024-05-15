@@ -22,7 +22,7 @@ namespace ShowWork.DAL_MSSQL
             double middleGrade = grades.Sum() / (float)work.LikesCount;
             await DbHelper.ExecuteAsync(
                     "UPDATE [Work] SET MiddleGrade = @middleGrade WHERE WorkId = @WorkId",
-                    new { middleGrade = middleGrade, WorkId = work.WorkId}
+                    new { middleGrade = Math.Round(middleGrade, 2), WorkId = work.WorkId}
                 );
         }
 
@@ -37,7 +37,7 @@ namespace ShowWork.DAL_MSSQL
             double middleGrade = grades.Sum() / (float)work.LikesCount;
             await DbHelper.ExecuteAsync(
                     "UPDATE [Work] SET MiddleGrade = @middleGrade WHERE WorkId = @WorkId",
-                    new { middleGrade = middleGrade, WorkId = work.WorkId }
+                    new { middleGrade = Math.Round(middleGrade,2), WorkId = work.WorkId }
                 );
         }
 

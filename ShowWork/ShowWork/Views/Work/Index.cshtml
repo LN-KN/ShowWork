@@ -1,45 +1,78 @@
-﻿@model ShowWork.DAL_MSSQL.Models.WorkModel
+﻿@using ShowWork.DAL_MSSQL.Models
+@model Tuple<WorkModel, IEnumerable<CommentViewModel>>
 @{
     IgnoreBody();
 }
 
+<!DOCTYPE html>
+@await Component.InvokeAsync("MainMenu")
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="портфолио, контент, работы">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<h2>@Model.Title</h2>
-<p>@Model.Description</p>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
 
-@if (Model.MiddleGrade != 0)
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <title>Профиль</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
+</head>
+<body>
+<h2>@Model.Item1.Title</h2>
+    <p>@Model.Item1.Description</p>
+
+    @if (Model.Item1.MiddleGrade != 0)
 {
-    <p>Средняя оценка: @Model.MiddleGrade</p>
+        <p>Средняя оценка: @Model.Item1.MiddleGrade</p>
 }
 else
 {
     <p>Пока нет оценок</p>
 }
 <div class="rating-icons">
-    <input type="hidden" name="WorkId" value="@Model.WorkId" />
-    <form method="post" enctype="multipart/form-data" action="/work/@Model.WorkId/rate1">
-        <input type="hidden" name="UserId" value="@Model.UserId" />
+        <input type="hidden" name="WorkId" value="@Model.Item1.WorkId" />
+        <form method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate1">
+            <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
         @Html.AntiForgeryToken()
         <input type="image" src="/images/1.png" alt="grade 1" value="1" name="Grade_1" />
     </form>
-    <form method="post" enctype="multipart/form-data" action="/work/@Model.WorkId/rate2">
-        <input type="hidden" name="UserId" value="@Model.UserId" />
+        <form method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate2">
+            <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
         @Html.AntiForgeryToken()
         <input type="image" src="/images/2.png" alt="grade 2" value="2" name="Grade_2" />
     </form>
-    <form method="post" enctype="multipart/form-data" action="/work/@Model.WorkId/rate3">
-        <input type="hidden" name="UserId" value="@Model.UserId" />
+        <form method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate3">
+            <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
         @Html.AntiForgeryToken()
         <input type="image" src="/images/3.png" alt="grade 3" value="3" name="Grade_3" />
     </form>
-    <form method="post" enctype="multipart/form-data" action="/work/@Model.WorkId/rate4">
-        <input type="hidden" name="UserId" value="@Model.UserId" />
+        <form method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate4">
+            <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
         @Html.AntiForgeryToken()
         <input type="image" src="/images/4.png" alt="grade 4" value="4" name="Grade_4" />
     </form>
-    <form method="post" enctype="multipart/form-data" action="/work/@Model.WorkId/rate5">
-        <input type="hidden" name="UserId" value="@Model.UserId" />
+        <form method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate5">
+            <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
         @Html.AntiForgeryToken()
         <input type="image" src="/images/5.png" alt="grade 5" value="5" name="Grade_5" />
     </form>
+        @foreach(var comment in Model.Item2)
+        {
+            <div class="profile-section">
+            <h3>@comment.NickName</h3>
+            <p>@comment.Content</p>
+            </div>
+        }
+        <form method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/AddComment">
+        <input type="text" name="Content", height="400", width="800"/>
+        <button>Отправить</button>
+    </form>
 </div>
+</body>

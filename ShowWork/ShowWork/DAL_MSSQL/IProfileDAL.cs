@@ -9,7 +9,7 @@ namespace ShowWork.DAL_MSSQL
         Task Update(UserModel user);
         Task UpdateImage(UserModel user);
         Task<IEnumerable<UserModel>> GetAllProfiles();
-        Task<IEnumerable<UserModel>> Search(int top);
+        Task<IEnumerable<UserModel>> Search();
 
     }
 }

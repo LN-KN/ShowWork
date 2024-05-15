@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShowWork.BL.Auth;
+using ShowWork.BL.Resume;
 using ShowWork.DAL_MSSQL;
 using ShowWork.DAL_MSSQL.Models;
 using ShowWork.ViewMapper;
@@ -12,20 +13,31 @@ namespace ShowWork.Controllers
         private readonly IGradesDAL gradesDAL;
         private readonly IWorkDAL workDAL;
         private readonly ICurrentUser currentUser;
+        private readonly ICommentDAL commentDAL;
+        private readonly IResume resume;
 
-        public WorkController(IGradesDAL gradesDAL, IWorkDAL workDAL, ICurrentUser currentUser)
+        public WorkController(IGradesDAL gradesDAL, IWorkDAL workDAL, ICurrentUser currentUser, ICommentDAL commentDAL, IResume resume)
         {
             this.gradesDAL = gradesDAL;
             this.workDAL = workDAL;
             this.currentUser = currentUser;
+            this.commentDAL = commentDAL;
+            this.resume = resume;
         }
         [HttpGet]
         [Route("/work/{WorkId}")]
         public async Task<IActionResult> Index(int WorkId)
         {
             var work = await workDAL.GetWorkByWorkId(WorkId);
+            var comments = await commentDAL.FindCommentsByWorkId(WorkId);
+            List<CommentViewModel> commentsViewModel = new List<CommentViewModel>();
+            var profiles = await resume.Search();
+            foreach (var comment in comments)
+            {
+                commentsViewModel.Add(new CommentViewModel {Content=comment.Content, NickName = profiles.Where(x=>x.UserId == comment.UserId).FirstOrDefault().Login });
+            }
 
-            return View(work);
+            return View(new Tuple<WorkModel?, IEnumerable<CommentViewModel>>(work, commentsViewModel));
         }
 
         [HttpPost]
@@ -158,11 +170,24 @@ namespace ShowWork.Controllers
             return View();
         }
 
+        [HttpPost]
+        [Route("/work/{WorkId}/AddComment")]
+        //[AutoValidateAntiforgeryToken]
+        public async Task<ActionResult> AddComment(int workId, string Content)
+        {
+            var userId = await GetCurrentUserId();
+            if (userId != null)
+            {
+                var commentModel = new CommentModel { WorkId = workId, UserId = (int)userId, Content = Content };
+                await commentDAL.AddCommentAsync(commentModel);
+
+                return Redirect($"/work/{workId}"); // Перенаправление на главную страницу или другую страницу
+            }
+            return View();
+        }
+
         private async Task<int?> GetCurrentUserId()
         {
-            // Реализуйте этот метод, чтобы он возвращал идентификатор текущего пользователя
-            // Это может быть, например, идентификатор пользователя из вашей системы аутентификации
-            // Пример
             return await currentUser.GetCurrentUserId();
         }
     }

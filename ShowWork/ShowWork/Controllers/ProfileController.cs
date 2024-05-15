@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShowWork.BL.Auth;
+using ShowWork.BL.General;
 using ShowWork.BL.Profile;
 using ShowWork.DAL_MSSQL;
 using ShowWork.DAL_MSSQL.Models;
@@ -15,12 +16,14 @@ namespace ShowWork.Controllers
     {
         private readonly ICurrentUser currentUser;
         private readonly IProfile profile;
+        private readonly IWebCookie cookie;
 
 
-        public ProfileController(ICurrentUser currentUser, IProfile profile)
+        public ProfileController(ICurrentUser currentUser, IProfile profile, IWebCookie cookie)
         {
             this.currentUser = currentUser;
             this.profile = profile;
+            this.cookie = cookie;   
         }
 
         [HttpGet]
@@ -89,6 +92,25 @@ namespace ShowWork.Controllers
                 
             }
             return Redirect("/profile");
+        }
+
+        [HttpPost]
+        [Route("/profile/exit")]
+        public async Task<IActionResult> Exit(int? UserId)
+        {
+            int? userId = await currentUser.GetCurrentUserId();
+            if (userId == null)
+                throw new Exception("Пользователь не найден");
+
+            var profiles = await profile.Get((int)userId);
+            if (UserId != null && !profiles.Any(m => m.UserId == UserId))
+                throw new Exception("Error");
+
+            if (ModelState.IsValid)
+            {
+                cookie.Delete(AuthConstants.SessionCookieName);
+            }
+            return Redirect("/home");
         }
     }
 }

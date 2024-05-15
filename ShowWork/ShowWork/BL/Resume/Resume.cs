@@ -24,9 +24,9 @@ namespace ShowWork.BL.Resume
             return await followDAL.GetUserFollows(FollowerId);
         }
 
-        public async Task<IEnumerable<UserModel>> Search(int top)
+        public async Task<IEnumerable<UserModel>> Search()
         {
-            return await profileDAL.Search(top);
+            return await profileDAL.Search();
         }
 
         public async Task UnfollowFrom(int ProfileId, int FollowerId)
