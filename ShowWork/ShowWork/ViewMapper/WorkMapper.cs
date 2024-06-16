@@ -16,7 +16,8 @@ namespace ShowWork.ViewMapper
                 TextBlockOne = m.TextBlockOne,
                 TextBlockThree = m.TextBlockThree,
                 TextBlockTwo = m.TextBlockTwo,
-                TypeOfWork = m.TypeOfWork,
+                CategoryOfWork = m.CategoryOfWork,
+                PatternOfWork = m.PatternOfWork,
                 UserId = m.UserId,
                 WorkId = m.WorkId
             };
@@ -33,7 +34,8 @@ namespace ShowWork.ViewMapper
                 TextBlockOne = m.TextBlockOne,
                 TextBlockThree = m.TextBlockThree,
                 TextBlockTwo = m.TextBlockTwo,
-                TypeOfWork = m.TypeOfWork,
+                PatternOfWork = m.PatternOfWork,
+                CategoryOfWork = m.CategoryOfWork,
                 UserId = m.UserId,
                 WorkId = m.WorkId
             };

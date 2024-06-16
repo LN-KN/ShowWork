@@ -48,17 +48,15 @@ namespace ShowWork.BL.Profile
 
         public async Task AddProfileWork(WorkModel model)
         {
-            var work = await this.workDAL.Get(model.Title);
-            //if (work == null || work.WorkId == null)
-            //    model.WorkId = await this.workDAL.Create(model.Title);
-            //else
-            //    model.WorkId = work.WorkId ?? 0;
             if (model.Title != null)
             {
                 await workDAL.AddUserWork(model);
-                await workDAL.AddTagToCurrentWork(model);
-            }
-                
+            }     
+        }
+
+        public Task UpdatePass(UserModel user)
+        {
+            return profileDAL.UpdatePass(user);
         }
     }
 }

@@ -30,6 +30,24 @@ namespace ShowWork.DAL_MSSQL
             return users;
         }
 
+        public async Task<IEnumerable<UserModel>> GetUserFollowsCount(int ProfileId)
+        {
+            var follows = await DbHelper.QueryAsync<FollowModel>(@"
+                   select FollowerId
+                   from [Follows]
+                   where ProfileId = @ProfileId", new { ProfileId });
+
+            List<UserModel> users = new List<UserModel>();
+
+            foreach (var user in follows)
+            {
+                users.Add(await DbHelper.QueryScalarAsync<UserModel>(@"
+                            select * from [User]
+                            where UserId = @UserId", new { UserId = user.ProfileId }));
+            }
+            return users;
+        }
+
         public async Task UnfollowFrom(int ProfileId, int FollowerId)
         {
             string sql = @"delete from [Follows]

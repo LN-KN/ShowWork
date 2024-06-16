@@ -33,8 +33,10 @@ namespace ShowWork.DAL_MSSQL.Models
         public int LikesCount { get; set; } = 0;
         [Column(Name = "CommentsCount", CanBeNull = true)]
         public int CommentsCount { get; set; } = 0;
-        [Column(Name = "TypeOfWork", CanBeNull = true)]
-        public int TypeOfWork { get; set; } = 0;
+        [Column(Name = "CategoryOfWork", CanBeNull = true)]
+        public int CategoryOfWork { get; set; } = 0;
+        [Column(Name = "PatternOfWork", CanBeNull = true)]
+        public int PatternOfWork { get; set; } = 0;
         [Column(Name = "MiddleGrade", CanBeNull = true)]
         public double MiddleGrade { get; set; } = 0;
 

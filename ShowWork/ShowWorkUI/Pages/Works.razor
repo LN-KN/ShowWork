@@ -19,46 +19,88 @@ else
     <div class="rait-works">
         <div class="work-block">
         <div class="top-portfolio">
-        @foreach (var work in works)
+            @for (var i = 0; i < works.Count - ADD_MORE_COUNT; i++)
         {
-            if (work.TypeOfWork >= 0 && work.TypeOfWork < tagNames.Length)
+            if (works[i].TypeOfWork >= 0 && works[i].TypeOfWork < categoryNames.Length)
             {
                 <div class="work">
                     <div class="portfolio-info">
                         <div class="author">
-                              @if (!String.IsNullOrEmpty(@work.UserImagePath))
+                              @if (!String.IsNullOrEmpty(@works[i].UserImagePath))
                               {
-                                 <a href="/resume/@work.UserId"><img src="@work.UserImagePath"  height="32.54" width="36.5" /></a>
+                                 <a href="/resume/@works[i].UserId"><img src="@works[i].UserImagePath" height="32.54" width="36.5" /></a>
                               }
                               else
                               {
-                                 <a href="/resume/@work.UserId"><img src="images/inputImage.svg"  height="32.54" width="36.5" /></a>
+                                 <a href="/resume/@works[i].UserId"><img src="images/inputImage.svg" height="32.54" width="36.5" /></a>
                               }
-                            <p>@work.UserName @work.UserSurname</p>
+                              <p>@works[i].UserName @works[i].UserSurname</p>
                         </div>
                         <div>
-                            <p class="work-name">@work.Title</p>
-                            <p class="rating">@work.MiddleGrade</p>
+                            <p class="work-name">@works[i].Title</p>
+                            <p class="rating">@works[i].MiddleGrade</p>
                         </div>
                     </div>
-                    <a href="/work/@work.WorkId"> <img src="/images/image 7.png" /></a>
+                     <a href="/work/@works[i].WorkId"> <img src="/images/image 7.png" /></a>
                 </div>
             }
         }
+        @for (var i = 6; i < works.Count; i++)
+        {
+            if (works[i].TypeOfWork >= 0 && works[i].TypeOfWork < categoryNames.Length)
+            {
+                <div class="workmore">
+                    <div class="portfolio-info">
+                        <div class="author">
+                            @if (!String.IsNullOrEmpty(@works[i].UserImagePath))
+                            {
+                                <a href="/resume/@works[i].UserId"><img src="@works[i].UserImagePath" height="32.54" width="36.5" /></a>
+                            }
+                            else
+                            {
+                                <a href="/resume/@works[i].UserId"><img src="images/inputImage.svg" height="32.54" width="36.5" /></a>
+                            }
+                            <p>@works[i].UserName @works[i].UserSurname</p>
+                        </div>
+                        <div>
+                            <p class="work-name">@works[i].Title</p>
+                            <p class="rating">@works[i].MiddleGrade</p>
+                        </div>
+                    </div>
+                    <a href="/work/@works[i].WorkId"> <img src="/images/image 7.png" /></a>
+                </div>
+            }
+        }
+        </div>
             </div>
         </div>
-    </div>
+    <button id="moreButton" class="more-work_button-home" onclick="OnAddMore()">
+        ЕЩЁ
+    </button>
+    <script type="text/javascript">
+        function OnAddMore() {
+            let button = document.getElementById("moreButton");
+            let works = document.querySelectorAll(".workmore");
+            button.style.display = 'none';
+            for (var i = 0; i < works.length; ++i) {
+                works[i].classList.remove('workmore');
+                works[i].classList.add('work');
+            }
+            works.style.display = 'grid';
+        }
+    </script>
 }
 
 @code {
+    const int ADD_MORE_COUNT = 4;
     internal static List<Work>? works = null;
-    private string[] tagNames = new string[]
+    private string[] categoryNames = new string[]
     {
         "Аналитика",
-        "Фотография",
-        "Графический дизайн",
         "Разработка",
+        "Фотография",
         "UI/UX дизайн",
+        "Графический дизайн",
         "Другое"
     };
     private Work editItem = new Work();

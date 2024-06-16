@@ -7,5 +7,8 @@ namespace ShowWork.BL.Profile
         Task<IEnumerable<WorkModel>?> Search(int top, string title);
         Task<IEnumerable<WorkModel>?> GetTopWorks(int top);
         Task<WorkModel> GetBestWork();
+        Task<int> UploadImage(ImageModel model);
+        Task<int> UploadFile(FileModel model);
+        Task<int> AddTag(TagModel model);
     }
 }

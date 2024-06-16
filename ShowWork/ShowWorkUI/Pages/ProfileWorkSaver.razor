@@ -1,58 +1,757 @@
 ﻿@page "/fetchdata"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@using Microsoft.JSInterop
+@using System.Net.Http.Headers
+@inject IJSRuntime JS
 @using static ProfileWorkEditor
-<head>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-4-grid@3.4.0/Gruntfile.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-4-grid@3.4.0/css/grid.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/uistyles.css">
-</head>
 
-<h1>Добавление работы</h1>
-<table class="table">
-    <tbody>
-        <tr>
-            <td>Тег</td>
-            <td>Название</td>
-            <td>Описание</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <select @bind="editItem.TypeOfWork">
-                    @for (int i = 0; i < tagNames.Length; i++)
+<section class="work-create-info">
+    @if (!IsCompleted)
+    {
+        <div style="color:red; margin-left: auto; margin-right:auto;display:table;">
+            <p>Вы не заполнили обязательные поля: Заголовок, Описание, Категория</p>
+        </div>
+    }
+    <div class="first-row">
+    <label>
+       <input type="text" class="work-create-name" @bind="editItem.Title" placeholder="Введите заголовок...">
+    </label>
+        <button class="download" type="button" @ref="downloadButton" @onclick="SaveItem">Загрузить</button>
+    </div>
+    <label>
+        <textarea class="work-description" @bind="editItem.Description" placeholder="Введите описание..."></textarea>
+    </label>
+    <div class="category_buttons">
+        <button class="btnCategory" data-index="0">Аналитика</button>
+        <button class="btnCategory" data-index="1">Разработка</button>
+        <button class="btnCategory" data-index="2">Фотография</button>
+        <button class="btnCategory" data-index="3">UI/UX дизайн</button>
+        <button class="btnCategory" data-index="4">Графический дизайн</button>
+        <button class="btnCategory" data-index="5">Другое</button>
+    </div>
+    <figure class="hashtags_label">
+        <figcaption>Добавьте тегов</figcaption>
+        <label>
+            <input type="text" placeholder="#AI #Дизайн" @bind="tags">
+        </label>
+    </figure>
+    <div class="work-designs">
+        <div class="work-designs-links">
+            <a href="#analytics" data-index="0" class="first-label layout-link">Аналитика</a>
+            <a href="#development" data-index="1" class="layout-link">Разработка</a>
+            <a href="#photography" data-index="2" class="layout-link">Фотография</a>
+            <a href="#designing" data-index="3" class="layout-link">Дизайн</a>
+            <a href="#another" data-index="4" class="layout-link">Другое</a>
+        </div>
+    </div>
+    
+
+</section>
+<section class="tab-work-content">
+    <div class="create-work-block" id="analytics">
+        <textarea class="addtext-analytics" @bind="editItem.TextBlockOne" oninput="autoResize(this)" rows="5"  placeholder="Добавьте текст..."> </textarea>
+
+        <div class="slideshow-container">
+
+            <!-- Full-width images with number and caption text -->
+            <div class="mySlides1 fade">
+                <img src="images/image_placeholder.jpg" style="width:1000px">
+            </div>
+
+            <div class="mySlides1 fade">
+                <img src="images/image_placeholder.jpg" style="width:1000px">
+            </div>
+
+            <div class="mySlides1 fade">
+                <img src="images/image_placeholder.jpg" style="width:1000px">
+            </div>
+            <div class="mySlides1 fade">
+                <img src="images/image_placeholder.jpg" style="width:1000px">
+            </div>
+
+            <div class="mySlides1 fade">
+                <img src="images/image_placeholder.jpg" style="width:1000px">
+            </div>
+
+            <div class="mySlides1 fade">
+                <img src="images/image_placeholder.jpg" style="width:1000px">
+            </div>
+            <div class="mySlides1 fade">
+                <img src="images/image_placeholder.jpg" style="width:1000px">
+            </div>
+
+            <div class="mySlides1 fade">
+                <img src="images/image_placeholder.jpg" style="width:1000px">
+            </div>
+
+            <div class="mySlides1 fade">
+                <img src="images/image_placeholder.jpg" style="width:1000px">
+            </div>
+            <div class="mySlides1 fade">
+                <img src="images/image_placeholder.jpg" style="width:1000px">
+            </div>
+            <a class="prev" onclick="plusSlidesAnalytics(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlidesAnalytics(1)">&#10095;</a>
+
+        </div>
+        <br>
+
+        <!-- The dots/circles -->
+        <div style="text-align:center">
+            <span class="dot1" onclick="currentSlideAnalytics(1)"></span>
+            <span class="dot1" onclick="currentSlideAnalytics(2)"></span>
+            <span class="dot1" onclick="currentSlideAnalytics(3)"></span>
+            <span class="dot1" onclick="currentSlideAnalytics(4)"></span>
+            <span class="dot1" onclick="currentSlideAnalytics(5)"></span>
+            <span class="dot1" onclick="currentSlideAnalytics(6)"></span>
+            <span class="dot1" onclick="currentSlideAnalytics(7)"></span>
+            <span class="dot1" onclick="currentSlideAnalytics(8)"></span>
+            <span class="dot1" onclick="currentSlideAnalytics(9)"></span>
+            <span class="dot1" onclick="currentSlideAnalytics(10)"></span>
+
+        </div>
+        <script>
+            var slideIndex = 1;
+            showSlidesAnalytics(slideIndex);
+
+            // Next/previous controls
+            function plusSlidesAnalytics(n) {
+                showSlidesAnalytics(slideIndex += n);
+            }
+
+            // Thumbnail image controls
+            function currentSlideAnalytics(n) {
+                showSlidesAnalytics(slideIndex = n);
+            }
+
+            function showSlidesAnalytics(n) {
+                var i;
+                var slides = document.getElementsByClassName("mySlides1");
+                var dots = document.getElementsByClassName("dot1");
+                if (n > slides.length) {
+                    slideIndex = 1
+                }
+                if (n < 1) {
+                    slideIndex = slides.length
+                }
+                for (i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";
+                }
+                for (i = 0; i < dots.length; i++) {
+                    dots[i].className = dots[i].className.replace(" active", "");
+                }
+                slides[slideIndex - 1].style.display = "block";
+                dots[slideIndex - 1].className += " active";
+            }
+            function autoResize(elem) {
+                elem.style.height = '100';
+                elem.style.height = (elem.scrollHeight+10) + 'px';
+            }
+        </script>
+    </div>
+    <div class="create-work-block" id="development">
+        <textarea type="text" class="addtext-development" @bind="editItem.TextBlockOne" placeholder="Добавьте текст..."></textarea>
+        <div class="codetext-development">
+            <textarea id="editor" onchange="Load()"> </textarea>
+        </div>
+        
+        <script type="text/javascript">
+            var editor = CodeMirror.fromTextArea
+                (document.getElementById('editor'), {
+                    mode: "xml",
+                    theme: "eclipse",
+                    autoCloseTags: true,
+                    tabSize:5,
+                    lineNumbers:true
+                });
+            editor.eachLine(line => {
+                editor.indentLine(editor.getLineNumber(line), "smart");
+            })
+            function Load() {
+                const event = new Event('change');
+                let type = document.querySelector('.typeOfWorkInput');
+                let tbinput = document.querySelector('.tbTwoInput');
+                let editor1 = document.querySelector('.CodeMirror').CodeMirror;
+                if (type.value == 1) {
+                    tbinput.value = editor1.getValue();
+                    let val = editor1.getValue();
+                    tbinput.setAttribute('value', val );
+                    tbinput.dispatchEvent(event);
+                }
+            }
+
+            window.initializeDownloadButton = function (downloadButton) {
+                downloadButton.addEventListener('click', function () {
+                    Load();
+                });
+            }
+        </script>
+        <div class="add-file">
+            <label for="file-input-file">
+                <img src="images/add-file.svg">
+            </label>
+            @if(devFile != null)
+            {
+                <p>@devFile.fileName</p>
+            }
+            <InputFile id="file-input-file" type="file" name="file-input-file" OnChange="LoadFile" style="display:none;" />
+        </div>
+         
+        <div class="slideshow-container2">
+
+            <!-- Full-width images with number and caption text -->
+            @foreach(var image in filesBase64)
+            {
+                <div class="mySlides fade">
+                    <img src="data:@image.contentType;base64,@image.base64data" style="width:1000px">
+                </div>
+            }
+            @if(filesBase64.Count < 10)
+            {
+                <label for="file-input-programming">
+                    <div class="mySlides fade">
+                        <img src="images/image_placeholder.jpg" style="width:1000px">
+                    </div>
+                </label>
+                <InputFile id="file-input-programming" type="file" name="file-input-programming" OnChange="OnChangeAny" accept="image/jpeg, image/png, image/gif" style="display:none;" />
+            }
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+        </div>
+        <br>
+
+        <!-- The dots/circles -->
+        <div style="text-align:center">
+            @for (var i=1; i<filesBase64.Count +2;i++)
+            {
+                <span class="dot" onclick="currentSlide(i)"></span>
+            }
+        </div>
+        <script>
+            var slideIndex = 1;
+            showSlides(slideIndex);
+
+            // Next/previous controls
+            function plusSlides(n) {
+                showSlides(slideIndex += n);
+            }
+
+            // Thumbnail image controls
+            function currentSlide(n) {
+                showSlides(slideIndex = n);
+            }
+
+            function showSlides(n) {
+                var i;
+                var slides = document.getElementsByClassName("mySlides");
+                var dots = document.getElementsByClassName("dot");
+                if (n > slides.length) {
+                    slideIndex = 1
+                }
+                if (n < 1) {
+                    slideIndex = slides.length
+                }
+                for (i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";
+                }
+                for (i = 0; i < dots.length; i++) {
+                    dots[i].className = dots[i].className.replace(" active", "");
+                }
+                slides[slideIndex - 1].style.display = "block";
+                dots[slideIndex - 1].className += " active";
+            }
+            function autoResize(elem) {
+                // elem.style.height = '100';
+                // elem.style.height = (elem.scrollHeight+10) + 'px';
+                let result_element = document.querySelector("#highlighting-content");
+                // Handle final newlines (see article)
+                if (elem.value[elem.value - 1] == "\n") {
+                    elem.value += " ";
+                }
+                // Update code
+                result_element.innerHTML = elem.value.replace(new RegExp("&", "g"), "&amp;").replace(new RegExp("<", "g"), "&lt;"); /* Global RegExp */
+                // Syntax Highlight
+                Prism.highlightElement(result_element);
+            }
+            function sync_scroll(element) {
+                /* Scroll result to scroll coords of event - sync with textarea */
+                let result_element = document.querySelector("#highlighting");
+                // Get and set x and y
+                result_element.scrollTop = element.scrollTop;
+                result_element.scrollLeft = element.scrollLeft;
+            }
+
+            function check_tab(element, event) {
+                let code = element.value;
+                if (event.key == "Tab") {
+                    /* Tab key pressed */
+                    event.preventDefault(); // stop normal
+                    let before_tab = code.slice(0, element.selectionStart); // text before tab
+                    let after_tab = code.slice(element.selectionEnd, element.value.length); // text after tab
+                    let cursor_pos = element.selectionStart + 1; // where cursor moves after tab - moving forward by 1 char to after tab
+                    element.value = before_tab + "\t" + after_tab; // add tab char
+                    // move cursor
+                    element.selectionStart = cursor_pos;
+                    element.selectionEnd = cursor_pos;
+                    update(element.value); // Update text to include indent
+                }
+            }
+        </script>
+    </div>
+    <div class="create-work-block" id="photography">
+        <textarea class="addtext-development" @bind="editItem.TextBlockOne" placeholder="Добавьте текст..."></textarea>
+        <div id="photos" class="photos">
+            @if (imageOne == null && imageTwo == null && imageThree == null)
+            {
+                <div>
+                    <label for="file-input1">
+                        <img src="images/image_placeholder.jpg">
+                    </label>
+                    <InputFile id="file-input1" type="file" name="file1" OnChange="OnChangeFirst" accept="image/jpeg, image/png, image/gif" style="display:none;" />
+                    <label for="file-input2">
+                        <img src="images/image_placeholder.jpg ">
+                    </label>
+                    <InputFile id="file-input2" type="file" name="file2" OnChange="OnChangeSecond" accept="image/jpeg, image/png, image/gif" style="display:none;" />
+
+                </div>
+                <label class="vertical" for="file-input3">
+                    <img src="images/image_placeholder2.jpg">
+                </label>
+                <InputFile id="file-input3" type="file" name="file3" OnChange="OnChangeThird" accept="image/jpeg, image/png, image/gif" style="display:none;" />
+            }
+            else
+            {
+                <div>
+                    <label for="file-input1">
+                        @if (imageOne != null)
+                        {
+                            <img src="data:@imageOne.contentType;base64,@imageOne.base64data">
+                        }
+                        else
+                        {
+                            <img src="images/image_placeholder.jpg">
+                        }
+                    </label>
+                    <InputFile id="file-input1" type="file" name="file1" OnChange="OnChangeFirst" accept="image/jpeg, image/png, image/gif" style="display:none;" />
+                    <label for="file-input2">
+                        @if (imageTwo != null)
+                        {
+                            <img src="data:@imageTwo.contentType;base64,@imageTwo.base64data">
+                        }
+                        else
+                        {
+                            <img src="images/image_placeholder.jpg">
+                        }
+                    </label>
+                    <InputFile id="file-input2" type="file" name="file2" OnChange="OnChangeSecond" accept="image/jpeg, image/png, image/gif" style="display:none;" />
+
+                </div>
+                <label class="vertical" for="file-input3">
+                    @if (imageThree != null)
                     {
-                        <option value="@i">@tagNames[i]</option>
+                        <img src="data:@imageThree.contentType;base64,@imageThree.base64data">
                     }
-                </select>
-            </td>
-            <td><input type="text" @bind="editItem.Title" /></td>
-            <td><input type="text" @bind="editItem.Description" /></td>
-            <td><input type="file" name="file" @bind="editItem.ImagePath" /></td>
-            <td> <button id="button" class="button" @onclick="SaveItem">Добавить</button></td>
-        </tr>
-    </tbody>
-</table>
+                    else
+                    {
+                        <img src="images/image_placeholder.jpg">
+                    }
+                </label>
+                <InputFile id="file-input3" type="file" name="file3" OnChange="OnChangeThird" accept="image/jpeg, image/png, image/gif" style="display:none;" />
+            }
+            
+        </div>
+    </div>
+    <div class="create-work-block" id="designing">
+        <textarea class="addtext-development" @bind="editItem.TextBlockOne" placeholder="Добавьте текст..."></textarea>
+        <div class="slideshow-container3">
+
+            <!-- Full-width images with number and caption text -->
+            <div class="mySlides2 fade">
+                <img src="images/image_placeholder2.jpg" style="height:1000px">
+            </div>
+
+            <div class="mySlides2 fade">
+                <img src="images/image_placeholder2.jpg" style="height:1000px">
+            </div>
+
+            <div class="mySlides2 fade">
+                <img src="images/image_placeholder2.jpg" style="height:1000px">
+            </div>
+            <div class="mySlides2 fade">
+                <img src="images/image_placeholder2.jpg" style="height:1000px">
+            </div>
+
+            <div class="mySlides2 fade">
+                <img src="images/image_placeholder2.jpg" style="height:1000px">
+            </div>
+
+            <div class="mySlides2 fade">
+                <img src="images/image_placeholder2.jpg" style="height:1000px">
+            </div>
+            <div class="mySlides2 fade">
+                <img src="images/image_placeholder2.jpg" style="height:1000px">
+            </div>
+
+            <div class="mySlides2 fade">
+                <img src="images/image_placeholder2.jpg" style="height:1000px">
+            </div>
+
+            <div class="mySlides2 fade">
+                <img src="images/image_placeholder2.jpg" style="height:1000px">
+            </div>
+            <div class="mySlides2 fade">
+                <img src="images/image_placeholder2.jpg" style="height:1000px">
+            </div>
+            <a class="prev" onclick="plusSlidesDesigning(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlidesDesigning(1)">&#10095;</a>
+
+        </div>
+        <br>
+
+        <!-- The dots/circles -->
+        <div style="text-align:center">
+            <span class="dot2" onclick="currentSlideDesigning(1)"></span>
+            <span class="dot2" onclick="currentSlideDesigning(2)"></span>
+            <span class="dot2" onclick="currentSlideDesigning(3)"></span>
+            <span class="dot2" onclick="currentSlideDesigning(4)"></span>
+            <span class="dot2" onclick="currentSlideDesigning(5)"></span>
+            <span class="dot2" onclick="currentSlideDesigning(6)"></span>
+            <span class="dot2" onclick="currentSlideDesigning(7)"></span>
+            <span class="dot2" onclick="currentSlideDesigning(8)"></span>
+            <span class="dot2" onclick="currentSlideDesigning(9)"></span>
+            <span class="dot2" onclick="currentSlideDesigning(10)"></span>
+
+        </div>
+        <script>
+            var slideIndex = 1;
+            showSlidesDesigning(slideIndex);
+
+            // Next/previous controls
+            function plusSlidesDesigning(n) {
+                showSlidesDesigning(slideIndex += n);
+            }
+
+            // Thumbnail image controls
+            function currentSlideDesigning(n) {
+                showSlidesDesigning(slideIndex = n);
+            }
+
+            function showSlidesDesigning(n) {
+                var i;
+                var slides = document.getElementsByClassName("mySlides2");
+                var dots = document.getElementsByClassName("dot2");
+                if (n > slides.length) {
+                    slideIndex = 1
+                }
+                if (n < 1) {
+                    slideIndex = slides.length
+                }
+                for (i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";
+                }
+                for (i = 0; i < dots.length; i++) {
+                    dots[i].className = dots[i].className.replace(" active", "");
+                }
+                slides[slideIndex - 1].style.display = "block";
+                dots[slideIndex - 1].className += " active";
+            }
+        </script>
+    </div>
+
+    <div class="create-work-block" id="another">
+        <div class="article">
+            <textarea class="article-text" @bind="editItem.TextBlockOne" placeholder="Добавьте текст..."></textarea>
+            <img src="images/image_placeholder.jpg" width="400">
+        </div>
+        <div class="article">
+            <img src="images/image_placeholder.jpg" width="400">
+            <textarea class="article-text" @bind="editItem.TextBlockTwo" placeholder="Добавьте текст..."></textarea>
+
+        </div>
+        <div class="article">
+            <textarea class="article-text" @bind="editItem.TextBlockThree" placeholder="Добавьте текст..."></textarea>
+            <img src="images/image_placeholder.jpg" width="400">
+        </div>
+    </div>
+
+</section>
+<input class="typeOfWorkInput" @onchange="InputType" id="type" name="type"></input>
+<input class="categoryOfWorkInput" @onchange="InputCategory" id="category" name="category"></input>
+<input class="tbTwoInput" type="hidden" @onchange="InputCode" id="tbtwo" name="tbtwo" />
+<script>
+    let dots = document.querySelectorAll('.layout-link');
+    let active = document.querySelector('.layout-link.active') || dots[0];
+    let type = document.querySelector('.typeOfWorkInput');
+    let category = document.querySelector('.categoryOfWorkInput');
+    let btns = document.querySelectorAll('.btnCategory');
+    let activeCat = document.querySelector('.btnCategory.active') || btns[0];
+
+    let buttonsSwitch = document.querySelectorAll('.btnCategory');
+
+    for (let button of buttonsSwitch) {
+        button.addEventListener('click', function () {
+            toggleCategory(this);
+        });
+    }
+
+    function toggleCategory(element) {
+        let index = element.getAttribute('data-index'); // Получение значения атрибута data-index
+        type.value = index; // Установка значения индекса в поле ввода
+        type.setAttribute('value', index);
+        type.dispatchEvent(event);// Триггер для обновления привязки данных Blazor
+        activeCat.style.background = 'rgba(246, 142, 175, 1)';
+        element.style.background = 'rgba(112, 85, 189, 1)';
+        activeCat = element;
+    }
+
+    const event = new Event('change');
+    for (let i = 0; i < dots.length; i++) {
+        dots[i].addEventListener('click', function () {
+            toggleActive(this);
+        });
+    }
+    function toggleActive(element) {
+        let index = element.getAttribute('data-index'); // Получение значения атрибута data-index
+        category.value = index; // Установка значения индекса в поле ввода
+        category.setAttribute('value', index);
+        category.dispatchEvent(event);// Триггер для обновления привязки данных Blazor
+        active.style.background = 'none';
+        element.style.background = 'rgba(206, 203, 235, 1)';
+        active = element;
+    }  
+</script>
+
+
+
 
 @code {
-    private string[] tagNames = new string[]
+
+    public class ImageFile
+    {
+        public string base64data { get; set; }
+        public string contentType { get; set; }
+        public string fileName { get; set; }
+        public int WorkId { get; set; }
+    }
+
+    public class TagModel
+    {
+        public int TagId { get; set; }
+        public int WorkId { get; set; }
+        public string Title { get; set; }
+    }
+
+    private Work editItem = new Work();
+    List<ImageFile> filesBase64 = new List<ImageFile>();
+    ImageFile imageOne = null;
+    ImageFile imageTwo = null;
+    ImageFile imageThree = null;
+    ImageFile devFile = null;
+    IBrowserFile browserDevFile = null;
+
+    string message = "InputFile Example";
+    string tbCode;
+    string categoryOfWork;
+    string patternOfWork;
+    string tags;
+    private ElementReference downloadButton;
+    bool IsCompleted = true;
+
+
+    private string[] categoryNames = new string[]
     {
         "Аналитика",
-        "Фотография",
-        "Графический дизайн",
         "Разработка",
+        "Фотография",
         "UI/UX дизайн",
+        "Графический дизайн",
         "Другое"
     };
-    private Work editItem = new Work();
+
+    private string[] patternNames = new string[]
+    {
+        "Аналитика",
+        "Разработка",
+        "Фотография",
+        "Дизайн",
+        "Другое"
+    };
 
     private async Task SaveItem()
     {
-        editItem.Published = DateTime.Now;
-        await Http.PutAsJsonAsync<Work>("works/add", editItem);
-        works?.Add(editItem);
-        editItem = new Work();
-        await OnInitializedAsync();
-        NavigationManager.NavigateTo("/profile", true);
+        if((editItem.Title != "" 
+           && editItem.Description !=""
+           && categoryOfWork != ""
+           && patternOfWork !="")
+           && (editItem.Title != null
+           && categoryOfWork != null
+           && patternOfWork != null
+           && editItem.Description != null))
+        {
+            IsCompleted = true;
+        }
+        else
+        {
+            IsCompleted = false;
+        }
+        if (IsCompleted)
+        {
+            editItem.CategoryOfWork = int.Parse(categoryOfWork);
+            editItem.Published = DateTime.Now;
+            editItem.PatternOfWork = int.Parse(patternOfWork);
+            if (int.Parse(patternOfWork) == 1) editItem.TextBlockTwo = tbCode;
+            await Http.PutAsJsonAsync<Work>("works/add", editItem);
+            if (int.Parse(patternOfWork) == 1)
+            {
+                var fileContent = new StreamContent(browserDevFile.OpenReadStream());
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(browserDevFile.ContentType);
+                var content = new MultipartFormDataContent();
+                content.Add(fileContent, "file", browserDevFile.Name);
+                await Http.PutAsync("works/putfile", content);
+            } 
+            works?.Add(editItem);
+            Console.WriteLine(editItem.PatternOfWork);
+            
+            await UploadImages();
+            await AddTags();
+            editItem = new Work();
+            await OnInitializedAsync();
+            NavigationManager.NavigateTo("/profile", true);
+        }
+
     }
+    async Task UploadImages()
+    {   
+        if(imageOne != null 
+           || imageTwo != null
+           || imageThree != null
+           || filesBase64.Count > 0)
+        {
+            if (filesBase64.Count == 0) filesBase64.AddRange(new List<ImageFile>() { imageOne, imageTwo, imageThree });
+            var works = await Http.GetFromJsonAsync<List<Work>>("works/my");
+            var id = works.OrderByDescending(x=>x.WorkId).First().WorkId;
+            foreach (var file in filesBase64)
+            {
+                file.WorkId = id;
+            }
+            await Http.PutAsJsonAsync<List<ImageFile>>("works/put", filesBase64);
+            filesBase64 = new List<ImageFile>();
+            imageOne = null;
+            imageTwo = null;
+            imageThree = null;
+        }
+    }
+
+    async Task AddTags()
+    {
+        var works = await Http.GetFromJsonAsync<List<Work>>("works/my");
+        var id = works.OrderByDescending(x => x.WorkId).First().WorkId;
+        List<string> Tags = tags.Split('#').ToList();
+        Tags.RemoveAll(x => String.IsNullOrEmpty(x));
+        List<TagModel> tagModels = new List<TagModel>();
+        if(Tags.Count > 0)
+        {
+            foreach (var tag in Tags)
+            {
+                tag.Trim();
+                tagModels.Add(new TagModel()
+                    {
+                        WorkId = id,
+                        Title = tag
+                    });
+            }
+            await Http.PutAsJsonAsync<List<TagModel>>("works/addtags", tagModels);
+        }
+    }
+
+    async Task LoadFile(InputFileChangeEventArgs e)
+    {
+        editItem.PatternOfWork = int.Parse(patternOfWork);
+        if (editItem.PatternOfWork == 1)
+        {
+            browserDevFile = e.File;
+            var buf = new byte[browserDevFile.Size];
+            using (var stream = browserDevFile.OpenReadStream())
+            {
+                await stream.ReadAsync(buf);
+            }
+            devFile = new ImageFile { base64data = Convert.ToBase64String(buf), contentType = browserDevFile.ContentType, fileName = browserDevFile.Name };
+            Console.WriteLine("OK");
+        }
+    }
+
+    async Task OnChangeAny(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480); //resize the image
+        var buf = new byte[resizedFile.Size];
+        using (var stream = resizedFile.OpenReadStream())
+        {
+            await stream.ReadAsync(buf);
+        }
+        filesBase64.Add(new ImageFile { base64data = Convert.ToBase64String(buf), contentType = file.ContentType, fileName = file.Name });
+    }
+
+    async Task OnChangeFirst(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480); //resize the image
+        var buf = new byte[resizedFile.Size];
+        using (var stream = resizedFile.OpenReadStream())
+        {
+            await stream.ReadAsync(buf);
+        }
+        imageOne = new ImageFile { base64data = Convert.ToBase64String(buf), contentType = file.ContentType, fileName = file.Name };
+    }
+
+    async Task OnChangeSecond(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480); //resize the image
+        var buf = new byte[resizedFile.Size];
+        using (var stream = resizedFile.OpenReadStream())
+        {
+            await stream.ReadAsync(buf);
+        }
+        imageTwo = new ImageFile { base64data = Convert.ToBase64String(buf), contentType = file.ContentType, fileName = file.Name };
+    }
+
+    async Task OnChangeThird(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480); //resize the image
+        var buf = new byte[resizedFile.Size];
+        using (var stream = resizedFile.OpenReadStream())
+        {
+            await stream.ReadAsync(buf);
+        }
+        imageThree = new ImageFile { base64data = Convert.ToBase64String(buf), contentType = file.ContentType, fileName = file.Name };
+    }
+
+    private async Task InputCode(Microsoft.AspNetCore.Components.ChangeEventArgs patharg)
+    {
+        tbCode = (string)patharg.Value;
+
+    }
+    private async Task InputType(Microsoft.AspNetCore.Components.ChangeEventArgs patharg)
+    {
+        categoryOfWork = (string)patharg.Value;
+
+    }
+    private async Task InputCategory(Microsoft.AspNetCore.Components.ChangeEventArgs patharg)
+    {
+        patternOfWork = (string)patharg.Value;
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("initializeDownloadButton", downloadButton);
+        }
+    }
+    
 }

@@ -1,5 +1,5 @@
 ﻿@using ShowWork.DAL_MSSQL.Models
-@model Tuple<WorkModel, IEnumerable<CommentViewModel>>
+@model Tuple<WorkViewModel, IEnumerable<CommentViewModel>, IEnumerable<AnswerCommentViewModel>, GradesModel>
 @{
     IgnoreBody();
 }
@@ -24,55 +24,342 @@
     <link rel="stylesheet" href="/css/styles.css">
 
 </head>
-<body>
-<h2>@Model.Item1.Title</h2>
-    <p>@Model.Item1.Description</p>
+<body class="one-work">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Обработчик отправки форм
+        $('.ajax-form').on('submit', function (event) {
+            // Сохранение позиции прокрутки перед отправкой формы
+            localStorage.setItem('scrollPosition', $(window).scrollTop());
+        });
+    </script>
+    <section class="one-work-info">
+        <h1>@Model.Item1.Title</h1>
+        <div class="about-profile">
+            <img src="@Model.Item1.UserImagePath" width="35" height="35">
+            <div>
+                <p class="work-nickname">@Model.Item1.Login</p>
+                <p class="work-author">@Model.Item1.UserName @Model.Item1.UserSurname</p>
 
-    @if (Model.Item1.MiddleGrade != 0)
-{
-        <p>Средняя оценка: @Model.Item1.MiddleGrade</p>
-}
-else
-{
-    <p>Пока нет оценок</p>
-}
-<div class="rating-icons">
-        <input type="hidden" name="WorkId" value="@Model.Item1.WorkId" />
-        <form method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate1">
-            <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
-        @Html.AntiForgeryToken()
-        <input type="image" src="/images/1.png" alt="grade 1" value="1" name="Grade_1" />
-    </form>
-        <form method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate2">
-            <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
-        @Html.AntiForgeryToken()
-        <input type="image" src="/images/2.png" alt="grade 2" value="2" name="Grade_2" />
-    </form>
-        <form method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate3">
-            <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
-        @Html.AntiForgeryToken()
-        <input type="image" src="/images/3.png" alt="grade 3" value="3" name="Grade_3" />
-    </form>
-        <form method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate4">
-            <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
-        @Html.AntiForgeryToken()
-        <input type="image" src="/images/4.png" alt="grade 4" value="4" name="Grade_4" />
-    </form>
-        <form method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate5">
-            <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
-        @Html.AntiForgeryToken()
-        <input type="image" src="/images/5.png" alt="grade 5" value="5" name="Grade_5" />
-    </form>
-        @foreach(var comment in Model.Item2)
-        {
-            <div class="profile-section">
-            <h3>@comment.NickName</h3>
-            <p>@comment.Content</p>
             </div>
+
+            <p class="category">@Model.Item1.Category</p>
+            <div class="hashtags">
+                <p class="hashtag"></p>
+                <p class="hashtag"></p>
+            </div>
+        </div>
+        <p class="description">@Model.Item1.Description</p>
+    </section>
+    <section class="works">
+
+        <div class="slideshow-container">
+
+            <!-- Full-width images with number and caption text -->
+            <div class="mySlides fade">
+                <img src="../images/work-photo.jpg" style="width:1000px">
+            </div>
+
+            <div class="mySlides fade">
+                <img src="../images/work-photo2.png" style="width: 1000px">
+            </div>
+
+            <div class="mySlides fade">
+                <img src="../images/work-photo.jpg" style="width: 1000px">
+            </div>
+            <div class="mySlides fade">
+                <img src="../images/work-photo.jpg" style="width: 1000px">
+            </div>
+
+            <div class="mySlides fade">
+                <img src="../images/work-photo2.png" style="width: 1000px">
+            </div>
+
+            <div class="mySlides fade">
+                <img src="../images/work-photo.jpg" style="width: 1000px">
+            </div>
+            <div class="mySlides fade">
+                <img src="../images/work-photo.jpg" style="width: 1000px">
+            </div>
+
+            <div class="mySlides fade">
+                <img src="../images/work-photo2.png" style="width: 1000px">
+            </div>
+
+            <div class="mySlides fade">
+                <img src="../images/work-photo.jpg" style="width: 1000px">
+            </div>
+            <div class="mySlides fade">
+                <img src="../images/work-photo.jpg" style="width: 1000px">
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+        </div>
+        <br>
+
+        <!-- The dots/circles -->
+        <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+            <span class="dot" onclick="currentSlide(5)"></span>
+            <span class="dot" onclick="currentSlide(6)"></span>
+            <span class="dot" onclick="currentSlide(7)"></span>
+            <span class="dot" onclick="currentSlide(8)"></span>
+            <span class="dot" onclick="currentSlide(9)"></span>
+            <span class="dot" onclick="currentSlide(10)"></span>
+
+        </div>
+
+    </section>
+    <script>
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        // Next/previous controls
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
         }
-        <form method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/AddComment">
-        <input type="text" name="Content", height="400", width="800"/>
-        <button>Отправить</button>
-    </form>
-</div>
+
+        // Thumbnail image controls
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex-1].style.display = "block";
+            dots[slideIndex-1].className += " active";
+        }
+    </script>
+    <section class="bottom-comments">
+        <div class="raiting">
+            <form class="ajax-form" method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate1">
+                <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
+                @Html.AntiForgeryToken()
+                @if(Model.Item4.Grade == 1)
+                {
+                    <button class="raiting-button first-raiting raiting-round" alt="grade 1" value="1" name="Grade_1"><span>1</span></button>
+
+                }
+                else{
+                    <button class="raiting-button first-raiting" alt="grade 1" value="1" name="Grade_1"><span>1</span></button>
+                }
+            </form>
+            <form class="ajax-form" method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate2">
+                <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
+                @Html.AntiForgeryToken()
+                @if (Model.Item4.Grade == 2)
+                {
+                    <button class="raiting-button second-raiting raiting-round" alt="grade 2" value="1" name="Grade_2"><span>2</span></button>
+
+                }
+                else
+                {
+                    <button class="raiting-button second-raiting" alt="grade 2" value="2" name="Grade_2"><span>2</span></button>
+                }
+            </form>
+
+            <form class="ajax-form" method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate3">
+                <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
+                @Html.AntiForgeryToken()
+                @if (Model.Item4.Grade == 3)
+                {
+                    <button class="raiting-button third-raiting raiting-round" alt="grade 3" value="3" name="Grade_3"><span>3</span></button>
+
+                }
+                else
+                {
+                    <button class="raiting-button third-raiting" alt="grade 3" value="3" name="Grade_3"><span>3</span></button>
+                }
+            </form>
+            <form class="ajax-form" method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate4">
+                <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
+                @Html.AntiForgeryToken()
+                @if (Model.Item4.Grade == 4)
+                {
+                    <button class="raiting-button fourth-raiting raiting-round" alt="grade 4" value="4" name="Grade_4"><span>4</span></button>
+
+                }
+                else
+                {
+                    <button class="raiting-button fourth-raiting" alt="grade 4" value="4" name="Grade_4"><span>4</span></button>
+                }
+            </form>
+
+            <form class="ajax-form" method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/rate5">
+                <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
+                @Html.AntiForgeryToken()
+                @if (Model.Item4.Grade == 5)
+                {
+                    <button id="myButton" class="raiting-button fifth-raiting raiting-round" alt="grade 5" value="5" name="Grade_4"><span>5</span></button>
+
+                }
+                else
+                {
+                    <button class="raiting-button fifth-raiting" alt="grade 5" value="5" name="Grade_5"><span>5<span></button>
+                }
+            </form>
+            
+            
+
+
+        </div>
+        <h2>
+            Комментарии
+        </h2>
+        <form class="ajax-form" method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/AddComment">
+            <textarea id ="textArea" name="Content" class="autoresize" oninput="autoResize(this)" row=1 placeholder="Написать комментарий..." maxlength="1000"></textarea>
+            <p style="text-align:right;" id="count"></p>
+        </form>
+        <script>
+            
+            function submitOnEnter(event) {
+                if (event.which === 13) {
+                    if (!event.repeat) {
+                        const newEvent = new Event("submit", { cancelable: true });
+                        let area = document.getElementById("textArea");
+                        if(area.value.length>0)
+                        event.currentTarget.closest("form").submit();
+                    }
+
+                    event.preventDefault(); // Prevents the addition of a new line in the text field
+                }
+            }
+
+            document.getElementById("textArea").addEventListener("keydown", submitOnEnter);
+            document.getElementById('textArea').onkeyup = function () {
+                document.getElementById('count').innerHTML = this.value.length+"/1000";
+            };
+        </script>
+        <script>
+            function autoResize(elem) {
+                elem.style.height = '200';
+                elem.style.height = (elem.scrollHeight-1) + 'px';
+            }
+        </script>
+
+        <div class="comments">
+            @foreach (var comment in Model.Item2)
+            {
+                <div class="current-comment">
+                    <a href="/resume/@comment.UserId"><div class="photo-comments"><img src="@comment.ImagePath"></div></a>
+                    <div class="name-comment-container">
+                        <div class="name"><p>@comment.NickName</p></div>
+                        <div class="comment"><p>@comment.Content</p></div>
+                    </div>
+                    <div class="more">
+                        <button class="answer">Ответить</button>
+                        <button class="element-3" id="element-3">Ответы <img src="../images/more-arrow.svg"></button>
+                    </div>
+                    <div class="element-1" id="element-1">
+                        @foreach (var answerComment in Model.Item3)
+                        {
+                            if(answerComment.CommentId == comment.Id)
+                            {
+                                <div id="element-2">
+                                    <div class="one-comment">
+                                        <div class="photo-comments"><img src="@answerComment.ImagePath"></div>
+                                        <div class="name-answercomment-container">
+                                            <div class="name"><p>@answerComment.NickName</p></div>
+                                            <div class="comment"><p>@answerComment.Content</p></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="answer-box">
+                        <form class="ajax-form" method="post" enctype="multipart/form-data" action="/work/@Model.Item1.WorkId/AddAnswerComment">
+                            <input type="hidden" name="CommentId" value="@comment.Id" />
+                            @Html.AntiForgeryToken()
+                            <input class="answer-input" name="AnswerContent" type="text" placeholder="Написать ответ" maxlength="150">
+                            <div class="answer-buttons">
+                                <button class="cancel" type="button">Отменить</button>
+                                <button class="send-answer" type="button">Отправить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+            <script type="text/javascript">
+                let answerBoxes = document.querySelectorAll('.answer-box');
+
+                for (let box of answerBoxes) {
+                    let btns = box.querySelector('.answer-buttons');
+                    let input = box.querySelector('.answer-input');
+                    let btnAnswer = btns.querySelector('.send-answer');
+                    let cancel = btns.querySelector('.cancel')
+                    btnAnswer.onclick = function (event) {
+                        if (input.value.length > 0)
+                            event.currentTarget.closest("form").submit();
+                    };
+                };
+            </script>
+
+        <script>
+            let comments = document.querySelectorAll('.current-comment');
+
+            for (let comment of comments) {
+                let more = comment.querySelector('.more');
+                let btnAnswer = more.querySelector('.answer');
+                let btnShow = more.querySelector('.element-3');
+                let element1 = comment.querySelector('.element-1');
+                let textBox = comment.querySelector('.answer-box');
+                let cancel = comment.querySelector('.cancel')
+                btnShow.onclick = function () {
+                    element1.classList.toggle('show');
+                };
+                btnAnswer.onclick = function (event) {
+                    textBox.classList.toggle('show');
+                    element1.classList.remove('show');
+                };
+                cancel.onclick = function (){
+                    textBox.classList.remove('show');
+                    
+                }
+            };
+        </script>
+        <script>
+            // Восстановление позиции прокрутки
+            $(document).ready(function () {
+                if (localStorage.getItem('scrollPosition')) {
+                    $(window).scrollTop(localStorage.getItem('scrollPosition'));
+                    localStorage.removeItem('scrollPosition');
+                }
+            });
+        </script>
+
+    </section>
+    <footer>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="mainLogo2">
+            <img src="../images/logo.png">
+        </div>
+        <p class="bottom-slogan">
+            Show Work - Ваш путь к вдохновению и успеху в цифровом мире!
+        </p>
+        <div class="bottom-links">
+            <a href="index.html">Главная</a>
+            <a href="#">Каталог</a>
+            <a href="#">Мои подписки</a>
+        </div>
+    </footer>
 </body>

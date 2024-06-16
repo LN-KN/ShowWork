@@ -17,10 +17,10 @@ namespace ShowWork.ViewModels
         [Compare("Password", ErrorMessage ="Пароли не совпадают")]
         public string? CorrectPassword { get; set; }
         [Required(ErrorMessage = "Это поле является обязательным для заполнения")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Недопустимая длина")]
+        [StringLength(25, MinimumLength = 3, ErrorMessage = "Недопустимая длина")]
         public string? FirstName { get; set; }
         [Required(ErrorMessage = "Это поле является обязательным для заполнения")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Недопустимая длина")]
+        [StringLength(25, MinimumLength = 3, ErrorMessage = "Недопустимая длина")]
         public string? SecondName { get; set; }
     }
 }

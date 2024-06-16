@@ -37,149 +37,147 @@
     <link rel="stylesheet" href="/css/styles.css">
 
 </head>
-
-<body class="profile-background">
-    <div class="profile-background">
-        <div id="user_header">
-            <div id="user_info">
-                <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
-                    @Html.AntiForgeryToken()
-                    <label for="file-input" style="display: inline-block;">
-                    @if (!String.IsNullOrEmpty(Model.Item1.ProfileImage))
-                        {
-                            <div id="picture_box" style="display: inline-block;">
-                            <img src="@Url.Content(Model.Item1.ProfileImage)" name="ImagePath" />
-                            </div>
-                        }
-                        else
-                        {
-                            <div id="picture_box" style="display: inline-block;">
-                                <img src="images/inputImage.svg" />
-                            </div>
-                        }
-
-                    </label>
-
+<body class="body_profile" >
+    <div id="presection" class="pre-section">
+        <!-- editing-profile вот сюда ДОПОЛНИТЕЛЬНО К УЖЕ СТОЯЩЕМУ КЛАССУ-->
+        <div class="profile-info">
+            <div class="profile-arrow">
+                <a href="javascript:history.back()"><img src="/images/back-arrow.svg" height="35"></a>
+            </div>
+            <div class="nickname">
+                <p class="nickname">@Model.Item1.Login</p>
+            </div>
+            <div class="photo">
+                <form action="/profile/uploadimage" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
                     @Html.AntiForgeryToken()
-                    <div style="display: inline-block; padding:20px;">
-                        <h2 class="user_name"> Имя </h2>
-                    <label id="firstNameLabel" for="firstNameInput" class="note">@Model.Item1.FirstName</label>
-                        <input type="text" name="FirstName" id="firstNameInput" style="display:none;" />
-                    <div class="error">@Html.ValidationMessageFor(m => m.Item1.FirstName)</div>
-                    </div>
-                    <div style="display: inline-block; padding:20px;">
-                        <h2 class="user_name"> Фамилия </h2>
-                    <label id="lastNameLabel" for="lastNameInput" class="note">@Model.Item1.SecondName</label>
-                        <input type="text" name="LastName" id="lastNameInput" style="display:none;" />
-                    <div class="error">@Html.ValidationMessageFor(m => m.Item1.SecondName)</div>
-                    </div>
-
-                    <hr />
-                <input type="hidden" name="UserId" value="@Model.Item1.UserId" />
-
-                    <ul id="user_list">
-                        <li>
-                            <h2 class="note__title"> Логин </h2>
-                        <label id="loginLabel" for="loginInput" class="note">@Model.Item1.Login</label>
-                            <input type="text" name="Login" id="loginInput" style="display:none;" />
-                        <div class="error">@Html.ValidationMessageFor(m => m.Item1.Login)</div>
-                        </li>
-                        <li>
-                            <h2 class="note__title"> Email </h2>
-                        <label id="emailLabel" for="emailInput" class="note">@Model.Item1.Email</label>
-                            <input type="text" name="Email" id="emailInput" style="display:none;" />
-                        <div class="error">@Html.ValidationMessageFor(m => m.Item1.Email)</div>
-                        </li>
-                    @if (@Model.Item1.Description != null)
-                    {
-                        <li>
-                            <h2 class="note__title"> Описание </h2>
-                            <label id="descLabel" for="descInput" class="note">@Model.Item1.Description</label>
-                            <input type="text" name="Description" id="descInput" style="display:none;" />
-                            <div class="error">@Html.ValidationMessageFor(m => m.Item1.Description)</div>
-                        </li>
-                    }
-                    else
-                    {
-                        <li>
-                            <h2 class="note__title"> Описание </h2>
-                            <label id="descLabel" for="descInput" class="note">Не заполнено</label>
-                            <input type="text" name="Description" id="descInput" style="display:none;" />
-                            <div class="error">@Html.ValidationMessageFor(m => m.Item1.Description)</div>
-                        </li>
-                    }
-                    @if (@Model.Item1.Specialization != null)
-                    {
-                        <li>
-                            <h2 class="note__title"> Специализация </h2>
-                            <label id="specLabel" for="specInput" class="note">@Model.Item1.Specialization</label>
-                            <input type="text" name="Specialization" id="specInput" style="display:none;" />
-                            <div class="error">@Html.ValidationMessageFor(m => m.Item1.Specialization)</div>
-                        </li>
-                    }
-                    else
-                    {
-                        <li>
-                            <h2 class="note__title"> Специализация </h2>
-                            <label id="specLabel" for="specInput" class="note">Не заполнено</label>
-                            <input type="text" name="Specialization" id="specInput" style="display:none;" />
-                            <div class="error">@Html.ValidationMessageFor(m => m.Item1.Specialization)</div>
-                        </li>
-                    }
-                        <li>
-                        @if(!Model.Item2.Any(x=>x.UserId == Model.Item1.UserId))
+                    <label for="file-input">
+                        @if (!String.IsNullOrEmpty(Model.Item1.ProfileImage))
                         {
-                            <form action="/follows/follow/@Model.Item1.UserId" method="post" enctype="multipart/form-data">
-                                <button>Подписаться</button>
-                            </form>
+                            <div id="picture_box">
+                                <img src="@Url.Content(Model.Item1.ProfileImage)" name="ImagePath" width="109" height="109" />
+                            </div>
                         }
                         else
                         {
-                            <form action="/follows/unfollow/@Model.Item1.UserId" method="post" enctype="multipart/form-data">
-                                <button>Отписаться</button>
-                            </form>
-                        }
-                        </li>
-                    </ul>
-               
-            </div>
-        </div>
-       
-    </div>
-    <div class="row" style="margin-top:350px;">
-        <div class="rait-works">
-            <div class="work-block">
-                <div class="top-portfolio">
-                    @foreach (var work in Model.Item3)
-                    {
-                        <div class="work">
-                            <div class="portfolio-info">
-                                <div class="author">
-                                    @if (!String.IsNullOrEmpty(Model.Item1.ProfileImage))
-                                    {
-                                        <a href="/resume/@work.UserId"><img src="@Model.Item1.ProfileImage" height="32.54" width="36.5" /></a>
-                                    }
-                                    else
-                                    {
-                                        <a href="/resume/@work.UserId"><img src="images/inputImage.svg" height="32.54" width="36.5" /></a>
-                                    }
-                                    <p>@Model.Item1.FirstName @Model.Item1.SecondName</p>
-                                </div>
-                                <div>
-                                    <p class="work-name">@work.Title</p>
-                                    <p class="rating">@work.MiddleGrade</p>
-                                </div>
+                            <div id="picture_box">
+                                <img src="/images/inputImage.svg" width="115" />
                             </div>
-                            <a href="/work/@work.WorkId"> <img src="/images/image 7.png" /></a>
-                        </div>
+                        }
+                    </label>
+                </form>
+            </div>
+            @if (!Model.Item2.Any(x => x.UserId == Model.Item1.UserId))
+            {
+                <form action="/follows/follow/@Model.Item1.UserId" method="post" enctype="multipart/form-data">
+                    <button class="subscribers">Подписаться</button>
+                </form>
+            }
+            else
+            {
+                <form action="/follows/unfollow/@Model.Item1.UserId" method="post" enctype="multipart/form-data">
+                    <button class="subscribers">Отписаться</button>
+                </form>
+            }
+            <div class="subscribers">
+                <img class="icons" src="/images/subscribers-icon.svg" width="20">
+                <p class="count-of-subsrcibers">
+                    Подписчики: @Model.Item1.SubsCount
+                </p>
+            </div>
+            
+            <div class="name">
+                <label id="firstNameLabel" for="firstNameInput" class="name">@Model.Item1.FirstName @Model.Item1.SecondName</label>
+            </div>
+            <div class="job">
+                <p class="work-information">
+                    <img class="profile-icons" src="/images/work-icon.svg" width="20" height="20">
+                    @if (@Model.Item1.Specialization != null)
+                    {
+                        <span id="specLabel" for="specInput" class="note-profile">@Model.Item1.Specialization</span>
                     }
+                    else
+                    {
+                        <span id="specLabel" for="specInput" class="note-profile">Не заполнено</span>
+                    }
+                </p>
+            </div>
+            <div class="info">
+                <p class="profile-information">
+                    <img class="profile-icons" src="/images/info-icon.svg" width="20" height="20">
+                    @if (@Model.Item1.Description != null)
+                    {
+                        <span id="descLabel" for="descInput" class="note-profile">@Model.Item1.Description</span>
+                    }
+                    else
+                    {
+                        <span id="descLabel" for="descInput" class="note-profile">Не заполнено</span>
+                    }
+                </p>
+            </div>
+
+           
+        </div>
+    </div>
+    @if(Model.Item1.Status == (int)ProfileStatus.Public)
+    {
+        <div class="row">
+            <div class="profile-works">
+                <div class="work-block">
+                    <div class="profile-portfolio">
+                        @foreach (var work in Model.Item3)
+                        {
+                            <div class="work">
+                                <div class="portfolio-info">
+                                    <div class="author">
+                                        @if (!String.IsNullOrEmpty(Model.Item1.ProfileImage))
+                                        {
+                                            <a href="/resume/@work.UserId"><img src="@Model.Item1.ProfileImage" height="32.54" width="36.5" /></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="/resume/@work.UserId"><img src="/images/inputImage.svg" height="32.54" width="36.5" /></a>
+                                        }
+                                        <p>@Model.Item1.FirstName @Model.Item1.SecondName</p>
+                                    </div>
+                                    <div>
+                                        <p class="work-name">@work.Title</p>
+                                        <p class="rating">@work.MiddleGrade</p>
+                                    </div>
+                                </div>
+                                <a href="/work/@work.WorkId"> <img src="/images/image 7.png" /></a>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <script src="/_framework/blazor.webassembly.js"></script>
+    }
+    else
+    {
+        <div class="name">
+            <label>Профиль приватный, вы не можете просматривать работы пользователя</label>
+        </div>
+    }
+    <script src="_framework/blazor.webassembly.js"></script>
+    <footer>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="mainLogo2">
+            <img src="/images/logo.png">
+        </div>
+        <p class="bottom-slogan">
+            Show Work - Ваш путь к вдохновению и успеху в цифровом мире!
+        </p>
+        <div class="bottom-links">
+            <a href="index.html">Главная</a>
+            <a href="#">Каталог</a>
+            <a href="#">Мои подписки</a>
+        </div>
+    </footer>
 </body>
 </html>
 

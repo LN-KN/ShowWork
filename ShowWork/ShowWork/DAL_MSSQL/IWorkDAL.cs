@@ -20,5 +20,8 @@ namespace ShowWork.DAL_MSSQL
         Task<IEnumerable<WorkModel>> GetUserByWork(int WorkId);
         Task<IEnumerable<WorkModel>?> GetTopWorks(int top);
         Task<WorkModel> GetBestWork();
+        Task<int> UploadImage(ImageModel model);
+        Task<int> UploadFile(FileModel model);
+        Task<int> AddTag(TagModel model);
     }
 }

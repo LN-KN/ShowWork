@@ -16,7 +16,7 @@ namespace ShowWork.ViewMapper
                 Description = model.Description!,
                 Specialization = model.Specialization!,
                 ProfileImage = model.ImagePath!,
-                Status = model.Status!
+                Status = model.Status == false ? (int)ProfileStatus.Public : (int)ProfileStatus.Private
             };
         }
 
@@ -32,7 +32,7 @@ namespace ShowWork.ViewMapper
                 Description = model.Description!,
                 Specialization = model.Specialization!,
                 ImagePath = model.ProfileImage!,
-                Status = model.Status!
+                Status = model.Status == (int)ProfileStatus.Private
             };
         }
     }

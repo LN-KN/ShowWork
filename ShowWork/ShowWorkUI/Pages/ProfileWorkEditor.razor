@@ -2,12 +2,6 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
-<head>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-4-grid@3.4.0/Gruntfile.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-4-grid@3.4.0/css/grid.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/uistyles.css">
-</head>
-
 <PageTitle>Мои работы</PageTitle>
 
 @if (works == null)
@@ -16,16 +10,23 @@
 }
 else
 {
-    <div class="rait-works">
+    <div class="profile-works">
         <div class="work-block">
-        <div class="top-portfolio">
-        <label for="button" style="display: inline-block;">
-            <img class="work" src="/images/создать работу.png" />
-        </label>
-        <button id="button" class="button" @onclick="RedirectToEdit" style="display:none;">Добавить</button>
+            <div class="profile-portfolio">
+                     <!-- ПЕРВАЯ РАБОТА -->
+                     <div class="work create-work" @onclick="RedirectToEdit">
+                         <a>
+                            <div class="create-work-block">
+                                <img src="images/new-work.svg">
+                                <h3>Создать работу</h3>
+                                <img src="images/new-work-arrow.svg">
+                            </div>
+                        </a>
+                     </div>
+        <button id="button" class="button"  style="display:none;">Добавить</button>
         @foreach (var work in works)
         {
-            if (work.TypeOfWork >= 0 && work.TypeOfWork < tagNames.Length)
+            if (work.CategoryOfWork >= 0 && work.CategoryOfWork < categoryNames.Length)
             {
                 <div class="work">
                     <div class="portfolio-info">
@@ -42,16 +43,6 @@ else
                     </div>
                     <a href="/work/@work.WorkId"> <img src="/images/image 7.png" /></a>
                 </div>
-               @*  <div>
-                    <label>@tagNames[(int)work.TypeOfWork!]</label>
-                    <label>@work.Title</label>
-                    <label>@work.Description</label>
-                    <label>@work.LikesCount</label>
-                    <label>@work.CommentsCount</label>
-                    <a href="/work/@work.WorkId"> <img class="work" src="/images/image 7.png" /></a>
-                </div> *@
-                
-                 
             }
         }
             </div>
@@ -61,14 +52,14 @@ else
 
 @code {
     internal static List<Work>? works = null;
-    private string[] tagNames = new string[] 
-    { 
-        "Аналитика", 
-        "Фотография", 
-        "Графический дизайн", 
-        "Разработка", 
-        "UI/UX дизайн", 
-        "Другое" 
+    private string[] categoryNames = new string[]
+    {
+        "Аналитика",
+        "Разработка",
+        "Фотография",
+        "UI/UX дизайн",
+        "Графический дизайн",
+        "Другое"
     };
     private Work editItem = new Work();
 
@@ -89,7 +80,8 @@ else
         public string UserImagePath { get; set; }
         public double MiddleGrade { get; set; }
 
-        public int? TypeOfWork { get; set; } = 0;
+        public int? CategoryOfWork { get; set; } = 0;
+        public int? PatternOfWork { get; set; } = 0;
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string TextBlockOne { get; set; } = null!;

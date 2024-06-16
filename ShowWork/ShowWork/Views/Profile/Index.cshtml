@@ -9,7 +9,7 @@
 }
 
 <!DOCTYPE html>
-@await Component.InvokeAsync("MainMenu")
+
 <html lang="ru">
 <head>
     <meta charset="utf-8">
@@ -28,173 +28,322 @@
     <link rel="stylesheet" href="/css/styles.css">
 
 </head>
-
-<body class="profile-background">
-    <div class="profile-background">
-            <div id="user_header">
-                <div id="user_info">
-                    <form action="/profile/uploadimage" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="UserId" value="@Model.UserId"  />
-                        @Html.AntiForgeryToken()
-                        <label for="file-input" style="display: inline-block;">
-                            @if (!String.IsNullOrEmpty(Model.ImagePath))
-                            {
-                                <div id="picture_box" style="display: inline-block;">
-                                    <img src="@Url.Content(Model.ImagePath)" name="ImagePath" />
-                                </div>
-                            }
-                            else
-                            {
-                                <div id="picture_box" style="display: inline-block;">
-                                    <img src="images/inputImage.svg" />
-                                </div>
-                            }
-    
-                        </label>
-                        <input id="file-input" type="file" name="file" onchange="form.submit()" style="display:none;" />
-                    </form>
-                    <form action="/profile" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="UserId" value="@Model.UserId" />
-                         @Html.AntiForgeryToken()
-                             <div style="display: inline-block; padding:20px;">
-                                <h2 class="user_name"> Имя </h2>
-                                <label id="firstNameLabel" for="firstNameInput" class="note">@Model.FirstName</label>
-                                <input type="text" name="FirstName" id="firstNameInput" style="display:none;" />
-                                <div class="error">@Html.ValidationMessageFor(m => m.FirstName)</div>
-                             </div>
-                             <div style="display: inline-block; padding:20px;">
-                                <h2 class="user_name"> Фамилия </h2>
-                                <label id="lastNameLabel" for="lastNameInput" class="note">@Model.LastName</label>
-                                <input type="text" name="LastName" id="lastNameInput" style="display:none;" />
-                                <div class="error">@Html.ValidationMessageFor(m => m.LastName)</div>
-                             </div>
-                              
-                        <hr />
-                        <input type="hidden" name="UserId" value="@Model.UserId" />
-                          
-                         <ul id="user_list">
-                               <li>
-                                    <h2 class="note__title"> Логин </h2>
-                                    <label id="loginLabel" for="loginInput" class="note">@Model.Login</label>
-                                    <input type="text" name="Login" id="loginInput" style="display:none;" />
-                                    <div class="error">@Html.ValidationMessageFor(m => m.Login)</div>
-                                </li>
-                                <li>
-                                   <h2 class="note__title"> Email </h2>
-                                   <label id="emailLabel" for="emailInput" class="note">@Model.Email</label>
-                                   <input type="text" name="Email" id="emailInput" style="display:none;" />
-                                   <div class="error">@Html.ValidationMessageFor(m => m.Email)</div>
-                                </li>
-                                @if (@Model.Description != null)
-                                {
-                                     <li>
-                                         <h2 class="note__title"> Описание </h2>
-                                         <label id="descLabel" for="descInput" class="note">@Model.Description</label>
-                                         <input type="text" name="Description" id="descInput" style="display:none;" />
-                                         <div class="error">@Html.ValidationMessageFor(m => m.Description)</div>
-                                    </li>
-                                }
-                                else
-                                {
-                                    <li>
-                                        <h2 class="note__title"> Описание </h2>
-                                        <label id="descLabel" for="descInput" class="note">Не заполнено</label>
-                                        <input type="text" name="Description" id="descInput" style="display:none;" />
-                                        <div class="error">@Html.ValidationMessageFor(m => m.Description)</div>
-                                    </li>
-                                }
-                                @if (@Model.Specialization != null)
-                                {
-                                     <li>
-                                          <h2 class="note__title"> Специализация </h2>
-                                          <label id="specLabel" for="specInput" class="note">@Model.Specialization</label>
-                                          <input type="text" name="Specialization" id="specInput" style="display:none;" />
-                                          <div class="error">@Html.ValidationMessageFor(m => m.Specialization)</div>
-                                     </li>
-                                 }
-                                 else
-                                 {
-                                      <li>
-                                          <h2 class="note__title"> Специализация </h2>
-                                          <label id="specLabel" for="specInput" class="note">Не заполнено</label>
-                                          <input type="text" name="Specialization" id="specInput" style="display:none;" />
-                                          <div class="error">@Html.ValidationMessageFor(m => m.Specialization)</div>
-                                      </li>
-                                 }
-                                 <li>
-                                    <select name="Status" id="Status" class="Status" disabled>
-                                    @foreach (int s in Enum.GetValues(typeof(ProfileStatus))){
-                                    if(Model.Status == s)
-                                    {
-                                        <option value="@s" selected = "selected">
-                                            @Localization.Languages["ru"].GetLabel("ProfileStatusEnum" + @Enum.GetName(typeof(ProfileStatus), s))
-                                        </option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@s">
-                                            @Localization.Languages["ru"].GetLabel("ProfileStatusEnum" + @Enum.GetName(typeof(ProfileStatus), s))
-                                        </option>
-                                    }
-                                    
-                                    }
-                                    </select>
-                                </li>
-                                
-                                <button id="btnSave" class="btnSave" value="save" style="display:none; margin-left:auto; margin-right:auto;" onclick="OnSubmit()">Сохранить</button>
-                                <script type="text/javascript">
-                                    function OnSubmit() {
-                                        document.getElementById("firstNameInput").value = document.getElementById("firstNameLabel").innerHTML;
-                                        document.getElementById("lastNameInput").value = document.getElementById("lastNameLabel").innerHTML;
-                                        document.getElementById("loginInput").value = document.getElementById("loginLabel").innerHTML;
-                                        document.getElementById("emailInput").value = document.getElementById("emailLabel").innerHTML;
-                                        document.getElementById("descInput").value = document.getElementById("descLabel").innerHTML;
-                                        document.getElementById("specInput").value = document.getElementById("specLabel").innerHTML;
-                                    }
-                                </script>
-                        </ul>
-                    </form>
-                    <form action="/profile/exit" method="post" enctype="multipart/form-data">
-                        <button style="background-color:red"> Выйти </button>
-                    </form>
-                <button id="btnEditSave" class="actions" name="action" value="edit" style="display:block; margin-left:auto; margin-right:auto;">Редактировать</button>
-                </div>
+<body class="body_profile" >
+    @await Component.InvokeAsync("MainMenu")
+    <div id="presection" class="pre-section">
+        <!-- editing-profile вот сюда ДОПОЛНИТЕЛЬНО К УЖЕ СТОЯЩЕМУ КЛАССУ-->
+        <div class="profile-info">
+            <div class="profile-arrow">
+                <a href="javascript:history.back()"><img src="images/back-arrow.svg" height="35"></a>
             </div>
-            <script>
-                const editSave = function () {
-                    let notes = document.querySelectorAll('.note');
-                    let buttonSave = document.querySelector('.btnSave');
-                    if (this.textContent == 'Редактировать') {
-                        for (let note of notes) {
-                                note.contentEditable = true;
-                                this.textContent = 'Сохранить';
-                                note.classList.add('editable');
-                            }; 
-                        btnSave.style.display = 'block';
-                        this.style.display = 'none';
-                        document.getElementById("Status").disabled = false;
+            <div class="nickname">
+                <p class="nickname">@Model.Login</p>
+            </div>
+            <div class="photo">
+                <form action="/profile/uploadimage" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="UserId" value="@Model.UserId" />
+                    @Html.AntiForgeryToken()
+                    
+                        @if (!String.IsNullOrEmpty(Model.ImagePath))
+                        {
+                            <div id="picture_box" >
+                                <img src="@Url.Content(Model.ImagePath)" name="ImagePath" width="109" height="109"/>
+                            </div>
+                        }
+                        else
+                        {
+                            <div id="picture_box">
+                                <img src="images/inputImage.svg" width="115" />
+                            </div>
+                        }
+
+                    
+                    <label for="file-input">
+                    <img class="edit-photo" src="images/edit-photo.png" width="115">
+                    </label>
+                    <input id="file-input" type="file" name="file" onchange="form.submit()" style="display:none;" />
+                </form>
+            </div>
+            <div class="subscribers">
+                <img class="icons" src="images/subscribers-icon.svg" width="20">
+                <p class="count-of-subsrcibers">
+                    Подписчики: @Model.SubsCount
+                </p>
+            </div>
+            <div class="name">
+                <label id="firstNameLabel" for="firstNameInput" class="name">@Model.FirstName @Model.LastName</label>
+            </div>
+            <div class="job">
+                <p class="work-information">
+                    <img class="profile-icons" src="images/work-icon.svg" width="20" height="20">
+                    <img class="new-icon" src="images/new-icon.png" width="20" height="20">
+                    @if (@Model.Specialization != null)
+                    {
+                        <span id="specLabel" for="specInput" class="note-profile">@Model.Specialization</span>
+                        <div class="error">@Html.ValidationMessageFor(m => m.Specialization)</div>
                     }
-                    else {
-                        for (let note of notes) {
-                            this.textContent = 'Редактировать';
-                            note.contentEditable = false;
-                            note.classList.remove('editable');
-                        };
-                        btnSave.style.display = 'none';
-                        this.style.display = 'block';
-                        document.getElementById("Status").disabled = true;
+                    else
+                    {
+                        <span id="specLabel" for="specInput" class="note-profile">Не заполнено</span>
+                        <div class="error">@Html.ValidationMessageFor(m => m.Specialization)</div>
                     }
+                </p>
+            </div>
+            <div class="info">
+                <p class="profile-information">
+                    <img class="profile-icons" src="images/info-icon.svg" width="20" height="20">
+                    <img class="new-icon" src="images/new-icon.png" width="20" height="20">
+                    @if (@Model.Description != null)
+                    {
+                        <span id="descLabel" for="descInput" class="note-profile">@Model.Description</span>
+                        <div class="error">@Html.ValidationMessageFor(m => m.Description)</div>
+                    }
+                    else
+                    {
+                        <span id="descLabel" for="descInput" class="note-profile">Не заполнено</span>
+                        <div class="error">@Html.ValidationMessageFor(m => m.Description)</div>
+                    }
+                </p>
+            </div>
+            <div class="edit_profile">
+                <button id="btnEditSave" class="edit actions-profile" name="action" value="edit" width="36" type="button">Редактировать профиль <img src="images/edit-profile-arrow.svg" width="36"></button>
+                <button id="btnSave" style="display:none;" class="btnSave" value="save" onclick="OnSubmitProfile()">Сохранить</button>
+            </div>
+            <div id="private-profile" class="checkbox-off">
+                <input type="checkbox" value="true" id="StatusBox" name="StatusBox" class="custom-checkbox" checked="@Model.Status" />
+                <label for="StatusBox">Приватный профиль</label>
+            </div>
+            <form id="editProfileForm" action="/profile" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="UserId" value="@Model.UserId" />
+                @Html.AntiForgeryToken()
+                <input type="text" name="FirstName" value="@Model.FirstName" id="FirstNameInput" style="display:none;" />
+                <input type="text" name="LastName" value="@Model.LastName" id="SecondNameInput" style="display:none;" />
+                <input type="text" name="Email" value="@Model.Email" id="EmailInput" style="display:none;" />
+                <input type="text" name="Login" value="@Model.Login" id="LoginInput" style="display:none;" />
+                <input type="checkbox" name="Status" value="true" id="Status" style="display:none;"   />
+                <input type="text" name="Specialization" id="specInput" style="display:none;" />
+                <input type="text" name="Description" id="descInput" style="display:none;" />
+            </form>
+            <script type="text/javascript">
+                function OnSubmitProfile() {
+                    document.getElementById("descInput").value = document.getElementById("descLabel").innerHTML;
+                    document.getElementById("specInput").value = document.getElementById("specLabel").innerHTML;
+                    document.getElementById("Status").checked = document.getElementById("StatusBox").checked;
+                    document.getElementById("FirstNameInput").value = document.getElementById("FirstNameText").value;
+                    document.getElementById("SecondNameInput").value = document.getElementById("LastNameText").value;
+                    document.getElementById("LoginInput").value = document.getElementById("LoginText").value;
+                    document.getElementById("EmailInput").value = document.getElementById("EmailText").value;
+                    document.getElementById("editProfileForm").submit();
                 }
-                document.querySelector('.actions').addEventListener('click', editSave);
-                
-            </script>    
-    </div>
-    <div class="row" style="margin-top:350px;">
-        <div class="col-sm-12">
-            <component type="typeof(ShowWorkUI.Pages.ProfileWorkEditor)" render-mode="WebAssembly" />
+            </script>
+            <script>
+                const editSaveProfile = function () {
+                    let notes = document.querySelectorAll('.note-profile');
+                    let buttonSave = document.querySelector('.btnSave-profile');
+                    let editDiv = document.getElementById("presection");
+                    let cbPrivate = document.getElementById("private-profile");
+                    for (let note of notes) {
+                        note.contentEditable = true;
+                        this.textContent = 'Сохранить';
+                        note.classList.add('editable');
+                    };
+                    btnSave.classList.add('edit');
+                    btnSave.style.display = 'flex';
+                    this.style.display = 'none';
+                    editDiv.classList.add('editing-profile');
+                    cbPrivate.classList.remove('checkbox-off');
+                    cbPrivate.classList.add('checkbox');
+                }
+                document.getElementById("btnEditSave").addEventListener('click', editSaveProfile);
+            </script>
         </div>
     </div>
+    <div id="main-block">
+        <div class="tab">
     
+            <input checked id="tab-btn-1" name="tab-btn" type="radio" value="">
+            <label id="tab-btn-4" class="tab-btn1" for="tab-btn-1">Мои работы</label>
+            <input checked id="tab-btn-2" name="tab-btn" type="radio" value="">
+            <label id="tab-btn-3" class="tab-btn2" for="tab-btn-2">Настройки</label>
+            <script>
+                let btn = document.getElementById('tab-btn-3');
+    
+                btn.addEventListener('click', function onClick(event) {
+                    document.body.style.backgroundImage = 'url(/images/general-background.jpg)';
+                });
+            </script>
+            <script>
+                let button = document.getElementById('tab-btn-4');
+                button.onclick = function () {
+                    document.body.style.backgroundImage = 'inherit';
+                }
+            </script>
+    
+            <div class="tab-content" id="content-1">
+                <div class="main-section">
+                    <component type="typeof(ShowWorkUI.Pages.ProfileWorkEditor)" render-mode="WebAssembly" />
+                  
+                    <div class="button">
+                        <button class="more-work_button">
+                            ЕЩЁ
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" id="content-2">
+                    <div class="general-tab">
+                        <div class="general-tab-content" id="general-1">
+                            <div class="general_window">
+                                     <div class="fields">
+                                         <figure>
+                                             <figcaption><p class="title">Имя</p></figcaption>
+                                             <input class="field" type="text" id="FirstNameText" value="@Model.FirstName">
+                                         </figure>
+                                         <figure>
+                                             <figcaption><p class="title">Фамилия</p></figcaption>
+                                             <input class="field" type="text" id="LastNameText" value="@Model.LastName">
+                                         </figure>
+                                         <figure>
+                                             <figcaption><p class="title">Логин</p></figcaption>
+                                             <input class="field" type="text" id="LoginText" value="@Model.Login">
+                                         </figure><br>
+                                         <figure>
+                                             <figcaption><p class="title">E-mail</p></figcaption>
+                                             <input class="field" type="email" id="EmailText" value="@Model.Email">
+                                         </figure><br>
+                                         <label id="errorLbl" class="error" style="display:none;">Допущены ошибки в заполнении</label>
+                                    </div>
+                                    <button onclick="OnSubmitProfile1()" type = "button">Изменить</button>
+                                <script type="text/javascript">
+                                    function OnSubmitProfile1() {
+                                        document.getElementById("descInput").value = document.getElementById("descLabel").innerHTML;
+                                        document.getElementById("specInput").value = document.getElementById("specLabel").innerHTML;
+                                        document.getElementById("Status").checked = document.getElementById("StatusBox").checked;
+                                        let firstName = document.getElementById("FirstNameText").value;
+                                        let secondName = document.getElementById("LastNameText").value;
+                                        let email = document.getElementById("EmailText").value;
+                                        let login = document.getElementById("LoginText").value;
+                                        function validateEmail(email) {
+                                          var re = /\S+@@\S+\.\S+/;
+                                          return re.test(email);
+                                        }
+                                        if (firstName.length > 3 && firstName.length < 25 &&
+                                            secondName.length > 3 && secondName.length < 25 &&
+                                            login.length > 3 && login.length < 25 &&
+                                            validateEmail(email)) {
+                                            document.getElementById("FirstNameInput").value = firstName;
+                                            document.getElementById("SecondNameInput").value = secondName;
+                                            document.getElementById("EmailInput").value = email;
+                                            document.getElementById("LoginInput").value = login;
+                                            document.getElementById("editProfileForm").submit();
+                                        }
+                                        else {
+                                            document.getElementById("errorLbl").style.display = 'flex';
+                                            document.getElementById("errorLbl").style.color = 'red';
+                                        }
+                                        
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                        <div class="general-tab-content" id="general-2">
+                            <form id="changepassform" action="/profile/changepass" method="post" enctype="multipart/form-data">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="UserId" value="@Model.UserId" />
+                            <div class="general_window">
+                                <div class="fields">
+                                    <figure>
+                                        <figcaption><p class="title">Старый пароль</p></figcaption>
+                                        <input class="field" type="password" id="curPass" name="CurrentPassword">
+                                    </figure><br>
+                                    <figure>
+                                        <figcaption><p class="title">Новый пароль</p></figcaption>
+                                        <input class="field" type="password" id="newPass" name="NewPassword">
+                                    </figure>
+                                    <figure>
+                                        <figcaption><p class="title">Подтверждение пароля</p></figcaption>
+                                        <input class="field" type="password" id="repPass" name="RepeatPassword">
+                                    </figure>
+                                        <input type="checkbox" name="Status" value="true" id="Status1" style="display:none;" />
+                                        <input type="text" name="Specialization" value="@Model.Specialization" style="display:none;" />
+                                        <input type="text" name="Description" value="@Model.Description" style="display:none;" />
+                                        <input type="text" name="LastName" value="@Model.LastName" style="display:none;" />
+                                        <input type="text" name="FirstName" value="@Model.FirstName" style="display:none;" />
+                                        <input type="text" name="Login" value="@Model.Login" style="display:none;" />
+                                        <input type="text" name="Email" value="@Model.Email" style="display:none;" />
+                                </div>
+                                <button onclick="OnChangePass()" type="button">Изменить</button>
+                                    @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
+                                    {
+                                        <label class="error" style="color:red" >@ViewData.ModelState["Error"].Errors.First().ErrorMessage</label>
+                                    }
+                                <label id="passErr" class="error" style="display:none;">Новый пароль должен содержать</label>
+                            </div>
+                            </form>
+                            <script type="text/javascript">
+                                function OnChangePass() {
+                                    document.getElementById("Status1").checked = document.getElementById("StatusBox").checked;
+                                    let oldPass = document.getElementById("curPass").value;
+                                    let newPass = document.getElementById("newPass").value;
+                                    let corrPass = document.getElementById("repPass").value;
+                                    let login = document.getElementById("LoginText").value;
+                                    function validatePassword(pass) 
+                                    {
+                                        var re = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@@#$%^&*-]).{8,}$/;
+                                        return re.test(pass);
+                                    }
+                                    if (newPass != corrPass) 
+                                    {
+                                        document.getElementById("passErr").innerHTML = "Пароли не совпадают";
+                                        document.getElementById("passErr").style.display = 'flex';
+                                        document.getElementById("passErr").style.color = 'red';
+                                    }
+                                    else 
+                                    {
+                                        if (validatePassword(newPass)) 
+                                        {
+                                            document.getElementById("changepassform").submit();
+                                        }
+                                        else 
+                                        {
+                                            document.getElementById("passErr").innerHTML = "Пароль слишком простой, требования:<br>• Более 8 символов<br>• Более одной строчной буквы<br>• Не менее одной цифры<br>• Не менее одного спецсимвола";
+                                            document.getElementById("passErr").style.display = 'flex';
+                                            document.getElementById("passErr").style.color = 'red';
+                                        }
+                                    }
+                                }
+                            </script>
+                        </div>
+                        <div class="general-buttons">
+                            <a class="general-tab-link" href="#general-1">Общие</a>
+                            <a class="general-tab-link" href="#general-2">Пароль</a>
+                            <form action="/profile/exit" method="post" enctype="multipart/form-data">
+                                <button class="logout">Выход</button>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
     <script src="_framework/blazor.webassembly.js"></script>
+    <footer>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="mainLogo2">
+            <img src="images/logo.png">
+        </div>
+        <p class="bottom-slogan">
+            Show Work - Ваш путь к вдохновению и успеху в цифровом мире!
+        </p>
+        <div class="bottom-links">
+            <a href="index.html">Главная</a>
+            <a href="#">Каталог</a>
+            <a href="#">Мои подписки</a>
+        </div>
+    </footer>
 </body>
 </html>
+

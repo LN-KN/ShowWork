@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShowWork.BL.Auth;
+using ShowWork.BL.Profile;
 using ShowWork.BL.Resume;
 using ShowWork.DAL_MSSQL;
 using ShowWork.DAL_MSSQL.Models;
@@ -15,14 +16,16 @@ namespace ShowWork.Controllers
         private readonly ICurrentUser currentUser;
         private readonly ICommentDAL commentDAL;
         private readonly IResume resume;
+        private readonly IProfile profile;
 
-        public WorkController(IGradesDAL gradesDAL, IWorkDAL workDAL, ICurrentUser currentUser, ICommentDAL commentDAL, IResume resume)
+        public WorkController(IGradesDAL gradesDAL, IWorkDAL workDAL, ICurrentUser currentUser, ICommentDAL commentDAL, IResume resume, IProfile profile)
         {
             this.gradesDAL = gradesDAL;
             this.workDAL = workDAL;
             this.currentUser = currentUser;
             this.commentDAL = commentDAL;
             this.resume = resume;
+            this.profile = profile;
         }
         [HttpGet]
         [Route("/work/{WorkId}")]
@@ -30,14 +33,52 @@ namespace ShowWork.Controllers
         {
             var work = await workDAL.GetWorkByWorkId(WorkId);
             var comments = await commentDAL.FindCommentsByWorkId(WorkId);
+            var answerComments = await commentDAL.FindAnswerCommentsByWorkId(WorkId);
+            string[] categoryNames = new string[]
+            {
+                 "Аналитика",
+                 "Фотография",
+                 "Графический дизайн",
+                 "Разработка",
+                 "UI/UX дизайн",
+                 "Другое"
+            };
             List<CommentViewModel> commentsViewModel = new List<CommentViewModel>();
-            var profiles = await resume.Search();
+            List<AnswerCommentViewModel> answerCommentsViewModel = new List<AnswerCommentViewModel>();
+            var profiles = await resume.SearchAll();
             foreach (var comment in comments)
             {
-                commentsViewModel.Add(new CommentViewModel {Content=comment.Content, NickName = profiles.Where(x=>x.UserId == comment.UserId).FirstOrDefault().Login });
+                if(profiles.Where(x => x.UserId == comment.UserId)?.FirstOrDefault() != null)
+                    commentsViewModel.Add(new CommentViewModel {
+                        Content=comment.Content,
+                        UserId=comment.UserId,
+                        NickName = profiles.Where(x=>x.UserId == comment.UserId)?.FirstOrDefault().Login, 
+                        ImagePath = profiles.Where(x => x.UserId == comment.UserId)?.FirstOrDefault().ProfileImage,
+                        Id = comment.id});
             }
+            foreach (var comment in answerComments)
+            {
+                if (profiles.Where(x => x.UserId == comment.UserId)?.FirstOrDefault() != null)
+                    answerCommentsViewModel.Add(new AnswerCommentViewModel { 
+                        Content = comment.Content, 
+                        NickName = profiles.Where(x => x.UserId == comment.UserId)?.FirstOrDefault().Login, 
+                        ImagePath = profiles.Where(x => x.UserId == comment.UserId)?.FirstOrDefault().ProfileImage,
+                        CommentId = comment.CommentId});
+            }
+            var currentUserId = await GetCurrentUserId();
+            var ids = profiles.Select(x => x.UserId);
+            WorkViewModel? workViewModel = WorkMapper.MapWorkModelToWorkViewModel(work);
+            var users = await profile.Get(workViewModel.UserId);
+            var user = users.FirstOrDefault();
+            workViewModel.UserImagePath = user.ProfileImage;
+            workViewModel.UserName = user.FirstName;
+            workViewModel.UserSurname = user.SecondName;
+            workViewModel.Login = user.Login;
+            workViewModel.Category = categoryNames[workViewModel.CategoryOfWork];
 
-            return View(new Tuple<WorkModel?, IEnumerable<CommentViewModel>>(work, commentsViewModel));
+            var gradeModel = await gradesDAL.FindGradeByUserId((int)currentUserId, (int)work.WorkId);
+            if (gradeModel == null) gradeModel = new GradesModel() { Grade = 0 };
+            return View(new Tuple<WorkViewModel?, IEnumerable<CommentViewModel>, IEnumerable<AnswerCommentViewModel>, GradesModel>(workViewModel, commentsViewModel, answerCommentsViewModel, gradeModel));
         }
 
         [HttpPost]
@@ -178,10 +219,44 @@ namespace ShowWork.Controllers
             var userId = await GetCurrentUserId();
             if (userId != null)
             {
-                var commentModel = new CommentModel { WorkId = workId, UserId = (int)userId, Content = Content };
-                await commentDAL.AddCommentAsync(commentModel);
+                var profiles = await resume.SearchAll();
+                var ids = profiles.Select(x => x.UserId);
+                if (ids.Contains(userId))
+                {
+                    var commentModel = new CommentModel { WorkId = workId, UserId = (int)userId, Content = Content };
+                    await commentDAL.AddCommentAsync(commentModel);
+                    return Redirect($"/work/{workId}");
+                }
+                else
+                {
+                    return Redirect($"/work/{workId}");
+                }
+                
+            }
+            return View();
+        }
 
-                return Redirect($"/work/{workId}"); // Перенаправление на главную страницу или другую страницу
+        [HttpPost]
+        [Route("/work/{WorkId}/AddAnswerComment")]
+        //[AutoValidateAntiforgeryToken]
+        public async Task<ActionResult> AddAnswerComment(int workId, string AnswerContent, int CommentId)
+        {
+            var userId = await GetCurrentUserId();
+            if (userId != null)
+            {
+                var profiles = await resume.SearchAll();
+                var ids = profiles.Select(x => x.UserId);
+                if (ids.Contains(userId))
+                {
+                    var commentModel = new AnswerComment{ WorkId = workId, UserId = (int)userId, Content = AnswerContent, CommentId = CommentId};
+                    await commentDAL.AddAnswerCommentAsync(commentModel);
+                    return Redirect($"/work/{workId}");
+                }
+                else
+                {
+                    return Redirect($"/work/{workId}");
+                }
+
             }
             return View();
         }

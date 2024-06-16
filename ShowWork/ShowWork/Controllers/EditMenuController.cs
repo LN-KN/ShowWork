@@ -28,36 +28,6 @@ namespace ShowWork.Controllers
             return View();
         }
 
-        public async Task<IActionResult> My()
-        {
-            var p = await currentUser.GetProfiles();
-            var myworks = await profile.GetProfileWorks(p.FirstOrDefault()?.UserId ?? 0);
-            return new JsonResult(myworks.Select(m => new WorkViewModel
-            {
-                Title = m.Title,
-                CommentsCount = m.CommentsCount,
-                LikesCount = m.LikesCount,
-                Description = m.Description,
-                TextBlockOne = m.TextBlockOne,
-                TextBlockThree = m.TextBlockThree,
-                TextBlockTwo = m.TextBlockTwo,
-                TypeOfWork = m.TypeOfWork,
-                UserId = m.UserId,
-                WorkId = m.WorkId
-
-            }));
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> Add([FromBody] WorkViewModel work)
-        {
-            var p = await currentUser.GetProfiles();
-            WorkModel profileWorkModel = WorkMapper.MapWorkViewModelToWorkModel(work);
-            profileWorkModel.UserId = p.FirstOrDefault()?.UserId ?? 0;
-            profileWorkModel.Published = DateTime.Now;
-            await profile.AddProfileWork(profileWorkModel);
-            return Ok();
-        }
 
         [Route("skills/search/{search}")]
         public async Task<IActionResult> Search(string search)

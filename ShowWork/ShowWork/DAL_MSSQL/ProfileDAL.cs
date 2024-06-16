@@ -38,6 +38,15 @@ namespace ShowWork.DAL_MSSQL
             await DbHelper.ExecuteAsync(sql, user);
         }
 
+        public async Task UpdatePass(UserModel user)
+        {
+            string sql =
+               @"update [User] set Password = @Password,
+                                   Salt = @Salt
+                                   where UserId = @UserId";
+            await DbHelper.ExecuteAsync(sql, user);
+        }
+
         public async Task UpdateImage(UserModel user)
         {
             string sql =
@@ -61,6 +70,14 @@ namespace ShowWork.DAL_MSSQL
                    from [User]
                    where Status = @profileStatus
                    order by 1 desc", new {profileStatus = ProfileStatus.Public});
+        }
+
+        public async Task<IEnumerable<UserModel>> SearchAll()
+        {
+            return await DbHelper.QueryAsync<UserModel>(@"select
+                   UserId, Email, Login, Password, Salt, Status, FirstName, SecondName, ProfileImage, Specialization, Description
+                   from [User]
+                   order by 1 desc", new());
         }
     }
 }

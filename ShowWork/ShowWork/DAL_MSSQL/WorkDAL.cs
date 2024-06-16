@@ -7,7 +7,7 @@ namespace ShowWork.DAL_MSSQL
     {
         public async Task<int> Create(string workname)
         {
-            string sql = @"insert into [Work] (Title, UserId, TypeOfWork, Status)
+            string sql = @"insert into [Work] (Title, UserId, CategoryOfWork,PatternOfWork, Status)
                     values (@workname);
                     SELECT WorkId AS LastID FROM [Work] WHERE WorkId = @@Identity;";
 
@@ -16,7 +16,7 @@ namespace ShowWork.DAL_MSSQL
 
         public async Task<IEnumerable<WorkModel>?> Search(int top, string workname)
         {
-            string sql = @"select WorkId, Title, Description, TypeOfWork, LikesCount, MiddleGrade, CommentsCount from [Work] where Title like @workname 
+            string sql = @"select WorkId, Title, Description, CategoryOfWork,PatternOfWork, LikesCount, MiddleGrade, CommentsCount from [Work] where Title like @workname 
                            order by 1
                            OFFSET 0 ROWS FETCH NEXT @top ROWS ONLY";
             return await DbHelper.QueryAsync<WorkModel>(sql, new { top = top, workname = "%" + workname + "%" });
@@ -24,8 +24,8 @@ namespace ShowWork.DAL_MSSQL
 
         public async Task<IEnumerable<WorkModel>?> GetTopWorks(int top)
         {
-            string sql = @"select WorkId, UserId, Title, Description, TypeOfWork, LikesCount, MiddleGrade, CommentsCount, Published, ImagePath from [Work] 
-                           order by MiddleGrade
+            string sql = @"select WorkId, UserId, Title, Description, CategoryOfWork,PatternOfWork, LikesCount, MiddleGrade, CommentsCount, Published, ImagePath from [Work] 
+                           order by MiddleGrade desc
                            OFFSET 0 ROWS FETCH NEXT @top ROWS ONLY";
             return await DbHelper.QueryAsync<WorkModel>(sql, new { top = top});
         }
@@ -76,28 +76,52 @@ namespace ShowWork.DAL_MSSQL
 
         public async Task<int> AddUserWork(WorkModel model)
         {
-            string sql = @"insert into Work (UserId, Title, Description, TextBlockOne, TextBlockTwo, TextBlockThree, TypeOfWork, Status, LikesCount, CommentsCount, ImagePath, Published)
-                    values (@UserId, @Title, @Description, @TextBlockOne, @TextBlockTwo, @TextBlockThree, @TypeOfWork, @Status, @LikesCount, @CommentsCount, @ImagePath, @Published);
+            string sql = @"insert into Work (UserId, Title, Description, TextBlockOne, TextBlockTwo, TextBlockThree, CategoryOfWork, PatternOfWork, Status, LikesCount, CommentsCount, ImagePath, Published)
+                    values (@UserId, @Title, @Description, @TextBlockOne, @TextBlockTwo, @TextBlockThree, @CategoryOfWork, @PatternOfWork, @Status, @LikesCount, @CommentsCount, @ImagePath, @Published);
                     SELECT WorkId AS LastID FROM [Work] WHERE WorkId = @@Identity;";
             return await DbHelper.QueryScalarAsync<int>(sql, model);
         }
 
         public async Task<int> AddTagToCurrentWork(WorkModel model)
         {
-            string[] tagNames = new string[]
-            {
+           string[] categoryNames = new string[]
+           {
                 "Аналитика",
-                "Фотография",
-                "Графический дизайн",
                 "Разработка",
+                "Фотография",
                 "UI/UX дизайн",
+                "Графический дизайн",
                 "Другое"
-            };
-            string TypeOfWork = tagNames[model.TypeOfWork];
+           };
+            string CategoryOfWork = categoryNames[model.CategoryOfWork];
             string sql = @"insert into [Tag] (WorkId, Title)
-                    values (@WorkId, @TypeOfWork);
+                    values (@WorkId, @CategoryOfWork);
                     SELECT TagId AS LastID FROM [Tag] WHERE TagId = @@Identity;";
-            return await DbHelper.QueryScalarAsync<int>(sql, new {model.WorkId, TypeOfWork});
+            return await DbHelper.QueryScalarAsync<int>(sql, new {model.WorkId, CategoryOfWork});
+        }
+
+        public async Task<int> UploadImage(ImageModel model)
+        {
+            string sql = @"insert into Image (WorkId, Image)
+                    values (@WorkId, @Image);
+                    SELECT ImageId AS LastID FROM [Image] WHERE ImageId = @@Identity;";
+            return await DbHelper.QueryScalarAsync<int>(sql, model);
+        }
+
+        public async Task<int> AddTag(TagModel model)
+        {
+            string sql = @"insert into Tag (WorkId, Title)
+                    values (@WorkId, @Title);
+                    SELECT TagId AS LastID FROM [Tag] WHERE TagId = @@Identity;";
+            return await DbHelper.QueryScalarAsync<int>(sql, model);
+        }
+
+        public async Task<int> UploadFile(FileModel model)
+        {
+            string sql = @"insert into Files (WorkId, FilePath)
+                    values (@WorkId, @FilePath);
+                    SELECT FileId AS LastID FROM [Files] WHERE FileId = @@Identity;";
+            return await DbHelper.QueryScalarAsync<int>(sql, model);
         }
     }
 }

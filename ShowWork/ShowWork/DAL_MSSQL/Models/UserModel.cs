@@ -36,5 +36,7 @@ namespace ShowWork.DAL_MSSQL.Models
 
         [Column(Name = "Status", CanBeNull = false)]
         public int Status { get; set; } = 1;
+        [Column(Name = "SubsCount", CanBeNull = false)]
+        public int SubsCount { get; set; } = 0;
     }
 }

@@ -26,11 +26,37 @@
 
     <title>Профиль</title>
     <link rel="stylesheet" href="/css/styles.css">
-
+    <link rel="stylesheet" type="text/css" href="/lib/codemirror/lib/codemirror.css" />
+    <link rel="stylesheet" type="text/css" href="/lib/codemirror/theme/eclipse.css" />
+    <script src="/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="/lib/codemirror/lib/codemirror.js"></script>
+    <script type="text/javascript" src="/lib/codemirror/mode/xml/xml.js"></script>
+    <script type="text/javascript" src="/lib/codemirror/addon/edit/closetag.js"></script>
+    <script type="text/javascript" src="/lib/codemirror/addon/comment/comment.js"></script>
 </head>
-<body>
+<body class="create-work-page">
     <component type="typeof(ShowWorkUI.Pages.ProfileWorkSaver)" render-mode="WebAssembly" />
     <script src="_framework/blazor.webassembly.js"></script>
+    <footer>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="mainLogo2">
+            <img src="images/logo.png">
+        </div>
+        <p class="bottom-slogan">
+            Show Work - Ваш путь к вдохновению и успеху в цифровом мире!
+        </p>
+        <div class="bottom-links">
+            <a href="index.html">Главная</a>
+            <a href="/catalogue">Каталог</a>
+            <a href="/follows">Мои подписки</a>
+        </div>
+    </footer>
+    
+    
 </body>
 </html>
 

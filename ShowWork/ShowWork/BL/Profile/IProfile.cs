@@ -7,6 +7,7 @@ namespace ShowWork.BL.Profile
         Task<IEnumerable<UserModel>> Get(int UserId);
         Task<int> Add(UserModel user);
         Task AddOrUpdate(UserModel user);
+        Task UpdatePass(UserModel user);
         Task UpdateImage(UserModel user);
         Task<IEnumerable<UserModel>> GetAllProfiles();
 

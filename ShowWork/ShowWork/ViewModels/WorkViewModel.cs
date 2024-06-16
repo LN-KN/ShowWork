@@ -15,11 +15,14 @@
 
         public string TextBlockThree { get; set; } = null!;
 
-        public int Status { get; set; } = 0;
+        public int Status { get; set; }
         public int LikesCount { get; set; } = 0;
         public int CommentsCount { get; set; } = 0;
-        public int TypeOfWork { get; set; } = 0;
+        public int CategoryOfWork { get; set; }
+        public int PatternOfWork { get; set; }
+        public string? Category { get; set; }
 
+        public string Login { get; set; }
         public string UserName { get; set; }
         public string UserSurname { get; set; }
         public string UserImagePath { get; set; }

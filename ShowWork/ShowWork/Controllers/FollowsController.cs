@@ -33,7 +33,8 @@ namespace ShowWork.Controllers
                 List<ProfileViewModel> list = new List<ProfileViewModel>();
                 foreach (var user in follows)
                 {
-                    list.Add(ViewMapper.ProfileMapper.MapUserModelToProfileViewModel(user));
+                    if(user.Status == 1)
+                        list.Add(ViewMapper.ProfileMapper.MapUserModelToProfileViewModel(user));
                 }
                 FollowsViewModel followsViewModel = new FollowsViewModel();
                 followsViewModel.Profiles = list;
@@ -53,7 +54,8 @@ namespace ShowWork.Controllers
                 List<ProfileViewModel> list = new List<ProfileViewModel>();
                 foreach (var user in follows)
                 {
-                    list.Add(ViewMapper.ProfileMapper.MapUserModelToProfileViewModel(user));
+                    if (user.Status == 1)
+                        list.Add(ViewMapper.ProfileMapper.MapUserModelToProfileViewModel(user));
                 }
                 if (!string.IsNullOrEmpty(model.Text))
                 {
