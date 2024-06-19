@@ -23,5 +23,8 @@ namespace ShowWork.DAL_MSSQL
         Task<int> UploadImage(ImageModel model);
         Task<int> UploadFile(FileModel model);
         Task<int> AddTag(TagModel model);
+        Task<IEnumerable<ImageModel>> GetImages(WorkModel model);
+        Task<IEnumerable<TagModel>> GetTags(WorkModel model);
+        Task<FileModel> GetFile(WorkModel model);
     }
 }

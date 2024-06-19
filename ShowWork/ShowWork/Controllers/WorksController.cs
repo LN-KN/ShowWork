@@ -154,27 +154,31 @@ namespace ShowWork.Controllers
                 nullWork = await work.GetTopWorks(10);
                 bestWork = nullWork!.OrderByDescending(x => x.Published).FirstOrDefault();
             }
-            var user = await profile.Get(bestWork!.UserId);
-            var u = user.FirstOrDefault();
-            return new JsonResult(new WorkViewModel
+            if(bestWork != null)
             {
-                Title = bestWork.Title,
-                CommentsCount = bestWork.CommentsCount,
-                LikesCount = bestWork.LikesCount,
-                Description = bestWork.Description,
-                TextBlockOne = bestWork.TextBlockOne,
-                TextBlockThree = bestWork.TextBlockThree,
-                TextBlockTwo = bestWork.TextBlockTwo,
-                CategoryOfWork = bestWork.CategoryOfWork,
-                PatternOfWork = bestWork.PatternOfWork,
-                UserId = bestWork.UserId,
-                WorkId = bestWork.WorkId,
+                var user = await profile.Get(bestWork!.UserId);
+                var u = user.FirstOrDefault();
+                return new JsonResult(new WorkViewModel
+                {
+                    Title = bestWork.Title,
+                    CommentsCount = bestWork.CommentsCount,
+                    LikesCount = bestWork.LikesCount,
+                    Description = bestWork.Description,
+                    TextBlockOne = bestWork.TextBlockOne,
+                    TextBlockThree = bestWork.TextBlockThree,
+                    TextBlockTwo = bestWork.TextBlockTwo,
+                    CategoryOfWork = bestWork.CategoryOfWork,
+                    PatternOfWork = bestWork.PatternOfWork,
+                    UserId = bestWork.UserId,
+                    WorkId = bestWork.WorkId,
 
-                UserName = u.FirstName,
-                UserSurname = u.SecondName,
-                UserImagePath = u.ProfileImage,
-                MiddleGrade = bestWork.MiddleGrade
-            });
+                    UserName = u.FirstName,
+                    UserSurname = u.SecondName,
+                    UserImagePath = u.ProfileImage,
+                    MiddleGrade = bestWork.MiddleGrade
+                });
+            }
+            return View();
         }
 
 

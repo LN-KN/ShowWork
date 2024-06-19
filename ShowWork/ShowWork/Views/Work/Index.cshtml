@@ -1,5 +1,5 @@
 ﻿@using ShowWork.DAL_MSSQL.Models
-@model Tuple<WorkViewModel, IEnumerable<CommentViewModel>, IEnumerable<AnswerCommentViewModel>, GradesModel>
+@model Tuple<WorkViewModel, IEnumerable<CommentViewModel>, IEnumerable<AnswerCommentViewModel>, GradesModel, IEnumerable<ImageModel>, IEnumerable<TagModel>, FileModel>
 @{
     IgnoreBody();
 }
@@ -19,8 +19,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/lib/codemirror/lib/codemirror.css" />
+    <link rel="stylesheet" type="text/css" href="/lib/codemirror/theme/eclipse.css" />
+    <script src="/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="/lib/codemirror/lib/codemirror.js"></script>
+    <script type="text/javascript" src="/lib/codemirror/mode/xml/xml.js"></script>
+    <script type="text/javascript" src="/lib/codemirror/addon/edit/closetag.js"></script>
+    <script type="text/javascript" src="/lib/codemirror/addon/comment/comment.js"></script>
 
-    <title>Профиль</title>
+    <title>@Model.Item1.Title</title>
     <link rel="stylesheet" href="/css/styles.css">
 
 </head>
@@ -45,74 +52,394 @@
 
             <p class="category">@Model.Item1.Category</p>
             <div class="hashtags">
-                <p class="hashtag"></p>
-                <p class="hashtag"></p>
+                @if (Model.Item6 != null)
+                {
+                    @foreach (var hashtag in Model.Item6)
+                    {
+                        <p class="hashtag">#@hashtag.Title </p>
+                    }
+                }
             </div>
         </div>
         <p class="description">@Model.Item1.Description</p>
     </section>
     <section class="works">
+        @if(Model.Item1.PatternOfWork == 0)
+        {
+            <p class="addtext-analytics" oninput="autoResize(this)" rows="5" contenteditable="false">@Model.Item1.TextBlockOne</p>
+            <div class="slideshow-container">
 
-        <div class="slideshow-container">
+                <!-- Full-width images with number and caption text -->
+                @if (Model.Item5.Count() != 0)
+                {
+                    @foreach (var image in Model.Item5)
+                    {
+                        <div class="mySlides fade">
+                            <img src="@image.Image" style="width:1000px">
+                        </div>
+                    }
 
-            <!-- Full-width images with number and caption text -->
-            <div class="mySlides fade">
-                <img src="../images/work-photo.jpg" style="width:1000px">
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                }
+            </div>
+            <br>
+
+            <!-- The dots/circles -->
+            <div style="text-align:center">
+                @if (Model.Item5.Count() != 0)
+                {
+                    @for (var i = 1; i < Model.Item5.Count() + 1; i++)
+                    {
+                        <span class="dot" onclick="currentSlide(i)"></span>
+                    }
+                }
+            </div>
+            <script>
+                var slideIndex = 1;
+                showSlides(slideIndex);
+
+                // Next/previous controls
+                function plusSlides(n) {
+                    showSlides(slideIndex += n);
+                }
+
+                // Thumbnail image controls
+                function currentSlide(n) {
+                    showSlides(slideIndex = n);
+                }
+
+                function showSlides(n) {
+                    var i;
+                    var slides = document.getElementsByClassName("mySlides");
+                    var dots = document.getElementsByClassName("dot");
+                    if (n > slides.length) {
+                        slideIndex = 1
+                    }
+                    if (n < 1) {
+                        slideIndex = slides.length
+                    }
+                    for (i = 0; i < slides.length; i++) {
+                        slides[i].style.display = "none";
+                    }
+                    for (i = 0; i < dots.length; i++) {
+                        dots[i].className = dots[i].className.replace(" active", "");
+                    }
+                    slides[slideIndex - 1].style.display = "block";
+                    dots[slideIndex - 1].className += " active";
+                }
+                function autoResize(elem) {
+                    // elem.style.height = '100';
+                    // elem.style.height = (elem.scrollHeight+10) + 'px';
+                    let result_element = document.querySelector("#highlighting-content");
+                    // Handle final newlines (see article)
+                    if (elem.value[elem.value - 1] == "\n") {
+                        elem.value += " ";
+                    }
+                    // Update code
+                    result_element.innerHTML = elem.value.replace(new RegExp("&", "g"), "&amp;").replace(new RegExp("<", "g"), "&lt;"); /* Global RegExp */
+                    // Syntax Highlight
+                    Prism.highlightElement(result_element);
+                }
+                function sync_scroll(element) {
+                    /* Scroll result to scroll coords of event - sync with textarea */
+                    let result_element = document.querySelector("#highlighting");
+                    // Get and set x and y
+                    result_element.scrollTop = element.scrollTop;
+                    result_element.scrollLeft = element.scrollLeft;
+                }
+
+                function check_tab(element, event) {
+                    let code = element.value;
+                    if (event.key == "Tab") {
+                        /* Tab key pressed */
+                        event.preventDefault(); // stop normal
+                        let before_tab = code.slice(0, element.selectionStart); // text before tab
+                        let after_tab = code.slice(element.selectionEnd, element.value.length); // text after tab
+                        let cursor_pos = element.selectionStart + 1; // where cursor moves after tab - moving forward by 1 char to after tab
+                        element.value = before_tab + "\t" + after_tab; // add tab char
+                        // move cursor
+                        element.selectionStart = cursor_pos;
+                        element.selectionEnd = cursor_pos;
+                        update(element.value); // Update text to include indent
+                    }
+                }
+            </script>
+        }
+        else if(Model.Item1.PatternOfWork == 1)
+        {
+            <p type="text" class="addtext-development"> @Model.Item1.TextBlockOne</p>
+            <div class="codetext-development">
+                <textarea id="editor" onchange="Load()"> </textarea>
+            </div>
+            <script type="text/javascript">
+                var encodedText = '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(@Model.Item1.TextBlockTwo))';
+                var editor = CodeMirror.fromTextArea
+                    (document.getElementById('editor'), {
+                        mode: "xml",
+                        theme: "eclipse",
+                        autoCloseTags: true,
+                        tabSize: 5,
+                        lineNumbers: true
+                    });
+                editor.setValue(encodedText);
+
+                editor.eachLine(line => {
+                    editor.indentLine(editor.getLineNumber(line), "smart");
+                });
+                function Load() {
+                    const event = new Event('change');
+                    let type = document.querySelector('.typeOfWorkInput');
+                    let tbinput = document.querySelector('.tbTwoInput');
+                    let editor1 = document.querySelector('.CodeMirror').CodeMirror;
+                    if (type.value == 1) {
+                        tbinput.value = editor1.getValue();
+                        let val = editor1.getValue();
+                        tbinput.setAttribute('value', val);
+                        tbinput.dispatchEvent(event);
+                    }
+                }
+
+                window.initializeDownloadButton = function (downloadButton) {
+                    downloadButton.addEventListener('click', function () {
+                        Load();
+                    });
+                }
+            </script>
+            <div class="add-file">
+                <label for="file-input-file">
+                    <img src="../images/add-file.svg">
+                </label>
+                @if (Model.Item7 != null)
+                {
+                    int pos = Model.Item7.FilePath.LastIndexOf("/") + 1;
+                    <a href="@Model.Item7.FilePath"><p>@Model.Item7.FilePath.Substring(pos, Model.Item7.FilePath.Length - pos)</p></a>
+                }
+                <InputFile id="file-input-file" type="file" name="file-input-file" OnChange="LoadFile" style="display:none;" />
             </div>
 
-            <div class="mySlides fade">
-                <img src="../images/work-photo2.png" style="width: 1000px">
-            </div>
+            <div class="slideshow-container2">
 
-            <div class="mySlides fade">
-                <img src="../images/work-photo.jpg" style="width: 1000px">
+                <!-- Full-width images with number and caption text -->
+                @if (Model.Item5.Count() != 0)
+                {
+                    @foreach (var image in Model.Item5)
+                    {
+                        <div class="mySlides fade">
+                            <img src="@image.Image" style="width:1000px">
+                        </div>
+                    }
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                }
             </div>
-            <div class="mySlides fade">
-                <img src="../images/work-photo.jpg" style="width: 1000px">
+            <br>
+
+            <!-- The dots/circles -->
+            <div style="text-align:center">
+                @if (Model.Item5.Count() != 0)
+                {
+                    @for (var i = 1; i < Model.Item5.Count() + 1; i++)
+                    {
+                        <span class="dot" onclick="currentSlide(i)"></span>
+                    }
+                }
             </div>
+            <script>
+                var slideIndex = 1;
+                showSlides(slideIndex);
 
-            <div class="mySlides fade">
-                <img src="../images/work-photo2.png" style="width: 1000px">
-            </div>
+                // Next/previous controls
+                function plusSlides(n) {
+                    showSlides(slideIndex += n);
+                }
 
-            <div class="mySlides fade">
-                <img src="../images/work-photo.jpg" style="width: 1000px">
-            </div>
-            <div class="mySlides fade">
-                <img src="../images/work-photo.jpg" style="width: 1000px">
-            </div>
+                // Thumbnail image controls
+                function currentSlide(n) {
+                    showSlides(slideIndex = n);
+                }
 
-            <div class="mySlides fade">
-                <img src="../images/work-photo2.png" style="width: 1000px">
-            </div>
+                function showSlides(n) {
+                    var i;
+                    var slides = document.getElementsByClassName("mySlides");
+                    var dots = document.getElementsByClassName("dot");
+                    if (n > slides.length) {
+                        slideIndex = 1
+                    }
+                    if (n < 1) {
+                        slideIndex = slides.length
+                    }
+                    for (i = 0; i < slides.length; i++) {
+                        slides[i].style.display = "none";
+                    }
+                    for (i = 0; i < dots.length; i++) {
+                        dots[i].className = dots[i].className.replace(" active", "");
+                    }
+                    slides[slideIndex - 1].style.display = "block";
+                    dots[slideIndex - 1].className += " active";
+                }
+                function autoResize(elem) {
+                    // elem.style.height = '100';
+                    // elem.style.height = (elem.scrollHeight+10) + 'px';
+                    let result_element = document.querySelector("#highlighting-content");
+                    // Handle final newlines (see article)
+                    if (elem.value[elem.value - 1] == "\n") {
+                        elem.value += " ";
+                    }
+                    // Update code
+                    result_element.innerHTML = elem.value.replace(new RegExp("&", "g"), "&amp;").replace(new RegExp("<", "g"), "&lt;"); /* Global RegExp */
+                    // Syntax Highlight
+                    Prism.highlightElement(result_element);
+                }
+                function sync_scroll(element) {
+                    /* Scroll result to scroll coords of event - sync with textarea */
+                    let result_element = document.querySelector("#highlighting");
+                    // Get and set x and y
+                    result_element.scrollTop = element.scrollTop;
+                    result_element.scrollLeft = element.scrollLeft;
+                }
 
-            <div class="mySlides fade">
-                <img src="../images/work-photo.jpg" style="width: 1000px">
-            </div>
-            <div class="mySlides fade">
-                <img src="../images/work-photo.jpg" style="width: 1000px">
-            </div>
-            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                function check_tab(element, event) {
+                    let code = element.value;
+                    if (event.key == "Tab") {
+                        /* Tab key pressed */
+                        event.preventDefault(); // stop normal
+                        let before_tab = code.slice(0, element.selectionStart); // text before tab
+                        let after_tab = code.slice(element.selectionEnd, element.value.length); // text after tab
+                        let cursor_pos = element.selectionStart + 1; // where cursor moves after tab - moving forward by 1 char to after tab
+                        element.value = before_tab + "\t" + after_tab; // add tab char
+                        // move cursor
+                        element.selectionStart = cursor_pos;
+                        element.selectionEnd = cursor_pos;
+                        update(element.value); // Update text to include indent
+                    }
+                }
+            </script>
+        }
+        else if(Model.Item1.PatternOfWork == 2)
+        {
+            <p class="addtext-development"> @Model.Item1.TextBlockOne</p>
+            @if(Model.Item5.Count() != 0)
+            {
+                <div id="photos" class="photos">
+                    <div>
+                        <label for="file-input1">
+                            @if (Model.Item5.ToList()[0] != null)
+                            {
+                                <img src="@Model.Item5.ToList()[0].Image">
+                            }
+                        </label>
+                        <label for="file-input2">
+                            @if (Model.Item5.ToList()[1] != null)
+                            {
+                                <img src="@Model.Item5.ToList()[1].Image">
+                            }
+                        </label>
+                    </div>
+                    <label class="vertical" for="file-input3">
+                        @if (Model.Item5.ToList()[2] != null)
+                        {
+                            <img src="@Model.Item5.ToList()[2].Image">
+                        }
+                    </label>
+                    }
 
-        </div>
-        <br>
+                </div>
+            }
+        }
+        else if(Model.Item1.PatternOfWork == 3)
+        {
+            <p class="addtext-development">@Model.Item1.TextBlockOne</p>
+            @if (Model.Item5.Count() != 0)
+            {
+                <div class="slideshow-container2">
+                    @foreach (var image in Model.Item5)
+                    {
+                        <div class="mySlides2 fade">
+                            <img src="@image.Image" style="width:1000px">
+                        </div>
+                    }
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                </div>
+                <br>
+                 <!-- The dots/circles -->
+                 <div style="text-align:center">
+                     @for (var i = 1; i < Model.Item5.Count() + 1; i++)
+                     {
+                         <span class="dot2" onclick="currentSlide(i)"></span>
+                     }
+                 </div>
 
-        <!-- The dots/circles -->
-        <div style="text-align:center">
-            <span class="dot" onclick="currentSlide(1)"></span>
-            <span class="dot" onclick="currentSlide(2)"></span>
-            <span class="dot" onclick="currentSlide(3)"></span>
-            <span class="dot" onclick="currentSlide(4)"></span>
-            <span class="dot" onclick="currentSlide(5)"></span>
-            <span class="dot" onclick="currentSlide(6)"></span>
-            <span class="dot" onclick="currentSlide(7)"></span>
-            <span class="dot" onclick="currentSlide(8)"></span>
-            <span class="dot" onclick="currentSlide(9)"></span>
-            <span class="dot" onclick="currentSlide(10)"></span>
+                 <script>
+                     var slideIndex = 1;
+                     showSlidesDesigning(slideIndex);
 
-        </div>
+                     // Next/previous controls
+                     function plusSlidesDesigning(n) {
+                         showSlidesDesigning(slideIndex += n);
+                     }
 
+                     // Thumbnail image controls
+                     function currentSlideDesigning(n) {
+                         showSlidesDesigning(slideIndex = n);
+                     }
+
+                     function showSlidesDesigning(n) {
+                         var i;
+                         var slides = document.getElementsByClassName("mySlides2");
+                         var dots = document.getElementsByClassName("dot2");
+                         if (n > slides.length) {
+                             slideIndex = 1
+                         }
+                         if (n < 1) {
+                             slideIndex = slides.length
+                         }
+                         for (i = 0; i < slides.length; i++) {
+                             slides[i].style.display = "none";
+                         }
+                         for (i = 0; i < dots.length; i++) {
+                             dots[i].className = dots[i].className.replace(" active", "");
+                         }
+                         slides[slideIndex - 1].style.display = "block";
+                         dots[slideIndex - 1].className += " active";
+                     }
+                 </script>
+            }
+        }
+        else if(Model.Item1.PatternOfWork == 4)
+        {
+            @if (Model.Item1.TextBlockOne != null)
+            {
+                <div class="article">
+                    <p class="article-text">@Model.Item1.TextBlockOne</p>
+                    @if (Model.Item5.Count() != 0 && Model.Item5.ToList()[0] != null)
+                    {
+                        <img src="@Model.Item5.ToList()[0].Image">
+                    }
+                </div>
+            }
+            @if (Model.Item1.TextBlockTwo != null)
+            {
+                <div class="article">
+                    @if (Model.Item5.Count() != 0 && Model.Item5.ToList()[1] != null)
+                    {
+                        <img src="@Model.Item5.ToList()[1].Image">
+                    }
+                    <p class="article-text">@Model.Item1.TextBlockTwo</p>
+                </div>
+            }
+            @if (Model.Item1.TextBlockThree != null)
+            {
+                <div class="article">
+                    <p class="article-text">@Model.Item1.TextBlockThree</p>
+                    @if (Model.Item5.Count() != 0 && Model.Item5.ToList()[2] != null)
+                    {
+                        <img src="@Model.Item5.ToList()[2].Image">
+                    }
+                </div>
+            }
+        }
     </section>
     <script>
         var slideIndex = 1;

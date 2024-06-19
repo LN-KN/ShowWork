@@ -1503,9 +1503,6 @@ button {
 }
 
 
-
-
-
 * {
     box-sizing: border-box
 }
@@ -1521,6 +1518,42 @@ button {
 /* Прячет скрытые изображения в карусели*/
 .mySlides {
     display: none;
+    object-fit: cover;
+    width: 1000px;
+    height: 450px;
+}
+
+.mySlides1 {
+    display: none;
+    object-fit: cover;
+    width: 1000px;
+    height: 450px;
+}
+
+.mySlides2 {
+    display: none;
+    object-fit: cover;
+    width: 600px;
+    height: 1009px;
+    margin-left: 78px;
+}
+
+.mySlides img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mySlides1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mySlides2 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* Стрелки переключения */

@@ -31,15 +31,16 @@ namespace ShowWork.Controllers
         [Route("/work/{WorkId}")]
         public async Task<IActionResult> Index(int WorkId)
         {
+
             var work = await workDAL.GetWorkByWorkId(WorkId);
             var comments = await commentDAL.FindCommentsByWorkId(WorkId);
             var answerComments = await commentDAL.FindAnswerCommentsByWorkId(WorkId);
             string[] categoryNames = new string[]
             {
                  "Аналитика",
+                 "Разработка",
                  "Фотография",
                  "Графический дизайн",
-                 "Разработка",
                  "UI/UX дизайн",
                  "Другое"
             };
@@ -78,7 +79,11 @@ namespace ShowWork.Controllers
 
             var gradeModel = await gradesDAL.FindGradeByUserId((int)currentUserId, (int)work.WorkId);
             if (gradeModel == null) gradeModel = new GradesModel() { Grade = 0 };
-            return View(new Tuple<WorkViewModel?, IEnumerable<CommentViewModel>, IEnumerable<AnswerCommentViewModel>, GradesModel>(workViewModel, commentsViewModel, answerCommentsViewModel, gradeModel));
+
+            var images = await workDAL.GetImages(work);
+            var tags = await workDAL.GetTags(work);
+            var file = await workDAL.GetFile(work);
+            return View(new Tuple<WorkViewModel?, IEnumerable<CommentViewModel>, IEnumerable<AnswerCommentViewModel>, GradesModel, IEnumerable<ImageModel>, IEnumerable<TagModel>, FileModel>(workViewModel, commentsViewModel, answerCommentsViewModel, gradeModel, images, tags, file));
         }
 
         [HttpPost]

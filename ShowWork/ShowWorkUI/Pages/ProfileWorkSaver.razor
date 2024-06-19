@@ -10,7 +10,7 @@
     @if (!IsCompleted)
     {
         <div style="color:red; margin-left: auto; margin-right:auto;display:table;">
-            <p>Вы не заполнили обязательные поля: Заголовок, Описание, Категория</p>
+            <p>Вы не заполнили обязательные поля либо не выбрали категорию</p>
         </div>
     }
     <div class="first-row">
@@ -50,67 +50,38 @@
 </section>
 <section class="tab-work-content">
     <div class="create-work-block" id="analytics">
-        <textarea class="addtext-analytics" @bind="editItem.TextBlockOne" oninput="autoResize(this)" rows="5"  placeholder="Добавьте текст..."> </textarea>
+        <textarea class="addtext-analytics" @bind="editItem.TextBlockOne" oninput="autoResize(this)" rows="5" placeholder="Добавьте текст..."></textarea>
 
         <div class="slideshow-container">
-
             <!-- Full-width images with number and caption text -->
-            <div class="mySlides1 fade">
-                <img src="images/image_placeholder.jpg" style="width:1000px">
-            </div>
-
-            <div class="mySlides1 fade">
-                <img src="images/image_placeholder.jpg" style="width:1000px">
-            </div>
-
-            <div class="mySlides1 fade">
-                <img src="images/image_placeholder.jpg" style="width:1000px">
-            </div>
-            <div class="mySlides1 fade">
-                <img src="images/image_placeholder.jpg" style="width:1000px">
-            </div>
-
-            <div class="mySlides1 fade">
-                <img src="images/image_placeholder.jpg" style="width:1000px">
-            </div>
-
-            <div class="mySlides1 fade">
-                <img src="images/image_placeholder.jpg" style="width:1000px">
-            </div>
-            <div class="mySlides1 fade">
-                <img src="images/image_placeholder.jpg" style="width:1000px">
-            </div>
-
-            <div class="mySlides1 fade">
-                <img src="images/image_placeholder.jpg" style="width:1000px">
-            </div>
-
-            <div class="mySlides1 fade">
-                <img src="images/image_placeholder.jpg" style="width:1000px">
-            </div>
-            <div class="mySlides1 fade">
-                <img src="images/image_placeholder.jpg" style="width:1000px">
-            </div>
+            @foreach (var image in filesBase64)
+            {
+                <div class="mySlides1 fade">
+                    <img src="data:@image.contentType;base64,@image.base64data">
+                </div>
+            }
+            @if (filesBase64.Count() < 10)
+            {
+                <label for="file-input-analytics">
+                    <div class="mySlides1 fade">
+                        <img src="images/image_placeholder.jpg">
+                    </div>
+                </label>
+                <InputFile id="file-input-analytics" type="file" name="file-input-analytics" OnChange="OnChangeAny" accept="image/jpeg, image/png, image/gif" style="display:none;" />
+            }
             <a class="prev" onclick="plusSlidesAnalytics(-1)">&#10094;</a>
             <a class="next" onclick="plusSlidesAnalytics(1)">&#10095;</a>
-
         </div>
         <br>
 
         <!-- The dots/circles -->
         <div style="text-align:center">
-            <span class="dot1" onclick="currentSlideAnalytics(1)"></span>
-            <span class="dot1" onclick="currentSlideAnalytics(2)"></span>
-            <span class="dot1" onclick="currentSlideAnalytics(3)"></span>
-            <span class="dot1" onclick="currentSlideAnalytics(4)"></span>
-            <span class="dot1" onclick="currentSlideAnalytics(5)"></span>
-            <span class="dot1" onclick="currentSlideAnalytics(6)"></span>
-            <span class="dot1" onclick="currentSlideAnalytics(7)"></span>
-            <span class="dot1" onclick="currentSlideAnalytics(8)"></span>
-            <span class="dot1" onclick="currentSlideAnalytics(9)"></span>
-            <span class="dot1" onclick="currentSlideAnalytics(10)"></span>
-
+            @for (var i = 1; i < filesBase64.Count() + 2; i++)
+            {
+                <span class="dot1" onclick="currentSlideAnalytics(@i)"></span>
+            }
         </div>
+
         <script>
             var slideIndex = 1;
             showSlidesAnalytics(slideIndex);
@@ -130,10 +101,10 @@
                 var slides = document.getElementsByClassName("mySlides1");
                 var dots = document.getElementsByClassName("dot1");
                 if (n > slides.length) {
-                    slideIndex = 1
+                    slideIndex = 1;
                 }
                 if (n < 1) {
-                    slideIndex = slides.length
+                    slideIndex = slides.length;
                 }
                 for (i = 0; i < slides.length; i++) {
                     slides[i].style.display = "none";
@@ -146,10 +117,13 @@
             }
             function autoResize(elem) {
                 elem.style.height = '100';
-                elem.style.height = (elem.scrollHeight+10) + 'px';
+                elem.style.height = (elem.scrollHeight + 10) + 'px';
             }
+           
         </script>
     </div>
+
+
     <div class="create-work-block" id="development">
         <textarea type="text" class="addtext-development" @bind="editItem.TextBlockOne" placeholder="Добавьте текст..."></textarea>
         <div class="codetext-development">
@@ -167,7 +141,7 @@
                 });
             editor.eachLine(line => {
                 editor.indentLine(editor.getLineNumber(line), "smart");
-            })
+            });
             function Load() {
                 const event = new Event('change');
                 let type = document.querySelector('.typeOfWorkInput');
@@ -204,14 +178,14 @@
             @foreach(var image in filesBase64)
             {
                 <div class="mySlides fade">
-                    <img src="data:@image.contentType;base64,@image.base64data" style="width:1000px">
+                    <img src="data:@image.contentType;base64,@image.base64data">
                 </div>
             }
-            @if(filesBase64.Count < 10)
+            @if(filesBase64.Count() < 10)
             {
                 <label for="file-input-programming">
                     <div class="mySlides fade">
-                        <img src="images/image_placeholder.jpg" style="width:1000px">
+                        <img src="images/image_placeholder.jpg">
                     </div>
                 </label>
                 <InputFile id="file-input-programming" type="file" name="file-input-programming" OnChange="OnChangeAny" accept="image/jpeg, image/png, image/gif" style="display:none;" />
@@ -224,7 +198,7 @@
 
         <!-- The dots/circles -->
         <div style="text-align:center">
-            @for (var i=1; i<filesBase64.Count +2;i++)
+            @for (var i=1; i<filesBase64.Count() +2;i++)
             {
                 <span class="dot" onclick="currentSlide(i)"></span>
             }
@@ -368,42 +342,21 @@
         <div class="slideshow-container3">
 
             <!-- Full-width images with number and caption text -->
-            <div class="mySlides2 fade">
-                <img src="images/image_placeholder2.jpg" style="height:1000px">
-            </div>
-
-            <div class="mySlides2 fade">
-                <img src="images/image_placeholder2.jpg" style="height:1000px">
-            </div>
-
-            <div class="mySlides2 fade">
-                <img src="images/image_placeholder2.jpg" style="height:1000px">
-            </div>
-            <div class="mySlides2 fade">
-                <img src="images/image_placeholder2.jpg" style="height:1000px">
-            </div>
-
-            <div class="mySlides2 fade">
-                <img src="images/image_placeholder2.jpg" style="height:1000px">
-            </div>
-
-            <div class="mySlides2 fade">
-                <img src="images/image_placeholder2.jpg" style="height:1000px">
-            </div>
-            <div class="mySlides2 fade">
-                <img src="images/image_placeholder2.jpg" style="height:1000px">
-            </div>
-
-            <div class="mySlides2 fade">
-                <img src="images/image_placeholder2.jpg" style="height:1000px">
-            </div>
-
-            <div class="mySlides2 fade">
-                <img src="images/image_placeholder2.jpg" style="height:1000px">
-            </div>
-            <div class="mySlides2 fade">
-                <img src="images/image_placeholder2.jpg" style="height:1000px">
-            </div>
+            @foreach (var image in filesBase64)
+            {
+                <div class="mySlides2 fade">
+                    <img src="data:@image.contentType;base64,@image.base64data">
+                </div>
+            }
+            @if (filesBase64.Count < 10)
+            {
+                <label for="file-input-design">
+                    <div class="mySlides2 fade">
+                        <img src="images/image_placeholder2.jpg">
+                    </div>
+                </label>
+                <InputFile id="file-input-design" type="file" name="file-input-design" OnChange="OnChangeAny" accept="image/jpeg, image/png, image/gif" style="display:none;" />
+            }
             <a class="prev" onclick="plusSlidesDesigning(-1)">&#10094;</a>
             <a class="next" onclick="plusSlidesDesigning(1)">&#10095;</a>
 
@@ -412,17 +365,10 @@
 
         <!-- The dots/circles -->
         <div style="text-align:center">
-            <span class="dot2" onclick="currentSlideDesigning(1)"></span>
-            <span class="dot2" onclick="currentSlideDesigning(2)"></span>
-            <span class="dot2" onclick="currentSlideDesigning(3)"></span>
-            <span class="dot2" onclick="currentSlideDesigning(4)"></span>
-            <span class="dot2" onclick="currentSlideDesigning(5)"></span>
-            <span class="dot2" onclick="currentSlideDesigning(6)"></span>
-            <span class="dot2" onclick="currentSlideDesigning(7)"></span>
-            <span class="dot2" onclick="currentSlideDesigning(8)"></span>
-            <span class="dot2" onclick="currentSlideDesigning(9)"></span>
-            <span class="dot2" onclick="currentSlideDesigning(10)"></span>
-
+            @for (var i = 1; i < filesBase64.Count + 2; i++)
+            {
+                <span class="dot2" onclick="currentSlideDesigning(i)"></span>
+            }
         </div>
         <script>
             var slideIndex = 1;
@@ -463,22 +409,54 @@
     <div class="create-work-block" id="another">
         <div class="article">
             <textarea class="article-text" @bind="editItem.TextBlockOne" placeholder="Добавьте текст..."></textarea>
-            <img src="images/image_placeholder.jpg" width="400">
+            @if(imageOne == null)
+            {
+                <label for="file-input1">
+                    <img src="images/image_placeholder.jpg" width="400">
+                </label>
+                <InputFile id="file-input1" type="file" name="file1" OnChange="OnChangeFirst" accept="image/jpeg, image/png, image/gif" style="display:none;" />
+            }
+            else
+            {
+                <img src="data:@imageOne.contentType;base64,@imageOne.base64data">
+
+            }
         </div>
         <div class="article">
-            <img src="images/image_placeholder.jpg" width="400">
+            @if (imageTwo == null)
+            {
+                <label for="file-input2">
+                    <img src="images/image_placeholder.jpg" width="400">
+                </label>
+                <InputFile id="file-input2" type="file" name="file2" OnChange="OnChangeSecond" accept="image/jpeg, image/png, image/gif" style="display:none;" />
+            }
+            else
+            {
+                <img src="data:@imageTwo.contentType;base64,@imageTwo.base64data">
+
+            }
             <textarea class="article-text" @bind="editItem.TextBlockTwo" placeholder="Добавьте текст..."></textarea>
 
         </div>
         <div class="article">
             <textarea class="article-text" @bind="editItem.TextBlockThree" placeholder="Добавьте текст..."></textarea>
-            <img src="images/image_placeholder.jpg" width="400">
+            @if (imageThree == null)
+            {
+                <label for="file-input3">
+                    <img src="images/image_placeholder.jpg" width="400">
+                </label>
+                <InputFile id="file-input3" type="file" name="file3" OnChange="OnChangeThird" accept="image/jpeg, image/png, image/gif" style="display:none;" />
+            }
+            else
+            {
+                <img src="data:@imageThree.contentType;base64,@imageThree.base64data">
+            }
         </div>
     </div>
 
 </section>
-<input class="typeOfWorkInput" @onchange="InputType" id="type" name="type"></input>
-<input class="categoryOfWorkInput" @onchange="InputCategory" id="category" name="category"></input>
+<input class="typeOfWorkInput" type="hidden" @onchange="InputType" id="type" name="type"></input>
+<input class="categoryOfWorkInput" type="hidden" @onchange="InputCategory" id="category" name="category"></input>
 <input class="tbTwoInput" type="hidden" @onchange="InputCode" id="tbtwo" name="tbtwo" />
 <script>
     let dots = document.querySelectorAll('.layout-link');
@@ -685,7 +663,7 @@
     async Task OnChangeAny(InputFileChangeEventArgs e)
     {
         var file = e.File;
-        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480); //resize the image
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 1920, 1080); //resize the image
         var buf = new byte[resizedFile.Size];
         using (var stream = resizedFile.OpenReadStream())
         {
@@ -697,7 +675,7 @@
     async Task OnChangeFirst(InputFileChangeEventArgs e)
     {
         var file = e.File;
-        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480); //resize the image
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 1920, 1080); //resize the image
         var buf = new byte[resizedFile.Size];
         using (var stream = resizedFile.OpenReadStream())
         {
@@ -709,7 +687,7 @@
     async Task OnChangeSecond(InputFileChangeEventArgs e)
     {
         var file = e.File;
-        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480); //resize the image
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 1920, 1080); //resize the image
         var buf = new byte[resizedFile.Size];
         using (var stream = resizedFile.OpenReadStream())
         {
@@ -721,7 +699,7 @@
     async Task OnChangeThird(InputFileChangeEventArgs e)
     {
         var file = e.File;
-        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480); //resize the image
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 1920, 1080); //resize the image
         var buf = new byte[resizedFile.Size];
         using (var stream = resizedFile.OpenReadStream())
         {

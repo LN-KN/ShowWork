@@ -1,4 +1,5 @@
 ﻿using ShowWork.DAL_MSSQL.Models;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace ShowWork.DAL_MSSQL
@@ -108,12 +109,24 @@ namespace ShowWork.DAL_MSSQL
             return await DbHelper.QueryScalarAsync<int>(sql, model);
         }
 
+        public async Task<IEnumerable<ImageModel>> GetImages(WorkModel model)
+        {
+            string sql = @"SELECT * FROM [Image] WHERE WorkId = @WorkId";
+            return await DbHelper.QueryAsync<ImageModel>(sql, model);
+        }
+
         public async Task<int> AddTag(TagModel model)
         {
             string sql = @"insert into Tag (WorkId, Title)
                     values (@WorkId, @Title);
                     SELECT TagId AS LastID FROM [Tag] WHERE TagId = @@Identity;";
             return await DbHelper.QueryScalarAsync<int>(sql, model);
+        }
+
+        public async Task<IEnumerable<TagModel>> GetTags(WorkModel model)
+        {
+            string sql = @"SELECT * FROM [Tag] WHERE WorkId = @WorkId";
+            return await DbHelper.QueryAsync<TagModel> (sql, model);
         }
 
         public async Task<int> UploadFile(FileModel model)
@@ -123,5 +136,13 @@ namespace ShowWork.DAL_MSSQL
                     SELECT FileId AS LastID FROM [Files] WHERE FileId = @@Identity;";
             return await DbHelper.QueryScalarAsync<int>(sql, model);
         }
+
+        public async Task<FileModel> GetFile(WorkModel model)
+        {
+            string sql = @"SELECT * FROM [Files] WHERE WorkId = @WorkId";
+            return await DbHelper.QueryScalarAsync<FileModel>(sql, model);
+        }
+
+
     }
 }
