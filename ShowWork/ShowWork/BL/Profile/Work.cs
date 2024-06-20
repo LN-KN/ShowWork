@@ -41,5 +41,10 @@ namespace ShowWork.BL.Profile
         {
             return workDAL.UploadFile(model);
         }
+
+        public Task<int> AddImageToWork(WorkModel model)
+        {
+            return workDAL.AddImageToWork(model);
+        }
     }
 }

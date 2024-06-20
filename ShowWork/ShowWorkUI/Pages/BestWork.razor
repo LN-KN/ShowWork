@@ -37,7 +37,16 @@ else
             <p class="portfolio-name">@work.Title</p>
             <p class="rating">@work.MiddleGrade</p>
         </div>
-        <a href="/work/@work.WorkId"> <img src="/images/image 7.png" width="700" height="400" /></a>
+        <a href="/work/@work.WorkId"> 
+           @if (work.ImagePath != null)
+           {
+               <img src="@work.ImagePath" width="700" height="400" />
+           }
+           else
+           {
+               <img src="/images/image 7.png" width="700" height="400" />
+           }
+         </a>
     </div>
     </div>
 }

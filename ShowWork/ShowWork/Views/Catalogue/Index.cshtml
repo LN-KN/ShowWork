@@ -75,7 +75,16 @@
                                     <p class="rating">@work.MiddleGrade</p>
                                 </div>
                             </div>
-                            <a href="/work/@work.WorkId"> <img src="/images/image 7.png" /></a>
+                            <a href="/work/@work.WorkId">
+                                @if (work.ImagePath != null)
+                                {
+                                    <img class="work-image" src="@work.ImagePath" />
+                                }
+                                else
+                                {
+                                    <img src="/images/image 7.png" />
+                                }
+                            </a>
                         </div>
                     }
                 }

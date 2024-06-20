@@ -322,28 +322,30 @@
             @if(Model.Item5.Count() != 0)
             {
                 <div id="photos" class="photos">
-                    <div>
-                        <label for="file-input1">
+                    <div class="photosGrid">
+                        <label for="file-input1" class="horizontal-image">
                             @if (Model.Item5.ToList()[0] != null)
                             {
                                 <img src="@Model.Item5.ToList()[0].Image">
                             }
                         </label>
-                        <label for="file-input2">
+                        <label for="file-input2" class="horizontal-image">
                             @if (Model.Item5.ToList()[1] != null)
                             {
                                 <img src="@Model.Item5.ToList()[1].Image">
                             }
                         </label>
-                    </div>
-                    <label class="vertical" for="file-input3">
-                        @if (Model.Item5.ToList()[2] != null)
-                        {
-                            <img src="@Model.Item5.ToList()[2].Image">
-                        }
-                    </label>
-                    }
 
+                    </div>
+
+                    <div class="verticalGrid">
+                        <label class="vertical vertical-image">
+                            @if (Model.Item5.ToList()[2] != null)
+                            {
+                                <img src="@Model.Item5.ToList()[2].Image">
+                            }
+                        </label>
+                    </div>
                 </div>
             }
         }
@@ -352,22 +354,22 @@
             <p class="addtext-development">@Model.Item1.TextBlockOne</p>
             @if (Model.Item5.Count() != 0)
             {
-                <div class="slideshow-container2">
+                <div class="slideshow-container3">
                     @foreach (var image in Model.Item5)
                     {
                         <div class="mySlides2 fade">
                             <img src="@image.Image" style="width:1000px">
                         </div>
                     }
-                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                    <a class="prev" onclick="plusSlidesDesigning(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlidesDesigning(1)">&#10095;</a>
                 </div>
                 <br>
                  <!-- The dots/circles -->
                  <div style="text-align:center">
                      @for (var i = 1; i < Model.Item5.Count() + 1; i++)
                      {
-                         <span class="dot2" onclick="currentSlide(i)"></span>
+                        <span class="dot2" onclick="currentSlideDesigning(i)"></span>
                      }
                  </div>
 
@@ -415,7 +417,7 @@
                     <p class="article-text">@Model.Item1.TextBlockOne</p>
                     @if (Model.Item5.Count() != 0 && Model.Item5.ToList()[0] != null)
                     {
-                        <img src="@Model.Item5.ToList()[0].Image">
+                        <img src="@Model.Item5.ToList()[0].Image" width="388" height="219">
                     }
                 </div>
             }
@@ -424,7 +426,7 @@
                 <div class="article">
                     @if (Model.Item5.Count() != 0 && Model.Item5.ToList()[1] != null)
                     {
-                        <img src="@Model.Item5.ToList()[1].Image">
+                        <img src="@Model.Item5.ToList()[1].Image" width="388" height="219">
                     }
                     <p class="article-text">@Model.Item1.TextBlockTwo</p>
                 </div>
@@ -435,7 +437,7 @@
                     <p class="article-text">@Model.Item1.TextBlockThree</p>
                     @if (Model.Item5.Count() != 0 && Model.Item5.ToList()[2] != null)
                     {
-                        <img src="@Model.Item5.ToList()[2].Image">
+                        <img src="@Model.Item5.ToList()[2].Image" width="388" height="219">
                     }
                 </div>
             }

@@ -29,7 +29,7 @@
         public double MiddleGrade { get; set; }
         public DateTime Published { get; set; }
 
-        public string ImagePath { get; set; }
+        public string? ImagePath { get; set; }
 
     }
 }

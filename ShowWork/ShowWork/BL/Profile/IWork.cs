@@ -10,5 +10,6 @@ namespace ShowWork.BL.Profile
         Task<int> UploadImage(ImageModel model);
         Task<int> UploadFile(FileModel model);
         Task<int> AddTag(TagModel model);
+        Task<int> AddImageToWork(WorkModel model);
     }
 }

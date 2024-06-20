@@ -28,27 +28,58 @@
 
 </head>
 @await Component.InvokeAsync("MainMenu")
-<body class="profile-background">
-    <form method="post" action="/follows/search">
-        <input class="form-control" asp-for="@Model.Text" id="TextSearchInput" placeholder="Введите текст для поиска" width="800px" height="50px" />
-        <button id="ApplyTextSearchButton" height="50px">Поиск</button>
-    </form>
-    <br />
-    <br />
-    @foreach (var profile in Model.Profiles)
-    {
-        <div class="profile-section">
-            @if (!String.IsNullOrEmpty(@profile.ImagePath))
-            {
-                <a href="/resume/@profile.UserId"><img src="@profile.ImagePath" /></a>
-            }
-            else
-            {
-                <a href="/resume/@profile.UserId"><img src="images/inputImage.svg" /></a>
-            }
-            <h1>@profile.Login</h1>
-            <h2>@profile.FirstName @profile.LastName</h2>
-            @* <button></button> *@
+<body class="users">
+    <section class="search">
+        <form method="post" action="/follows/search">
+            <input class="form-control searchbar" asp-for="@Model.Text" id="TextSearchInput" placeholder="Поиск..."/>
+        </form>
+    </section>
+    <section class="subscriptions">
+        @foreach (var profile in Model.Profiles)
+        {
+            <div class="one-subscription">
+                <div>
+                    @if (!String.IsNullOrEmpty(@profile.ImagePath))
+                    {
+                        <a href="/resume/@profile.UserId"><img src="@profile.ImagePath" width="70" height="70"/></a>
+                    }
+                    else
+                    {
+                        <a href="/resume/@profile.UserId"><img src="images/inputImage.svg" width="70" height="70"/></a>
+                    }
+                </div>
+                <div class="names">
+                    <p class="sub-nick">@profile.Login</p>
+                    <p class="sub-name">@profile.FirstName @profile.LastName</p>
+                </div>
+                <div>
+                    <p><img src="/images/work-icon.svg">@profile.Specialization</p>
+                    <p><img src="/images/info-icon.svg">@profile.Description</p>
+                </div>
+            </div>
+        }
+        <div class="button">
+            <button class="more-work_button">
+                ЕЩЁ
+            </button>
         </div>
-    }
+    </section>
+    <footer>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="mainLogo2">
+            <img src="/images/logo.png">
+        </div>
+        <p class="bottom-slogan">
+            Show Work - Ваш путь к вдохновению и успеху в цифровом мире!
+        </p>
+        <div class="bottom-links">
+            <a href="index.html">Главная</a>
+            <a href="#">Каталог</a>
+            <a href="#">Мои подписки</a>
+        </div>
+    </footer>
 </body>

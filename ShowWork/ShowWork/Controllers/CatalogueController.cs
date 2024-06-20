@@ -60,7 +60,7 @@ namespace ShowWork.Controllers
                         CategoryOfWork = m.CategoryOfWork,
                         UserId = m.UserId,
                         WorkId = m.WorkId,
-
+                        ImagePath = m.ImagePath,
                         Published = m.Published,
                         UserName = p.FirstName,
                         UserSurname = p.SecondName,
@@ -118,7 +118,7 @@ namespace ShowWork.Controllers
                         CategoryOfWork = m.CategoryOfWork,
                         UserId = m.UserId,
                         WorkId = m.WorkId,
-
+                        ImagePath = m.ImagePath,
                         Published = m.Published,
                         UserName = p.FirstName,
                         UserSurname = p.SecondName,
@@ -213,7 +213,7 @@ namespace ShowWork.Controllers
                             CategoryOfWork = m.CategoryOfWork,
                             UserId = m.UserId,
                             WorkId = m.WorkId,
-
+                            ImagePath = m.ImagePath,
                             Published = m.Published,
                             UserName = p.FirstName,
                             UserSurname = p.SecondName,

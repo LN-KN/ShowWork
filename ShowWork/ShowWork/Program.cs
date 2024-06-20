@@ -15,6 +15,19 @@ namespace ShowWork
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // Add CORS policy
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
+
+
             builder.Services.AddScoped<IAuth, Auth>();
             builder.Services.AddSingleton<IEncrypt, Encrypt>();
             builder.Services.AddScoped<ICurrentUser, CurrentUser>(); //Scoped потому что юзеры разные, синглтон для одинаковых данных
@@ -41,11 +54,14 @@ namespace ShowWork
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-                app.UseWebAssemblyDebugging();
+                //app.UseWebAssemblyDebugging();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            // Use CORS middleware
+            app.UseCors("AllowAllOrigins");
 
             app.UseRouting();
 

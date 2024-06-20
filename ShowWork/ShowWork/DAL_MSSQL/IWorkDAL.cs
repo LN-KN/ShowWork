@@ -13,6 +13,7 @@ namespace ShowWork.DAL_MSSQL
         Task<IEnumerable<WorkModel>> GetWorksByUserId(int userId);
 
         Task<int> AddUserWork(WorkModel model);
+        Task<int> AddImageToWork(WorkModel model);
 
         Task<int> AddTagToCurrentWork(WorkModel model);
         Task<WorkModel> GetWorkByWorkId(int WorkId);

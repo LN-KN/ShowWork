@@ -41,11 +41,20 @@ else
                             <p class="rating">@works[i].MiddleGrade</p>
                         </div>
                     </div>
-                     <a href="/work/@works[i].WorkId"> <img src="/images/image 7.png" /></a>
+                     <a href="/work/@works[i].WorkId">
+                         @if (works[i].ImagePath != null)
+                         {
+                             <img class="work-image" src="@works[i].ImagePath" />
+                         }
+                         else
+                         {
+                             <img src="/images/image 7.png" />
+                         }
+                     </a>
                 </div>
             }
         }
-        @for (var i = 6; i < works.Count; i++)
+        @for (var i = works.Count - ADD_MORE_COUNT; i < works.Count; i++)
         {
             if (works[i].TypeOfWork >= 0 && works[i].TypeOfWork < categoryNames.Length)
             {
@@ -67,7 +76,16 @@ else
                             <p class="rating">@works[i].MiddleGrade</p>
                         </div>
                     </div>
-                    <a href="/work/@works[i].WorkId"> <img src="/images/image 7.png" /></a>
+                    <a href="/work/@works[i].WorkId">
+                        @if (works[i].ImagePath != null)
+                        {
+                             <img class="work-image" src="@works[i].ImagePath" />
+                        }
+                        else
+                        {
+                            <img src="/images/image 7.png" />
+                        }
+                    </a>
                 </div>
             }
         }
@@ -92,7 +110,7 @@ else
 }
 
 @code {
-    const int ADD_MORE_COUNT = 4;
+    int ADD_MORE_COUNT = 0;
     internal static List<Work>? works = null;
     private string[] categoryNames = new string[]
     {
@@ -110,6 +128,13 @@ else
         var result = await Http.GetFromJsonAsync<List<Work>>("works/all");
         if (result != null)
             works = result.ToList();
+        ADD_MORE_COUNT = works.Count() - 6;
+        if(ADD_MORE_COUNT < 0)
+            ADD_MORE_COUNT = works.Count() - 4;
+        if (ADD_MORE_COUNT < 0)
+            ADD_MORE_COUNT = works.Count() - 2;
+        if (ADD_MORE_COUNT < 0)
+            ADD_MORE_COUNT = 0;
     }
 
     public class Work
@@ -128,7 +153,7 @@ else
         public string TextBlockOne { get; set; } = null!;
         public string TextBlockTwo { get; set; } = null!;
         public string TextBlockThree { get; set; } = null!;
-        public string ImagePath { get; set; }
+        public string? ImagePath { get; set; }
         public int Status { get; set; } = 0;
         public int LikesCount { get; set; } = 0;
         public int CommentsCount { get; set; } = 0;

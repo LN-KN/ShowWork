@@ -46,7 +46,7 @@ namespace ShowWork.Controllers
                 PatternOfWork = m.PatternOfWork,
                 UserId = m.UserId,
                 WorkId = m.WorkId,
-
+                ImagePath = m.ImagePath,
                 UserName = user.FirstName,
                 UserSurname = user.SecondName,
                 UserImagePath = user.ProfileImage,
@@ -83,7 +83,7 @@ namespace ShowWork.Controllers
                         PatternOfWork = m.PatternOfWork,
                         UserId = m.UserId,
                         WorkId = m.WorkId,
-
+                        ImagePath = m.ImagePath,
                         UserName = p.FirstName,
                         UserSurname = p.SecondName,
                         UserImagePath = p.ProfileImage,
@@ -126,7 +126,7 @@ namespace ShowWork.Controllers
                         PatternOfWork = m.PatternOfWork,
                         UserId = m.UserId,
                         WorkId = m.WorkId,
-
+                        ImagePath = m.ImagePath,
                         UserName = p.FirstName,
                         UserSurname = p.SecondName,
                         UserImagePath = p.ProfileImage,
@@ -171,7 +171,7 @@ namespace ShowWork.Controllers
                     PatternOfWork = bestWork.PatternOfWork,
                     UserId = bestWork.UserId,
                     WorkId = bestWork.WorkId,
-
+                    ImagePath = bestWork.ImagePath,
                     UserName = u.FirstName,
                     UserSurname = u.SecondName,
                     UserImagePath = u.ProfileImage,
@@ -200,7 +200,8 @@ namespace ShowWork.Controllers
                 CategoryOfWork = m.CategoryOfWork,
                 PatternOfWork = m.PatternOfWork,
                 UserId = m.UserId,
-                WorkId = m.WorkId
+                WorkId = m.WorkId,
+                ImagePath = m.ImagePath,
 
             }));
         }
@@ -213,12 +214,15 @@ namespace ShowWork.Controllers
             profileWorkModel.UserId= p.FirstOrDefault()?.UserId ?? 0;
             profileWorkModel.Published = DateTime.Today;
             await profile.AddProfileWork(profileWorkModel);
-            return Redirect("/profile");
+            return Ok();
         }
 
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] ImageFile[] files)
         {
+            var p = await currentUser.GetProfiles();
+            var works = await profile.GetProfileWorks(p.FirstOrDefault()?.UserId ?? 0);
+            var currentWork = works.Where(x=>x.WorkId == files[0].WorkId).FirstOrDefault();
             foreach (var file in files)
             {
                 WebFile webFile = new WebFile();
@@ -228,39 +232,54 @@ namespace ShowWork.Controllers
                 ImageModel imageModel = new ImageModel();
                 imageModel.Image = fileName;
                 imageModel.WorkId = file.WorkId;
+                currentWork.ImagePath = fileName;
                 await work.UploadImage(imageModel);
             }
-            return Ok();
+            await work.AddImageToWork(currentWork!);
+            return View();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Putfile(IFormFile file)
+        [HttpPut("works/putfile")]
+        public async Task<IActionResult> Putfile([FromForm] IFormFile file)
         {
-            if (file == null || file.Length == 0)
+            try
             {
-                return BadRequest("Invalid file.");
+                if (file == null || file.Length == 0)
+                {
+                    Console.WriteLine("Invalid file.");
+                    return BadRequest("Invalid file.");
+                }
+
+                var p = await currentUser.GetProfiles();
+                var works = await profile.GetProfileWorks(p.FirstOrDefault()?.UserId ?? 0);
+
+                WebFile webFile = new WebFile();
+                string fileName = webFile.GetFileName(file.FileName);
+
+                using (var stream = file.OpenReadStream())
+                {
+                    webFile.UploadFile(stream, fileName);
+                }
+
+                FileModel fileModel = new FileModel
+                {
+                    FilePath = fileName,
+                    WorkId = works.OrderByDescending(x => x.WorkId).FirstOrDefault()?.WorkId ?? 0
+                };
+
+                await work.UploadFile(fileModel);
+                Console.WriteLine("File uploaded successfully.");
+                return Ok();
+
             }
-
-            var p = await currentUser.GetProfiles();
-            var works = await profile.GetProfileWorks(p.FirstOrDefault()?.UserId ?? 0);
-
-            WebFile webFile = new WebFile();
-            string fileName = webFile.GetFileName(file.FileName);
-
-            using (var stream = file.OpenReadStream())
+            catch (Exception ex)
             {
-                webFile.UploadFile(stream, fileName);
+                // Log the exception
+                Console.WriteLine($"Error in Putfile: {ex.Message}");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-
-            FileModel fileModel = new FileModel
-            {
-                FilePath = fileName,
-                WorkId = works.OrderByDescending(x => x.WorkId).FirstOrDefault()?.WorkId ?? 0
-            };
-
-            await work.UploadFile(fileModel);
-            return Ok();
         }
+
 
 
         [HttpPut]
@@ -271,7 +290,7 @@ namespace ShowWork.Controllers
                 tag.Title = tag.Title.Replace(" ", "");
                 await work.AddTag(tag);
             }
-            return Ok();
+            return View();
         }
 
         [Route("works/search/{search}")]

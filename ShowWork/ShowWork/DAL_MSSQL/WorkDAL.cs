@@ -83,6 +83,15 @@ namespace ShowWork.DAL_MSSQL
             return await DbHelper.QueryScalarAsync<int>(sql, model);
         }
 
+        public async Task<int> AddImageToWork(WorkModel model)
+        {
+            string sql = @"UPDATE [Work]
+                           set ImagePath = @ImagePath
+                           where WorkId = @WorkId;
+                           SELECT WorkId AS LastID FROM [Work] WHERE WorkId = @WorkId;";
+            return await DbHelper.QueryScalarAsync<int>(sql, model);
+        }
+
         public async Task<int> AddTagToCurrentWork(WorkModel model)
         {
            string[] categoryNames = new string[]
@@ -143,6 +152,6 @@ namespace ShowWork.DAL_MSSQL
             return await DbHelper.QueryScalarAsync<FileModel>(sql, model);
         }
 
-
+        
     }
 }

@@ -50,7 +50,7 @@
 </section>
 <section class="tab-work-content">
     <div class="create-work-block" id="analytics">
-        <textarea class="addtext-analytics" @bind="editItem.TextBlockOne" oninput="autoResize(this)" rows="5" placeholder="Добавьте текст..."></textarea>
+        <textarea class="addtext-analytics" @bind="editItem.TextBlockOne" oninput="autoResizeAnalytics(this)" rows="5" placeholder="Добавьте текст..."></textarea>
 
         <div class="slideshow-container">
             <!-- Full-width images with number and caption text -->
@@ -115,7 +115,7 @@
                 slides[slideIndex - 1].style.display = "block";
                 dots[slideIndex - 1].className += " active";
             }
-            function autoResize(elem) {
+            function autoResizeAnalytics(elem) {
                 elem.style.height = '100';
                 elem.style.height = (elem.scrollHeight + 10) + 'px';
             }
@@ -169,7 +169,7 @@
             {
                 <p>@devFile.fileName</p>
             }
-            <InputFile id="file-input-file" type="file" name="file-input-file" OnChange="LoadFile" style="display:none;" />
+            <InputFile id="file-input-file" class="file-input-file" type="file" name="file-input-file" OnChange="LoadFile" style="display:none;" />
         </div>
          
         <div class="slideshow-container2">
@@ -206,7 +206,7 @@
         <script>
             var slideIndex = 1;
             showSlides(slideIndex);
-
+            var inputFile = document.getElementsByClassName("file-input-file");
             // Next/previous controls
             function plusSlides(n) {
                 showSlides(slideIndex += n);
@@ -298,7 +298,7 @@
             else
             {
                 <div>
-                    <label for="file-input1">
+                    <label for="file-input1" class="horizontal-image">
                         @if (imageOne != null)
                         {
                             <img src="data:@imageOne.contentType;base64,@imageOne.base64data">
@@ -309,7 +309,7 @@
                         }
                     </label>
                     <InputFile id="file-input1" type="file" name="file1" OnChange="OnChangeFirst" accept="image/jpeg, image/png, image/gif" style="display:none;" />
-                    <label for="file-input2">
+                    <label for="file-input2" class="horizontal-image">
                         @if (imageTwo != null)
                         {
                             <img src="data:@imageTwo.contentType;base64,@imageTwo.base64data">
@@ -322,7 +322,7 @@
                     <InputFile id="file-input2" type="file" name="file2" OnChange="OnChangeSecond" accept="image/jpeg, image/png, image/gif" style="display:none;" />
 
                 </div>
-                <label class="vertical" for="file-input3">
+                <label class="vertical vertical-image" for="file-input3">
                     @if (imageThree != null)
                     {
                         <img src="data:@imageThree.contentType;base64,@imageThree.base64data">
@@ -412,13 +412,13 @@
             @if(imageOne == null)
             {
                 <label for="file-input1">
-                    <img src="images/image_placeholder.jpg" width="400">
+                    <img src="images/image_placeholder.jpg" width="388" height="219">
                 </label>
                 <InputFile id="file-input1" type="file" name="file1" OnChange="OnChangeFirst" accept="image/jpeg, image/png, image/gif" style="display:none;" />
             }
             else
             {
-                <img src="data:@imageOne.contentType;base64,@imageOne.base64data">
+                <img src="data:@imageOne.contentType;base64,@imageOne.base64data" width="388" height="219">
 
             }
         </div>
@@ -426,13 +426,13 @@
             @if (imageTwo == null)
             {
                 <label for="file-input2">
-                    <img src="images/image_placeholder.jpg" width="400">
+                    <img src="images/image_placeholder.jpg" width="388" height="219">
                 </label>
                 <InputFile id="file-input2" type="file" name="file2" OnChange="OnChangeSecond" accept="image/jpeg, image/png, image/gif" style="display:none;" />
             }
             else
             {
-                <img src="data:@imageTwo.contentType;base64,@imageTwo.base64data">
+                <img src="data:@imageTwo.contentType;base64,@imageTwo.base64data" width="388" height="219">
 
             }
             <textarea class="article-text" @bind="editItem.TextBlockTwo" placeholder="Добавьте текст..."></textarea>
@@ -443,13 +443,13 @@
             @if (imageThree == null)
             {
                 <label for="file-input3">
-                    <img src="images/image_placeholder.jpg" width="400">
+                    <img src="images/image_placeholder.jpg" width="388" height="219">
                 </label>
                 <InputFile id="file-input3" type="file" name="file3" OnChange="OnChangeThird" accept="image/jpeg, image/png, image/gif" style="display:none;" />
             }
             else
             {
-                <img src="data:@imageThree.contentType;base64,@imageThree.base64data">
+                <img src="data:@imageThree.contentType;base64,@imageThree.base64data" width="388" height="219">
             }
         </div>
     </div>
@@ -559,14 +559,14 @@
 
     private async Task SaveItem()
     {
-        if((editItem.Title != "" 
-           && editItem.Description !=""
-           && categoryOfWork != ""
-           && patternOfWork !="")
-           && (editItem.Title != null
-           && categoryOfWork != null
-           && patternOfWork != null
-           && editItem.Description != null))
+        if (!string.IsNullOrEmpty(editItem.Title) &&
+            !string.IsNullOrEmpty(editItem.Description) &&
+            !string.IsNullOrEmpty(categoryOfWork) &&
+            !string.IsNullOrEmpty(patternOfWork) &&
+            editItem.Title != null &&
+            categoryOfWork != null &&
+            patternOfWork != null &&
+            editItem.Description != null)
         {
             IsCompleted = true;
         }
@@ -574,47 +574,96 @@
         {
             IsCompleted = false;
         }
+
         if (IsCompleted)
         {
             editItem.CategoryOfWork = int.Parse(categoryOfWork);
             editItem.Published = DateTime.Now;
             editItem.PatternOfWork = int.Parse(patternOfWork);
             if (int.Parse(patternOfWork) == 1) editItem.TextBlockTwo = tbCode;
-            await Http.PutAsJsonAsync<Work>("works/add", editItem);
-            if (int.Parse(patternOfWork) == 1)
+            try
             {
-                var fileContent = new StreamContent(browserDevFile.OpenReadStream());
-                fileContent.Headers.ContentType = new MediaTypeHeaderValue(browserDevFile.ContentType);
-                var content = new MultipartFormDataContent();
-                content.Add(fileContent, "file", browserDevFile.Name);
-                await Http.PutAsync("works/putfile", content);
-            } 
-            works?.Add(editItem);
-            Console.WriteLine(editItem.PatternOfWork);
-            
-            await UploadImages();
-            await AddTags();
+                await Http.PutAsJsonAsync<Work>("works/add", editItem);
+                Console.WriteLine("work added");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding work: {ex.Message}");
+                return; // Exit the method if adding work fails
+            }
+
+            if (int.Parse(patternOfWork) == 1 && browserDevFile != null)
+            {
+                try
+                {
+                    var fileContent = new StreamContent(browserDevFile.OpenReadStream());
+                    fileContent.Headers.ContentType = new MediaTypeHeaderValue(browserDevFile.ContentType);
+                    var content = new MultipartFormDataContent();
+                    content.Add(fileContent, "file", browserDevFile.Name);
+                    Console.WriteLine("file before added");
+
+                    var response = await Http.PutAsync("works/putfile", content);
+                    response.EnsureSuccessStatusCode(); // Throws if not a success code.
+
+                    Console.WriteLine("file added");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error uploading file: {ex.Message}");
+                    return; // Exit the method if uploading file fails
+                }
+            }
+
+            try
+            {
+                await UploadImages();
+                Console.WriteLine("image added");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error uploading images: {ex.Message}");
+                return; // Exit the method if uploading images fails
+            }
+
+            try
+            {
+                await AddTags();
+                Console.WriteLine("tags added");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding tags: {ex.Message}");
+                return; // Exit the method if adding tags fails
+            }
+
             editItem = new Work();
-            await OnInitializedAsync();
             NavigationManager.NavigateTo("/profile", true);
         }
-
     }
+
     async Task UploadImages()
-    {   
-        if(imageOne != null 
-           || imageTwo != null
-           || imageThree != null
-           || filesBase64.Count > 0)
+    {
+        if (imageOne != null || imageTwo != null || imageThree != null || filesBase64.Count > 0)
         {
-            if (filesBase64.Count == 0) filesBase64.AddRange(new List<ImageFile>() { imageOne, imageTwo, imageThree });
+            if (filesBase64.Count == 0) filesBase64.AddRange(new List<ImageFile> { imageOne, imageTwo, imageThree });
             var works = await Http.GetFromJsonAsync<List<Work>>("works/my");
-            var id = works.OrderByDescending(x=>x.WorkId).First().WorkId;
+            var id = works.OrderByDescending(x => x.WorkId).First().WorkId;
             foreach (var file in filesBase64)
             {
                 file.WorkId = id;
             }
-            await Http.PutAsJsonAsync<List<ImageFile>>("works/put", filesBase64);
+
+            try
+            {
+                await Http.PutAsJsonAsync("works/put", filesBase64);
+                Console.WriteLine("images uploaded successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error uploading images: {ex.Message}");
+                throw; // Rethrow the exception to be caught in the SaveItem method
+            }
+
             filesBase64 = new List<ImageFile>();
             imageOne = null;
             imageTwo = null;
@@ -627,20 +676,30 @@
         var works = await Http.GetFromJsonAsync<List<Work>>("works/my");
         var id = works.OrderByDescending(x => x.WorkId).First().WorkId;
         List<string> Tags = tags.Split('#').ToList();
-        Tags.RemoveAll(x => String.IsNullOrEmpty(x));
+        Tags.RemoveAll(x => string.IsNullOrEmpty(x));
         List<TagModel> tagModels = new List<TagModel>();
-        if(Tags.Count > 0)
+
+        if (Tags.Count > 0)
         {
             foreach (var tag in Tags)
             {
-                tag.Trim();
-                tagModels.Add(new TagModel()
+                tagModels.Add(new TagModel
                     {
                         WorkId = id,
-                        Title = tag
+                        Title = tag.Trim()
                     });
             }
-            await Http.PutAsJsonAsync<List<TagModel>>("works/addtags", tagModels);
+
+            try
+            {
+                await Http.PutAsJsonAsync("works/addtags", tagModels);
+                Console.WriteLine("tags added successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding tags: {ex.Message}");
+                throw; // Rethrow the exception to be caught in the SaveItem method
+            }
         }
     }
 
@@ -663,7 +722,7 @@
     async Task OnChangeAny(InputFileChangeEventArgs e)
     {
         var file = e.File;
-        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 1920, 1080); //resize the image
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 1366, 768); //resize the image
         var buf = new byte[resizedFile.Size];
         using (var stream = resizedFile.OpenReadStream())
         {
@@ -675,7 +734,7 @@
     async Task OnChangeFirst(InputFileChangeEventArgs e)
     {
         var file = e.File;
-        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 1920, 1080); //resize the image
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 1366, 768); //resize the image
         var buf = new byte[resizedFile.Size];
         using (var stream = resizedFile.OpenReadStream())
         {
@@ -687,7 +746,7 @@
     async Task OnChangeSecond(InputFileChangeEventArgs e)
     {
         var file = e.File;
-        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 1920, 1080); //resize the image
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 1366, 768); //resize the image
         var buf = new byte[resizedFile.Size];
         using (var stream = resizedFile.OpenReadStream())
         {
@@ -699,7 +758,7 @@
     async Task OnChangeThird(InputFileChangeEventArgs e)
     {
         var file = e.File;
-        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 1920, 1080); //resize the image
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 1366, 768); //resize the image
         var buf = new byte[resizedFile.Size];
         using (var stream = resizedFile.OpenReadStream())
         {

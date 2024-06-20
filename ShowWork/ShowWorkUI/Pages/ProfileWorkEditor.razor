@@ -16,7 +16,7 @@ else
                      <!-- ПЕРВАЯ РАБОТА -->
                      <div class="work create-work" @onclick="RedirectToEdit">
                          <a>
-                            <div class="create-work-block">
+                            <div class="create-work-block-profile">
                                 <img src="images/new-work.svg">
                                 <h3>Создать работу</h3>
                                 <img src="images/new-work-arrow.svg">
@@ -41,7 +41,16 @@ else
                             <p class="rating">@Math.Round(work.MiddleGrade,2)</p>
                         </div>
                     </div>
-                    <a href="/work/@work.WorkId"> <img src="/images/image 7.png" /></a>
+                    <a href="/work/@work.WorkId"> 
+                        @if(work.ImagePath != null)
+                        {
+                            <img class="work-image" src="@work.ImagePath" />
+                        }
+                        else
+                        {
+                            <img src="/images/image 7.png" />
+                        }
+                    </a>
                 </div>
             }
         }
@@ -87,7 +96,7 @@ else
         public string TextBlockOne { get; set; } = null!;
         public string TextBlockTwo { get; set; } = null!;
         public string TextBlockThree { get; set; } = null!;
-        public string ImagePath { get; set; }
+        public string? ImagePath { get; set; }
         public int Status { get; set; } = 0;
         public int LikesCount { get; set; } = 0;
         public int CommentsCount { get; set; } = 0;
