@@ -53,6 +53,11 @@ ShowWork - это веб-приложение, которое позволяет
   <img width="12" />
 </div>
 
+##Команда
+| Тимлид-аналитик | Backend-Разработчик | Frontend-Разработчик | Дизайнер |
+| :---: | :---: | :---: | :---: |
+| [Кравцова Вероника](https://vk.com/id320997741) | [Беликов Никита](https://vk.com/holo2k) | [Истомина Алиса](https://vk.com/a.d.alison) | [Маркина Ксения](https://vk.com/markinnaa) |
+
 ## Ссылки
 
 [Репозиторий](https://github.com/LN-KN/ShowWork) &nbsp;&middot;&nbsp;
