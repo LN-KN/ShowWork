@@ -65,6 +65,6 @@ ShowWork - это веб-приложение, которое позволяет
 
 [Репозиторий](https://github.com/LN-KN/ShowWork) &nbsp;&middot;&nbsp;
 [Канбан-доска](https://yougile.com/board/fw7808n65ges) &nbsp;&middot;&nbsp;
-[Карточка проекта](https://project.ai-info.ru/sites/default/files/kartochka_proekta.pdf)
+[Карточка проекта](https://project.ai-info.ru/sites/default/files/kartochka_proekta.pdf) &nbsp;&middot;&nbsp;
 [Ссылка на сайт](https://a27956-9015.u.d-f.pw/home)
 
