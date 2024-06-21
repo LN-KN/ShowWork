@@ -1,14 +1,14 @@
 
 <h1 align="center">
   <br>
-  <a href="https://project.ai-info.ru/teams/lnkn"><img src="https://i.postimg.cc/DwTc9bD5/1.png" alt="ShowWork" width="200"></a>
+  <a href="https://a27956-9015.u.d-f.pw/home"><img src="https://i.postimg.cc/DwTc9bD5/1.png" alt="ShowWork" width="200"></a>
   <br>
   ShowWork
   <br>
 </h1>
 
 <h4 align="center">Веб-приложение для организации, хранения, публикации  материалов  конкретного пользователя.</h4>
-
+<h3 align="center" style="color:red;">Сайт прекратит работу 21.07.2024</h4>
 ![screenshot](https://i.postimg.cc/dQZmDBc4/showwork.png)
 
 ## Описание
@@ -63,4 +63,5 @@ ShowWork - это веб-приложение, которое позволяет
 [Репозиторий](https://github.com/LN-KN/ShowWork) &nbsp;&middot;&nbsp;
 [Канбан-доска](https://yougile.com/board/fw7808n65ges) &nbsp;&middot;&nbsp;
 [Карточка проекта](https://project.ai-info.ru/sites/default/files/kartochka_proekta.pdf)
+[Ссылка на сайт](https://a27956-9015.u.d-f.pw/home)
 
