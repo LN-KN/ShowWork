@@ -9,12 +9,11 @@
 
 <h4 align="center">Веб-приложение для организации, хранения, публикации  материалов  конкретного пользователя.</h4>
 <style type="text/css">
-h3 {color:red;}
+    h3 {color:red;}
 </style>
 
-<h3>
-    Сайт прекратит работу 21.07.2024
-</h3>
+> [!WARNING]
+> Сайт прекратит работу 21.07.2024
 
 ![screenshot](https://i.postimg.cc/dQZmDBc4/showwork.png)
 
