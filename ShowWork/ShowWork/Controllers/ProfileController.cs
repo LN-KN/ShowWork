@@ -161,6 +161,7 @@ namespace ShowWork.Controllers
             if (ModelState.IsValid)
             {
                 cookie.Delete(AuthConstants.SessionCookieName);
+                cookie.Delete("RememberMe");
             }
             return Redirect("/home");
         }

@@ -31,7 +31,11 @@ namespace ShowWork.Controllers
         [Route("/work/{WorkId}")]
         public async Task<IActionResult> Index(int WorkId)
         {
-
+            var currentUserId = await GetCurrentUserId();
+            if (currentUserId == null)
+            {
+                return Redirect("/register");
+            }
             var work = await workDAL.GetWorkByWorkId(WorkId);
             var comments = await commentDAL.FindCommentsByWorkId(WorkId);
             var answerComments = await commentDAL.FindAnswerCommentsByWorkId(WorkId);
@@ -66,7 +70,7 @@ namespace ShowWork.Controllers
                         ImagePath = profiles.Where(x => x.UserId == comment.UserId)?.FirstOrDefault().ProfileImage,
                         CommentId = comment.CommentId});
             }
-            var currentUserId = await GetCurrentUserId();
+            
             var ids = profiles.Select(x => x.UserId);
             WorkViewModel? workViewModel = WorkMapper.MapWorkModelToWorkViewModel(work);
             var users = await profile.Get(workViewModel.UserId);

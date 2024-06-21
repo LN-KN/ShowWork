@@ -40,7 +40,7 @@ namespace ShowWork.Controllers
                 followsViewModel.Profiles = list;
                 return View(followsViewModel);
             }
-            return View("/register");
+            return Redirect("/register");
         }
 
         [HttpPost]
@@ -67,7 +67,7 @@ namespace ShowWork.Controllers
                 }
                 return View(model);
             }
-            return View("/register");
+            return Redirect("/register");
         }
 
         [HttpPost]
@@ -80,7 +80,7 @@ namespace ShowWork.Controllers
                 await resume.FollowTo(UserId,(int)userId);
                 return Redirect($"/resume/{UserId}");
             }
-            return View("/register");
+            return Redirect("/register");
         }
 
         [HttpPost]
@@ -93,7 +93,7 @@ namespace ShowWork.Controllers
                 await resume.UnfollowFrom(UserId, (int)userId);
                 return Redirect($"/resume/{UserId}");
             }
-            return View("/register");
+            return Redirect("/register");
         }
 
         //var latestResumes = await resume.Search(5);

@@ -61,7 +61,7 @@ namespace ShowWork
             app.UseStaticFiles();
 
             // Use CORS middleware
-            app.UseCors("AllowAllOrigins");
+            //app.UseCors("AllowAllOrigins");
 
             app.UseRouting();
 

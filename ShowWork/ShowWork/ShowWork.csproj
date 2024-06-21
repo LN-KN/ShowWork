@@ -46,8 +46,8 @@
     <None Include="wwwroot\images\color_decor.svg" />
     <None Include="wwwroot\images\logo.png" />
     <None Include="wwwroot\images\patterns.png" />
-    <None Include="wwwroot\images\узоры цвет 1.png" />
-    <None Include="wwwroot\images\узоры цвет 2.png" />
+    <None Include="wwwroot\images\patterns_color_one.png" />
+    <None Include="wwwroot\images\patterns_color_2.png" />
     <None Include="wwwroot\lib\codemirror\.editorconfig" />
     <None Include="wwwroot\lib\codemirror\.gitattributes" />
     <None Include="wwwroot\lib\codemirror\.npmignore" />

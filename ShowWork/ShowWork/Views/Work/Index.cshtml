@@ -358,7 +358,7 @@
                     @foreach (var image in Model.Item5)
                     {
                         <div class="mySlides2 fade">
-                            <img src="@image.Image" style="width:1000px">
+                            <img src="@image.Image" style="margin-left:110px;">
                         </div>
                     }
                     <a class="prev" onclick="plusSlidesDesigning(-1)">&#10094;</a>
@@ -658,7 +658,6 @@
                 };
                 cancel.onclick = function (){
                     textBox.classList.remove('show');
-                    
                 }
             };
         </script>
@@ -686,9 +685,9 @@
             Show Work - Ваш путь к вдохновению и успеху в цифровом мире!
         </p>
         <div class="bottom-links">
-            <a href="index.html">Главная</a>
-            <a href="#">Каталог</a>
-            <a href="#">Мои подписки</a>
+            <a href="/home">Главная</a>
+            <a href="/catalogue">Каталог</a>
+            <a href="/follows">Мои подписки</a>
         </div>
     </footer>
 </body>

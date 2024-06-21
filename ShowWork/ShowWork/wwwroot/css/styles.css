@@ -6,9 +6,11 @@
     margin-top: -10%;
     top: 1;
     z-index: 0;
+    margin-bottom: 20px;
 }
 
-.body {
+body {
+    overflow-x: hidden;
 }
 
 .main {
@@ -16,8 +18,6 @@
 }
 
 .mainPage {
-    height: 100%;
-    width: 100%;
     margin: 0;
     padding: 0;
     background: rgba(248, 247, 254, 1);
@@ -313,7 +313,7 @@ img {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     column-gap: 10px;
-    gap: 20px 2%;
+    gap: 20px 5%;
     grid-auto-flow: row;
     grid-template-areas:
         ". ."
@@ -325,6 +325,7 @@ img {
 .work-block {
     background-image: url("../images/rait-background.svg");
     background-size: cover;
+    padding-inline: 5%
 }
 
 .bottom-links {
@@ -356,7 +357,7 @@ margin-bottom: 2%;
 
 .loginPage {
     background-color: rgb(167,151,214);
-    background-image: url(../images/узоры.png);
+    background-image: url(../images/patterns1.png);
     background-size: cover;
 }
 
@@ -471,7 +472,7 @@ margin-bottom: 2%;
 /* Регистрация */
 .registerPage {
     background-color: rgb(167,151,214);
-    background-image: url(../images/узоры.png);
+    background-image: url(../images/patterns1.png);
     background-size: cover;
     padding-inline: 25%;
 }
@@ -874,8 +875,8 @@ img
 {
     display: block;
     position: absolute;
-    margin-top: -115px;
-    margin-left: -2px;
+    margin-top: -110px;
+    margin-left: 0px;
 }
 
 .new-icon {
@@ -887,23 +888,23 @@ img
 }
 
 .profile-information {
+    outline: 0;
+    outline-offset: 0;
     span
-
-{
-    border-bottom: 1px dashed black;
-    padding-bottom: 10px;
-}
-
+    {
+        border-bottom: 1px dashed black;
+        padding-bottom: 10px;
+    }
 }
 
 .work-information {
+    outline: 0;
+    outline-offset: 0;
     span
-
-{
-    border-bottom: 1px dashed black;
-    padding-bottom: 30px;
-}
-
+    {
+        border-bottom: 1px dashed black;
+        padding-bottom: 30px;
+    }
 }
 }
 
@@ -1147,6 +1148,7 @@ button {
 /* Страница работы */
 .one-work {
     background-image: url("../images/general-background.jpg");
+    margin:0;
 }
 
 .one-work-info {
@@ -1161,8 +1163,9 @@ button {
     -moz-box-shadow: 0px 7px 8px 0px rgba(34, 60, 80, 0.2);
     box-shadow: 0px 7px 8px 0px rgba(34, 60, 80, 0.2);
     padding-bottom: 30px;
+    padding-top: 15%;
+    margin-top: -10%;
     h1
-
 {
     color: rgba(112, 85, 189, 1);
     font-size: 28px;
@@ -1239,6 +1242,13 @@ align-items: end;
             text-align: center;
             padding: 0;
         }
+
+.bottom-comments textarea {
+    outline: 0;
+    outline-offset: 0;
+    min-height: 30px;
+}
+
 
 .first-raiting {
     background-color: rgba(244, 6, 6, 0.68);
@@ -1323,6 +1333,11 @@ textarea::-webkit-scrollbar-thumb {
 .comments {
     position: relative;
     width: 100%;
+    .answer-input
+    {
+        outline: 0;
+        outline-offset: 0;
+    }
 }
 
 .current-comment {
@@ -1599,7 +1614,7 @@ div#photos {
 }
 
 .work-image {
-    width: 434px;
+    /*width: 434px;*/
     height: 235px;
 }
 
@@ -1686,6 +1701,8 @@ div#photos {
     width: 100%;
     background-image: url("../images/general-background.jpg");
     overflow-x: hidden;
+    outline: 0;
+    outline-offset: 0;
 }
 
 .work-create-info {
@@ -1961,7 +1978,7 @@ a {
 
 {
     margin-top: 2%;
-    margin-inline: 20pc;
+    margin-inline: 10pc;
     display: flex;
     justify-content: space-between;
 }
@@ -2060,6 +2077,7 @@ img {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    margin-top: -19px;
 }
 
 .search input
@@ -2151,6 +2169,144 @@ img {
 
 p {
     margin: 5px;
+}
+}
+
+/*Каталог*/
+.filter {
+    margin-inline: 16%;
+    margin-top: -6pc;
+    font-family: "Lato", system-ui;
+    padding-bottom: 25px;
+    border-bottom-right-radius: 35px;
+    border-bottom-left-radius: 35px;
+    margin-top: -7pc;
+}
+
+#filter {
+    margin-inline: 2%;
+    color: rgba(112, 85, 189, 1);
+}
+
+#filter-section.show {
+    background: rgba(237, 234, 248, 1);
+}
+
+.catalog-page {
+    margin: 0;
+    overflow-x: hidden;
+}
+
+#sub-window {
+    display: flex;
+    align-items: center;
+    margin-top: -5px;
+    justify-content: space-between;
+}
+
+#main-window {
+    display: none;
+    margin-inline: 2%;
+    margin-top: 10px;
+}
+
+    #main-window.show {
+        display: block;
+    }
+
+#arrow {
+    width: 23px;
+    height: 30px;
+    vertical-align: bottom;
+}
+
+.sort-block {
+    list-style-type: circle;
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0;
+    li
+
+{
+    margin-bottom: -12px;
+    padding: 0;
+    line-height: 30px;
+}
+
+::marker {
+    color: rgba(112, 85, 189, 1);
+}
+
+}
+
+.all-filters {
+    display: grid;
+    width: 70%;
+    grid-template-columns: 2fr 2fr 4fr;
+    grid-template-rows: 1fr 1fr;
+    grid-auto-flow: column;
+    list-style: none;
+    line-height: 30px;
+    input
+
+{
+    border: 1px solid rgba(112, 85, 189, 1);
+    border-radius: 0;
+}
+
+.custom-checkbox {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+    .custom-checkbox + label {
+        display: inline-flex;
+        align-items: center;
+        user-select: none;
+    }
+
+        .custom-checkbox + label::before {
+            content: '';
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+            flex-grow: 0;
+            border: 2px solid rgba(112, 85, 189, 1);
+            margin-right: 0.5em;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 50% 50%;
+        }
+
+    .custom-checkbox:checked + label::before {
+        border-color: rgba(112, 85, 189, 1);
+        background-color: rgba(112, 85, 189, 1);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+    }
+
+    .custom-checkbox:not(:disabled):active + label::before {
+        background-color: rgba(112, 85, 189, 1);
+    }
+
+    .custom-checkbox:disabled + label::before {
+        background-color: rgba(112, 85, 189, 1);
+    }
+
+}
+
+.catalog-works {
+    .top-portfolio
+
+{
+    width: 95%;
+    margin-inline: 5%;
+}
+
+.button {
+    margin-top: 2%;
+    margin-inline: 30%;
 }
 }
 

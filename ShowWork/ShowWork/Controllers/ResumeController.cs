@@ -43,7 +43,7 @@ namespace ShowWork.Controllers
                 return View(tuple);
             }
             
-            return View("Index");
+            return Redirect("/register");
             
         }
     }

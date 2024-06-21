@@ -40,6 +40,11 @@ namespace ShowWork.Controllers
         [Route("/catalogue")]
         public async Task<IActionResult> Index(WorksViewModel vm)
         {
+            var id = await session.GetUserId();
+            if (id == null)
+            {
+                return Redirect("/register");
+            }
             var works = await work.GetTopWorks(100);
             var profiles = await profile.GetAllProfiles();
             profiles = profiles.Where(x => x.Status == 1);
@@ -186,13 +191,13 @@ namespace ShowWork.Controllers
                 profiles = profiles.Where(x => x.Status == 1);
                 if (model.Analytics)
                     tagNames.Add(0);
-                if (model.Photography)
-                    tagNames.Add(1);
-                if (model.GraphicDesign)
-                    tagNames.Add(2);
                 if (model.Develop)
-                    tagNames.Add(3);
+                    tagNames.Add(1);
+                if (model.Photography)
+                    tagNames.Add(2);
                 if (model.UXUIDesign)
+                    tagNames.Add(3);
+                if (model.GraphicDesign)
                     tagNames.Add(4);
                 if (model.Other)
                     tagNames.Add(5);
@@ -238,16 +243,16 @@ namespace ShowWork.Controllers
                 if (model.PopularityUpOrDown)
                     list = list.OrderByDescending(x => x.MiddleGrade).ToList();
                 else
-                    list = list.OrderBy(x => x.MiddleGrade).ToList();
-
-                if (model.TimePublishedUpOrDown)
                 {
-                    if (model.PopularityUpOrDown)
-                        list = list.OrderBy(x => x.Published).ThenByDescending(x => x.MiddleGrade).ToList();
+                    if (model.TimePublishedUpOrDown)
+                    {
+                        list = list.OrderBy(x => x.Published).ToList();
+                    }
                     else
-                        list =  list.OrderByDescending(x => x.Published).ToList();
+                    {
+                        list = list.OrderByDescending(x => x.Published).ToList();
+                    }
                 }
-                    
 
                 if (!string.IsNullOrEmpty(model.Text))
                 {
@@ -283,7 +288,7 @@ namespace ShowWork.Controllers
                     model.Works = model.Works.Where(x => x != null).Take(count);
                 return View(model);
             }
-            return View("/register");
+            return Redirect("/register");
         }
 
 

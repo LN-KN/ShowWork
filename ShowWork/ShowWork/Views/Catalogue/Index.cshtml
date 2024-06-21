@@ -36,10 +36,56 @@
 
 </head>
 @await Component.InvokeAsync("MainMenu")
-<body class="profile-background">
-    <form method="post" action="/catalogue/search">
-        <input class="form-control" asp-for="@Model.Text" id="TextSearchInput" placeholder="Введите текст для поиска" width="800px" height="50px" />
-        @Html.CheckBoxFor(model => model.Analytics) <span>Аналитика</span>
+<body class="catalog-page">
+    <form id="form" method="post" action="/catalogue/search">
+        <section class="search">
+            <input class="form-control searchbar" asp-for="@Model.Text" id="TextSearchInput" placeholder="Поиск..." width="800px" height="50px" />
+        </section>
+        <section class="filter" id="filter-section">
+            <span id="filter">Сортировать по <img src="/images/down-arrow.svg"> </span>
+            <div id="main-window">
+                <div id="sub-window">
+                    <ul class="sort-block">
+                        <input type="hidden" class="custom-checkbox" id="popularity-box" asp-for="PopularityUpOrDown">
+                        @if (Model.PopularityUpOrDown)
+                        {
+                            <li id="popularityLabel" onclick="popularityOrder()" style="color:rgba(112, 85, 189, 1)">Популярности</li>
+                        }
+                        else
+                        {
+                            <li id="popularityLabel" onclick="popularityOrder()" style="color:black">Популярности</li>
+                        }
+
+                        <input type="hidden" class="custom-checkbox" id="time-box" asp-for="TimePublishedUpOrDown">
+                        @if (Model.TimePublishedUpOrDown)
+                        {
+                            <li><p id="timeLabel" onclick="timeOrder()" style="color:rgba(112, 85, 189, 1)">Время публикации <img onclick="changeImage()" id="arrow" src="/images/up-arrow.svg"></p></li>
+
+                        }
+                        else
+                        {
+                            <li><p id="timeLabel" onclick="timeOrder()" style="color:black">Время публикации <img onclick="changeImage()" id="arrow" src="/images/up-arrow.svg"></p></li>
+
+                        }
+                    </ul>
+                    <div class="all-filters">
+                        <input type="checkbox" class="custom-checkbox"  id="analytics-box" asp-for="Analytics">
+                        <label for="analytics-box">Аналитика</label>
+                        <input type="checkbox" class="custom-checkbox"  id="development-box" asp-for="Develop">
+                        <label for="development-box">Разработка</label>
+                        <input type="checkbox" class="custom-checkbox"  id="photography-box" asp-for="Photography">
+                        <label for="photography-box">Фотография</label>
+                        <input type="checkbox" class="custom-checkbox"  id="designing-box" asp-for="UXUIDesign">
+                        <label for="designing-box">UI/UX дизайн</label>
+                        <input type="checkbox" class="custom-checkbox"  id="graphdesigning-box" asp-for="GraphicDesign">
+                        <label for="graphdesigning-box">Графический дизайн</label>
+                        <input type="checkbox" class="custom-checkbox" id="another-box" asp-for="Other">
+                        <label for="another-box">Другое</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+       @*  @Html.CheckBoxFor(model => model.Analytics) <span>Аналитика</span>
         @Html.CheckBoxFor(model => model.Develop) <span>Разработка</span>
         @Html.CheckBoxFor(model => model.GraphicDesign) <span>Графический дизайн</span>
         @Html.CheckBoxFor(model => model.UXUIDesign) <span>UX/UI Дизайн</span>
@@ -47,53 +93,136 @@
         @Html.CheckBoxFor(model => model.Other) <span>Другое</span>
         @Html.CheckBoxFor(model => model.TimePublishedUpOrDown, false) <span>Сортировать по времени публикации</span>
         @Html.CheckBoxFor(model => model.PopularityUpOrDown, true) <span>Сортировать по популярности</span>
-
-        <button id="ApplyTextSearchButton" height="50px">Поиск</button>
+        <button id="ApplyTextSearchButton" height="50px">Поиск</button> *@
     </form>
-    <div class="rait-works">
-        <div class="work-block">
-            <div class="top-portfolio">
-                @foreach (var work in Model.Works)
-                {
-                    if (work.CategoryOfWork >= 0 && work.CategoryOfWork < tagNames.Length)
+    
+    <section class="catalog-works">
+        <div class="rait-works">
+            <div class="work-block">
+                <div class="top-portfolio">
+                    @foreach (var work in Model.Works)
                     {
-                        <div class="work">
-                            <div class="portfolio-info">
-                                <div class="author">
-                                    @if (!String.IsNullOrEmpty(@work.UserImagePath))
+                        if (work.CategoryOfWork >= 0 && work.CategoryOfWork < tagNames.Length)
+                        {
+                            <div class="work">
+                                <div class="portfolio-info">
+                                    <div class="author">
+                                        @if (!String.IsNullOrEmpty(@work.UserImagePath))
+                                        {
+                                            <a href="/resume/@work.UserId"><img src="@work.UserImagePath" height="32.54" width="36.5" /></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="/resume/@work.UserId"><img src="images/inputImage.svg" height="32.54" width="36.5" /></a>
+                                        }
+                                        <p>@work.UserName @work.UserSurname</p>
+                                    </div>
+                                    <div>
+                                        <p class="work-name">@work.Title</p>
+                                        <p class="rating">@work.MiddleGrade</p>
+                                    </div>
+                                </div>
+                                <a href="/work/@work.WorkId">
+                                    @if (work.ImagePath != null)
                                     {
-                                        <a href="/resume/@work.UserId"><img src="@work.UserImagePath" height="32.54" width="36.5" /></a>
+                                        <img class="work-image" src="@work.ImagePath" />
                                     }
                                     else
                                     {
-                                        <a href="/resume/@work.UserId"><img src="images/inputImage.svg" height="32.54" width="36.5" /></a>
+                                        <img src="/images/image 7.png" />
                                     }
-                                    <p>@work.UserName @work.UserSurname</p>
-                                </div>
-                                <div>
-                                    <p class="work-name">@work.Title</p>
-                                    <p class="rating">@work.MiddleGrade</p>
-                                </div>
+                                </a>
                             </div>
-                            <a href="/work/@work.WorkId">
-                                @if (work.ImagePath != null)
-                                {
-                                    <img class="work-image" src="@work.ImagePath" />
-                                }
-                                else
-                                {
-                                    <img src="/images/image 7.png" />
-                                }
-                            </a>
-                        </div>
+                        }
                     }
-                }
+                </div>
             </div>
         </div>
-    </div>
-    <form method="post" action="/catalogue/more">
-    <button id="moreButton" class="more-work_button-home">
-        ЕЩЁ
-    </button>
-    </form>
+        <form method="post" action="/catalogue/more">
+            <button id="moreButton" class="more-work_button-home">
+                ЕЩЁ
+            </button>
+        </form>
+    </section>
+    <script>
+        var element1 = document.getElementById('filter');
+        var element2 = document.getElementById('filter-section')
+        var element3 = document.getElementById('main-window');
+
+        element1.onclick = function (){
+            if (element3.classList.contains('show')){
+                element3.classList.remove('show')
+                element2.classList.remove('show')
+            }
+            else {
+                element3.classList.add('show');
+                element2.classList.add('show')
+            }
+        }
+    </script>
+    <script>
+        let orderByTime = false;
+        let orderByTimeDesc = false;
+        let orderByPopularity = true;
+        let form = document.getElementById('form');
+        let popularityBox = document.getElementById('popularity-box');
+        let timeBox = document.getElementById('time-box');
+        let popularityLabel = document.getElementById('popularityLabel');
+        let timeLabel = document.getElementById('timeLabel');
+
+        function changeImage(){
+            if (document.getElementById('arrow').src.match("/images/up-arrow.svg")){
+                document.getElementById('arrow').src = "/images/filter-down-arrow.svg";
+            }
+            else{
+                document.getElementById('arrow').src = "/images/up-arrow.svg";
+            }
+            orderByTimeDesc = !orderByTimeDesc;
+            if (orderByTime) {
+                timeBox.value = orderByTimeDesc;
+            } 
+            else {
+                timeBox.value = null;
+            }
+        }
+
+        function popularityOrder() {
+            orderByPopularity = true;
+            orderByTime = false;
+            popularityLabel.style.color = 'rgba(112, 85, 189, 1)';
+            timeLabel.style.color = 'black';
+            popularityBox.value = true;
+        }
+
+        function timeOrder() {
+            orderByTime = true;
+            orderByPopularity = false;
+            timeLabel.style.color = 'rgba(112, 85, 189, 1)';
+            popularityLabel.style.color = 'black';
+            popularityBox.value = false;
+        }
+
+        function submitForm() {
+            form.submit();
+        }
+
+    </script>
+    <footer>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="mainLogo2">
+            <img src="/images/logo.png">
+        </div>
+        <p class="bottom-slogan">
+            Show Work - Ваш путь к вдохновению и успеху в цифровом мире!
+        </p>
+        <div class="bottom-links">
+            <a href="/home">Главная</a>
+            <a href="/catalogue">Каталог</a>
+            <a href="/follows">Мои подписки</a>
+        </div>
+    </footer>
 </body>
