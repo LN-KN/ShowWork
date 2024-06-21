@@ -9,7 +9,7 @@
 
 <h4 align="center">Веб-приложение для организации, хранения, публикации  материалов  конкретного пользователя.</h4>
 
-<span style="color:green;font-weight:700;font-size:20px;">
+<span style="color:green">
     Сайт прекратит работу 21.07.2024
 </span>
 
