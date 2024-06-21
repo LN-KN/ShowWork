@@ -8,12 +8,9 @@
 </h1>
 
 <h4 align="center">Веб-приложение для организации, хранения, публикации  материалов  конкретного пользователя.</h4>
-```diff
-
--Сайт прекратит работу 21.07.2024
-
-```
-```
+<span style="color:green;font-weight:700;font-size:20px">
+    Сайт прекратит работу 21.07.2024
+</span>
 ![screenshot](https://i.postimg.cc/dQZmDBc4/showwork.png)
 
 ## Описание
