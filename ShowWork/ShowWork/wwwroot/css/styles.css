@@ -54,8 +54,6 @@ body {
     grid-auto-flow: row;
     margin-top:auto;
     margin-bottom:0;
-    margin-left: 5%;
-    margin-right: 5%;
     align-items: center;
     column-gap: 10px;
     li
@@ -875,7 +873,7 @@ img
 {
     display: block;
     position: absolute;
-    margin-top: -110px;
+    margin-top: -119px;
     margin-left: 0px;
 }
 
@@ -2180,7 +2178,7 @@ p {
     padding-bottom: 25px;
     border-bottom-right-radius: 35px;
     border-bottom-left-radius: 35px;
-    margin-top: -7pc;
+/*  margin-top: -7pc;*/
 }
 
 #filter {
