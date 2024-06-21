@@ -9,6 +9,7 @@
 
 <h4 align="center">Веб-приложение для организации, хранения, публикации  материалов  конкретного пользователя.</h4>
 <h3 align="center" style="color:red;">Сайт прекратит работу 21.07.2024</h4>
+
 ![screenshot](https://i.postimg.cc/dQZmDBc4/showwork.png)
 
 ## Описание
