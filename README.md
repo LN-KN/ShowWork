@@ -1,13 +1,16 @@
 
 <h1 align="center">
   <br>
-  <a href="https://project.ai-info.ru/teams/lnkn"><img src="https://i.postimg.cc/DwTc9bD5/1.png" alt="ShowWork" width="200"></a>
+  <a href="https://a27956-9015.u.d-f.pw/home"><img src="https://i.postimg.cc/DwTc9bD5/1.png" alt="ShowWork" width="200"></a>
   <br>
   ShowWork
   <br>
 </h1>
 
 <h4 align="center">Веб-приложение для организации, хранения, публикации  материалов  конкретного пользователя.</h4>
+
+> [!WARNING]
+> Сайт прекратит работу 21.07.2024
 
 ![screenshot](https://i.postimg.cc/dQZmDBc4/showwork.png)
 
@@ -53,9 +56,15 @@ ShowWork - это веб-приложение, которое позволяет
   <img width="12" />
 </div>
 
+## Команда
+| Тимлид-аналитик | Backend-Разработчик | Frontend-Разработчик | Дизайнер |
+| :---: | :---: | :---: | :---: |
+| [Кравцова Вероника](https://vk.com/id320997741) | [Беликов Никита](https://vk.com/holo2k) | [Истомина Алиса](https://vk.com/a.d.alison) | [Маркина Ксения](https://vk.com/markinnaa) |
+
 ## Ссылки
 
 [Репозиторий](https://github.com/LN-KN/ShowWork) &nbsp;&middot;&nbsp;
-[Канбан-доска](https://yougile.com/team/47cdad97f983/DIGITAL-PORTFOLIO/Задачи) &nbsp;&middot;&nbsp;
-[Карточка проекта](https://project.ai-info.ru/sites/default/files/kartochka_proekta.pdf)
+[Канбан-доска](https://yougile.com/board/fw7808n65ges) &nbsp;&middot;&nbsp;
+[Карточка проекта](https://project.ai-info.ru/sites/default/files/kartochka_proekta.pdf) &nbsp;&middot;&nbsp;
+[Ссылка на сайт](https://a27956-9015.u.d-f.pw/home)
 
